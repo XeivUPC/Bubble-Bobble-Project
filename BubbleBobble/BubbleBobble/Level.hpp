@@ -16,8 +16,11 @@ public:
 	Level(char* levelJsonPath, int levelNumber, LevelManager* levelManager);
 	void Destroy() override;
 	void Render() override;
+	bool IsTile(int x, int y,int* dataMap);
+	int GetTile(int x, int y,int* dataMap);
+	int* Map;
+	int* Collisions;
 private:
 	LevelManager* _levelManager;
-	int* Map;
 	SpritePainter painter = SpritePainter(Vector2{ 8,8}, Vector2{0,0});
 };

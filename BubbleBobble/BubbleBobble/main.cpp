@@ -61,7 +61,7 @@ int main() {
     TextUI puntuationUI = TextUI(nullptr, &calls, &tileMapData, tileMapData.tileMapWidth, 1, 0, 1);
     PuntuationManager puntuationManager = PuntuationManager(&player1Points, &player2Points, &highScore, &calls, &puntuationUI);
 
-    Player player = Player(&calls, &tileMapData);
+    Player player = Player(&calls, &tileMapData, &levelManager);
     InitAudioDevice();
     SetMasterVolume(100);
 

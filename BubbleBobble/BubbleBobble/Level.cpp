@@ -1,5 +1,5 @@
 #include "Level.hpp"
-#include "../Project1/libraries/json.hpp"
+#include "../BubbleBobble/libraries/json.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -15,6 +15,7 @@ Level::Level(char* levelJsonPath, int levelNumber, LevelManager* levelManager)
 {
 	_levelManager = levelManager;
 	Map = new int[_levelManager->levelWidth * _levelManager->levelHeight];
+	Collisions = new int[_levelManager->levelWidth * _levelManager->levelHeight];
 
 
 	if (levelJsonPath != nullptr) {
@@ -25,12 +26,26 @@ Level::Level(char* levelJsonPath, int levelNumber, LevelManager* levelManager)
 		auto json = nlohmann::json::parse(buffer.str());
 
 
-		auto tiles = json["data"];
+		auto layers = json["layers"];
+		auto tilesMap = layers[0]["data"];
 
-		for (int index = 0; index < tiles.size(); ++index)
+		for (int index = 0; index < tilesMap.size(); ++index)
 		{
 
-			Map[index] = tiles[index];
+			Map[index] = tilesMap[index];
+		}
+
+		auto tilesCollisions = layers[1]["data"];
+		auto offset = json["tilesets"][1]["firstgid"];
+		for (int index = 0; index < tilesCollisions.size(); ++index)
+		{
+			if (tilesCollisions[index]!=0) {
+				Collisions[index] = tilesCollisions[index] - (int)offset + 1;
+			}
+			else {
+				Collisions[index] = 0;
+			}
+			
 		}
 	}
 	position = { 0,0 };
@@ -51,9 +66,23 @@ void Level::Render()
 				float xOffset = floor(valueOfTile - yOffset *20);
 				xOffset--;
 				painter.Paint(_levelManager->mapTileSet, Vector2{ x * _levelManager->_tileMapData->tileWidth + position.x,(y) *_levelManager->_tileMapData->tileHeight + position.y }, Vector2{ xOffset,yOffset }, Vector2{ (float)_levelManager->_tileMapData->tileWidth,(float)_levelManager->_tileMapData->tileHeight }, 0);
+				//DrawRectangle(x * _levelManager->_tileMapData->tileWidth + position.x,(y) *_levelManager->_tileMapData->tileHeight + position.y,_levelManager->_tileMapData->tileWidth,_levelManager->_tileMapData->tileHeight , BLUE);
 			}
 				
 		}
 	}
 	
+}
+
+bool Level::IsTile(int x, int y, int* dataMap)
+{
+	if(dataMap[(int)y * _levelManager->levelWidth + (int)x] !=0)
+		return true;
+	return false;
+}
+
+int Level::GetTile(int x, int y, int* dataMap)
+{
+	return dataMap[(int)y * _levelManager->levelWidth + (int)x];
+
 }

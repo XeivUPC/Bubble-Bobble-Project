@@ -9,7 +9,7 @@ class TileMapData;
 class LevelManager : public Entity
 {
 public:
-	const int MAX_LEVELS = 6;
+	const int MAX_LEVELS = 8;
 	LevelManager(SystemCalls* calls, TileMapData* tileMapData, Level* activeLevel, Level* waitingLevel);
 	void LoadNewWaitingLevel(int loadedLevelIndex);
 	void LoadNewActiveLevel(int loadedLevelIndex);
@@ -26,11 +26,11 @@ public:
 
 	Texture2D mapTileSet = LoadTexture("../Assets/Sprites/MapTileSet.png");
 	TileMapData* _tileMapData;
-
-	
-private:
 	Level* _activeLevel;
 	Level* _waitingLevel;
+	
+private:
+	
 	SystemCalls* _calls;
 	bool isOnTransition = false;
 	

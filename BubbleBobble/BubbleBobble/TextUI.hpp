@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <math.h>
-#include "../Project1/libraries/json.hpp"
+#include "../BubbleBobble/libraries/json.hpp"
 #include "Entity.hpp"
 #include "SpritePainter.hpp"
 #include "SystemCalls.hpp"

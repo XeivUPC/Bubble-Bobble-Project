@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="PuntuationManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="SpritePainter.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemCalls.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="TextUI.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMapData.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelManager.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="PuntuationManager.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePainter.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemCalls.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TextUI.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMapData.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\raylib\include\raylib.h">
+      <Filter>RayLib</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\raylib\include\rlgl.h">
+      <Filter>RayLib</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\raylib\include\raymath.h">
+      <Filter>RayLib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{04011948-0595-4d73-ae98-6adf731f778a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RayLib">
+      <UniqueIdentifier>{a80f7bc5-74c6-461a-aa09-d14392996b22}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
