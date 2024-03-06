@@ -18,7 +18,7 @@ void LevelManager::StartTransition()
 	if (isOnTransition)
 		return;
 	isOnTransition = true;
-	_waitingLevel->position = { 0, (float)GetScreenHeight() + 60.f };
+	_waitingLevel->position = { 0, (float)GetScreenHeight() + _tileMapData->tileHeight*2 };
 }
 void LevelManager::EndTransition()
 {

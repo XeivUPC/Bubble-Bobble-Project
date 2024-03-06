@@ -76,8 +76,8 @@ void Player::GetInput() {
 }
 void Player::Move() {
 
-	position.x += _direction.x;
-	position.y += _direction.y;
+	position.x += _direction.x * _tileMapData->tileHeight / 30;;
+	position.y += _direction.y * _tileMapData->tileHeight / 30;;
 }
 
 void Player::Jump() {
