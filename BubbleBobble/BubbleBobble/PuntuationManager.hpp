@@ -2,19 +2,23 @@
 #include "Entity.hpp"
 #include "TextUI.hpp"
 #include "SystemCalls.hpp"
+#include "PuntuationHolder.hpp"
+#include "GameManager.hpp"
 
+class GameManager;
+class PuntuationHolder;
 class PuntuationManager : public Entity
 {
 public:
-	PuntuationManager(int* p1, int* p2, int* highScore, SystemCalls* calls,TextUI* UI);
+	PuntuationManager(GameManager* _gameManager,PuntuationHolder* p1, PuntuationHolder* p2, PuntuationHolder* highScore,TextUI* UI);
 	void Update() override;
 	int FromNumberToTile(int num);
 
 private:
-	int* _p1;
-	int* _p2;
-	int* _highScore;
+	PuntuationHolder* _p1;
+	PuntuationHolder* _p2;
+	PuntuationHolder* _highScore;
 	TextUI* _UI;
-	SystemCalls* _calls;
+	GameManager* _gm;
 };
 

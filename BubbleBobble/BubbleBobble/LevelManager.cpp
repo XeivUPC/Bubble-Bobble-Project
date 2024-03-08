@@ -5,20 +5,18 @@
 #include <iostream>
 using namespace std;
 
-LevelManager::LevelManager(SystemCalls* calls, TileMapData* tileMapData, Level* activeLevel, Level* waitingLevel) {
-	_calls = calls;
-	_calls->renderCall.push_back(this);
-	_calls->updateCall.push_back(this);
-	_tileMapData = tileMapData;
-	_activeLevel = activeLevel;
-	_waitingLevel = waitingLevel;
+LevelManager::LevelManager(GameManager* gameManager) {
+	_gm = gameManager;
+	_gm->calls.updateCall.push_back(this);
+	_gm->calls.renderCall.push_back(this);
 }
 void LevelManager::StartTransition()
 {
 	if (isOnTransition)
 		return;
 	isOnTransition = true;
-	_waitingLevel->position = { 0, (float)GetScreenHeight() + _tileMapData->tileHeight*2 };
+	_gm->player->SetStatus(1);
+	_gm->waitingLevel->position = { 0, (float)GetScreenHeight() + _gm->TILE_HEIGHT*2 };
 }
 void LevelManager::EndTransition()
 {
@@ -26,27 +24,28 @@ void LevelManager::EndTransition()
 	nextLevelIndex++;
 	if(MAX_LEVELS>=nextLevelIndex)
 		LoadNewWaitingLevel(nextLevelIndex);
+	_gm->player->SetStatus(0);
 }
 void LevelManager::Update()
 {
 	if (!isOnTransition)
 		return;
 
-	_activeLevel->position = { 0,(_activeLevel->position.y -GetScreenHeight()/180.f)};
-	_waitingLevel->position = { 0,(_waitingLevel->position.y - GetScreenHeight()/180.f)};
+	_gm->activeLevel->position = { 0,(_gm->activeLevel->position.y -GetScreenHeight()/180.f)};
+	_gm->waitingLevel->position = { 0,(_gm->waitingLevel->position.y - GetScreenHeight()/180.f)};
 
 
-	if(_waitingLevel->position.y <=0)
+	if(_gm->waitingLevel->position.y <=0)
 	{
-		*_activeLevel = *_waitingLevel;
-		_activeLevel->position.y = 0;
+		*_gm->activeLevel = *_gm->waitingLevel;
+		_gm->activeLevel->position.y = 0;
 		EndTransition();
 	}
 }
 void LevelManager::Render() {
-	_activeLevel->Render();
+	_gm->activeLevel->Render();
 	if(isOnTransition)
-		_waitingLevel->Render();
+		_gm->waitingLevel->Render();
 }
 void LevelManager::LoadNewWaitingLevel(int loadedLevelIndex)
 {
@@ -57,7 +56,7 @@ void LevelManager::LoadNewWaitingLevel(int loadedLevelIndex)
 	strcat(path, integer_String);
 	strcat(path, end);
 	loadedLevelIndex--;
-	(*_waitingLevel) = Level((char*)path, loadedLevelIndex, this);
+	(*_gm->waitingLevel) = Level((char*)path, loadedLevelIndex, _gm);
 }
 void LevelManager::LoadNewActiveLevel(int loadedLevelIndex)
 {
@@ -68,5 +67,5 @@ void LevelManager::LoadNewActiveLevel(int loadedLevelIndex)
 	strcat(path, integer_String);
 	strcat(path, end);
 	loadedLevelIndex--;
-	(*_activeLevel) = Level((char*)path, loadedLevelIndex, this);
+	(*_gm->activeLevel) = Level((char*)path, loadedLevelIndex, _gm);
 }

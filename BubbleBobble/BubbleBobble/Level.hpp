@@ -1,26 +1,23 @@
 #pragma once
 #include <raylib.h>
-#include "Entity.hpp"
-#include "LevelManager.hpp"
-#include "SpritePainter.hpp"
-#include "TileMapData.hpp"
+#include "VisualEntity.hpp"
+#include "GameManager.hpp"
 
-class LevelManager;
-class TileMapData;
-class SpritePainter;
+class GameManager;
 
-class Level : public Entity
+class Level : public VisualEntity
 {
 public:
 	Level();
-	Level(char* levelJsonPath, int levelNumber, LevelManager* levelManager);
-	void Destroy() override;
+	Level(char* levelJsonPath, int levelNumber, GameManager* levelManager);
 	void Render() override;
+	void Destroy() override;
 	bool IsTile(int x, int y,int* dataMap);
 	int GetTile(int x, int y,int* dataMap);
 	int* Map;
 	int* Collisions;
+	int* Directions;
+	int* Enemies;
 private:
-	LevelManager* _levelManager;
-	SpritePainter painter = SpritePainter(Vector2{ 8,8}, Vector2{0,0});
+	GameManager* _gm;
 };

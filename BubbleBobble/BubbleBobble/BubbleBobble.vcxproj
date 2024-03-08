@@ -140,9 +140,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PuntuationHolder.hpp" />
     <ClInclude Include="PuntuationManager.hpp" />
-    <ClInclude Include="SpritePainter.hpp" />
+    <ClInclude Include="TextureRenderer.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Level.hpp" />
     <ClInclude Include="LevelManager.hpp" />
@@ -150,20 +152,22 @@
     <ClInclude Include="libraries\raylib\include\raymath.h" />
     <ClInclude Include="libraries\raylib\include\rlgl.h" />
     <ClInclude Include="SystemCalls.hpp" />
-    <ClInclude Include="TileMapData.hpp" />
     <ClInclude Include="TextUI.hpp" />
+    <ClInclude Include="VisualEntity.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PuntuationHolder.cpp" />
     <ClCompile Include="PuntuationManager.cpp" />
-    <ClCompile Include="SpritePainter.cpp" />
+    <ClCompile Include="TextureRenderer.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SystemCalls.cpp" />
-    <ClCompile Include="TileMapData.cpp" />
     <ClCompile Include="TextUI.cpp" />
+    <ClCompile Include="VisualEntity.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

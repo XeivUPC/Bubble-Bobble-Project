@@ -11,11 +11,15 @@ using namespace std;
 Level::Level() {
 
 }
-Level::Level(char* levelJsonPath, int levelNumber, LevelManager* levelManager)
+
+Level::Level(char* levelJsonPath, int levelNumber, GameManager* gameManager)
 {
-	_levelManager = levelManager;
-	Map = new int[_levelManager->levelWidth * _levelManager->levelHeight];
-	Collisions = new int[_levelManager->levelWidth * _levelManager->levelHeight];
+	renderer = TextureRenderer(Vector2{ 8,8 }, Vector2{ 0,0 });
+	_gm = gameManager;
+	Map = new int[(_gm->MAP_WIDTH) * (_gm->MAP_HEIGHT)];
+	Collisions = new int[(_gm->MAP_WIDTH) * (_gm->MAP_HEIGHT)];
+	Directions = new int[(_gm->MAP_WIDTH) * (_gm->MAP_HEIGHT)];
+	Enemies = new int[(_gm->MAP_WIDTH) * (_gm->MAP_HEIGHT)];
 
 
 	if (levelJsonPath != nullptr) {
@@ -51,38 +55,42 @@ Level::Level(char* levelJsonPath, int levelNumber, LevelManager* levelManager)
 	position = { 0,0 };
 
 }
-void Level::Destroy() {
-	delete[] Map;
-}
+
 void Level::Render()
 {
-	for (float y = 0; y < _levelManager->levelHeight; y++)
+	for (float y = 0; y < _gm->MAP_HEIGHT; y++)
 	{
-		for (float x = 0; x < _levelManager->levelWidth; x++)
+		for (float x = 0; x < _gm->MAP_WIDTH; x++)
 		{
-			float valueOfTile = Map[(int)y * _levelManager->levelWidth + (int)x];
+			float valueOfTile = Map[(int)y * _gm->MAP_WIDTH + (int)x];
 			if (valueOfTile != 0) {
-				float yOffset = floor(valueOfTile / 20);
-				float xOffset = floor(valueOfTile - yOffset *20);
+				float yOffset = floor(valueOfTile / 32);
+				float xOffset = floor(valueOfTile - yOffset *32);
 				xOffset--;
-				painter.Paint(_levelManager->mapTileSet, Vector2{ x * _levelManager->_tileMapData->tileWidth + position.x,(y) *_levelManager->_tileMapData->tileHeight + position.y }, Vector2{ xOffset,yOffset }, Vector2{ (float)_levelManager->_tileMapData->tileWidth,(float)_levelManager->_tileMapData->tileHeight }, 0);
-				//DrawRectangle(x * _levelManager->_tileMapData->tileWidth + position.x,(y) *_levelManager->_tileMapData->tileHeight + position.y,_levelManager->_tileMapData->tileWidth,_levelManager->_tileMapData->tileHeight , BLUE);
-			}
+				renderer.Paint(_gm->levelManager->mapTileSet, Vector2{ x * _gm->TILE_WIDTH + position.x,(y) *_gm->TILE_HEIGHT + position.y }, Vector2{ xOffset,yOffset }, Vector2{ (float)_gm->TILE_WIDTH,(float)_gm->TILE_HEIGHT }, 0);
 				
+				
+			}
 		}
 	}
 	
 }
+void Level::Destroy() {
+	delete[] Map;
+	delete[] Collisions;
+	delete[] Directions;
+	delete[] Enemies;
+}
 
 bool Level::IsTile(int x, int y, int* dataMap)
 {
-	if(dataMap[(int)y * _levelManager->levelWidth + (int)x] !=0)
+	if(dataMap[(int)y * _gm->MAP_WIDTH + (int)x] !=0)
 		return true;
 	return false;
 }
 
 int Level::GetTile(int x, int y, int* dataMap)
 {
-	return dataMap[(int)y * _levelManager->levelWidth + (int)x];
+	return dataMap[(int)y * _gm->MAP_WIDTH + (int)x];
 
 }

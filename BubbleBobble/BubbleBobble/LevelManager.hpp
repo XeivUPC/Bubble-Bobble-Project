@@ -3,14 +3,19 @@
 #include "Level.hpp"
 #include "SystemCalls.hpp"
 #include "TileMapData.hpp"
+#include "Player.hpp"
+
+#include "GameManager.hpp"
+class GameManager;
 
 class Level;
 class TileMapData;
+class Player;
 class LevelManager : public Entity
 {
 public:
-	const int MAX_LEVELS = 8;
-	LevelManager(SystemCalls* calls, TileMapData* tileMapData, Level* activeLevel, Level* waitingLevel);
+	
+	LevelManager(GameManager* gameManager);
 	void LoadNewWaitingLevel(int loadedLevelIndex);
 	void LoadNewActiveLevel(int loadedLevelIndex);
 	void StartTransition();
@@ -19,19 +24,11 @@ public:
 	void Update() override;
 	void Render() override;
 
-	int levelHeight = 30;
-	int levelWidth = 32;
-
-	int nextLevelIndex=2;
-
 	Texture2D mapTileSet = LoadTexture("../Assets/Sprites/MapTileSet.png");
-	TileMapData* _tileMapData;
-	Level* _activeLevel;
-	Level* _waitingLevel;
-	
+	GameManager* _gm;
 private:
-	
-	SystemCalls* _calls;
+	const int MAX_LEVELS = 8;
+	int nextLevelIndex = 2;
 	bool isOnTransition = false;
 	
 };

@@ -1,30 +1,42 @@
 #pragma once
 #include <raylib.h>
-#include "Entity.hpp"
-#include "SpritePainter.hpp"
+#include "VisualEntity.hpp"
 #include "SystemCalls.hpp"
 #include "TileMapData.hpp"
 #include "LevelManager.hpp"
 
-class TileMapData;
+#include "GameManager.hpp"
 
-class Player : public Entity
+class GameManager;
+
+class Player : public VisualEntity
 {
+
 public:
-	Player(SystemCalls* calls, TileMapData* tileMapData, LevelManager* _levelManager);
+	Player(GameManager* gameManager);
 	void GetInput();
 	void Move();
 	void Jump();
 	void CheckCollisions();
-	void Destroy() override;
 	void Update() override;
 	void Render() override;
+	void SetStatus(int index);
+	void TpToSpawnPoint();
+	void MoveToSpawnPoint();
+
+	enum PlayerStatus
+	{
+		Playing,
+		Dead,
+		ChangingLevel
+	};
+
+	
+
 private:
+	PlayerStatus state = Playing;
 	Texture2D playerTexture = LoadTexture("../Assets/Sprites/Player.png");
-	SystemCalls* _calls;
-	TileMapData* _tileMapData;
-	LevelManager* _levelManager;
-	SpritePainter painter;
+	GameManager* _gm;
 
 	float xOffset=0;
 	float yOffset=0;
@@ -39,6 +51,7 @@ private:
 	float _jumpMaxSpeed=7;
 	float _jumpHeight = 30 *5.1;
 	float _jumpDistance = 0;
+	float _jumpMovilityDebuff=25.f;
 
 	Vector2 _direction;
 
@@ -53,6 +66,14 @@ private:
 	bool isJumping=false;
 	bool isFalling=false;
 	bool isMoving=false;
-
 	bool isShooting = false;
+
+
+	int bubbleState = 0;
+
+
+	////Sounds
+	Sound jumpSound = LoadSound("../Assets/Sounds/SFX/Jump.wav");
+	Sound shootSound = LoadSound("../Assets/Sounds/SFX/Shoot.wav");
+	
 };

@@ -1,28 +1,28 @@
 #include "PuntuationManager.hpp"
 
-PuntuationManager::PuntuationManager(int* p1, int* p2, int* highScore,SystemCalls* calls, TextUI* UI)
+PuntuationManager::PuntuationManager(GameManager* gameManager, PuntuationHolder* p1, PuntuationHolder* p2, PuntuationHolder* highScore, TextUI* UI)
 {
-	_calls = calls;
+    _gm = gameManager;
 	_UI = UI;
 	_p1 = p1;
 	_p2 = p2;
 	_highScore = highScore;
 
-	_calls->updateCall.push_back(this);
+	_gm->calls.updateCall.push_back(this);
 }
 
 void PuntuationManager::Update()
 {
-    if (_highScore < _p1 || _highScore < _p2)
+    if (_highScore->GetPuntuation() < _p1->GetPuntuation() || _highScore->GetPuntuation() < _p2->GetPuntuation())
     {
-        if (_p1 < _p2)
-            _highScore = _p2;
+        if (_p1->GetPuntuation() < _p2->GetPuntuation())
+            _highScore->SetPuntutation(_p2->GetPuntuation());
         else
             _highScore = _p1;
     }
 
     /// ToDO --> newClass
-    int playerPoints = *_p1;
+    int playerPoints = _p1->GetPuntuation();
     if (playerPoints < 10) {
         int numTile = FromNumberToTile(0);
 
@@ -43,7 +43,7 @@ void PuntuationManager::Update()
             break;
     }
 
-    playerPoints = *_p2;
+    playerPoints = _p2->GetPuntuation();
     if (playerPoints < 10) {
         int numTile = FromNumberToTile(0);
 
@@ -64,7 +64,7 @@ void PuntuationManager::Update()
             break;
     }
 
-    playerPoints = *_highScore;
+    playerPoints = _highScore->GetPuntuation();
     if (playerPoints < 10) {
         int numTile = FromNumberToTile(0);
 
@@ -91,25 +91,25 @@ int PuntuationManager::FromNumberToTile(int num)
     switch (num)
     {
     case 0:
-        return 199;
-    case 1:
-        return 200;
-    case 2:
-        return 201;
-    case 3:
-        return 202;
-    case 4:
-        return 203;
-    case 5:
-        return 204;
-    case 6:
-        return 205;
-    case 7:
-        return 206;
-    case 8:
-        return 207;
-    case 9:
         return 208;
+    case 1:
+        return 209;
+    case 2:
+        return 210;
+    case 3:
+        return 211;
+    case 4:
+        return 212;
+    case 5:
+        return 213;
+    case 6:
+        return 214;
+    case 7:
+        return 215;
+    case 8:
+        return 216;
+    case 9:
+        return 217;
     default:
         break;
     }
