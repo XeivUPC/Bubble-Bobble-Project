@@ -31,7 +31,7 @@ int main() {
     InitAudioDevice();
     SetMasterVolume(0.1);
 
-    Music music = LoadMusicStream("../Assets/Sounds/Music/01 Introduction Main Theme.ogg");
+    Music music = LoadMusicStream("../Assets/Sounds/Music/01_Title Screen.ogg");
     PlayMusicStream(music);
     GameManager manager = GameManager();
     manager.activeLevel = &activeLevel;
