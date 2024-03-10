@@ -9,13 +9,31 @@
 class LevelManager;
 class Level;
 class Player;
-class GameManager
+class GameManager : public Entity
 {
 public:
+
+	enum GameState
+	{
+		InitialScreen,
+		InsertCoinScreen,
+		TutorialScreen,
+
+		CoinInsertedScreen,
+		LoadingGameScreen,
+		GameScreen,
+
+		Results,
+		GameOver
+	};
+
+
 	//// Functions
 	GameManager();
 	void SaveGameData(int highScore);
 	void LoadGameData(int* highScore);
+	void Update() override;
+	void ChangeGameState(int indexState);
 	SystemCalls calls = SystemCalls();
 
 	//// Points
@@ -38,5 +56,6 @@ public:
 	Level* activeLevel;
 	Level* waitingLevel;
 private:
+	GameState state = InitialScreen;
 };
 

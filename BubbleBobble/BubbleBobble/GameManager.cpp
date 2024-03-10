@@ -27,3 +27,12 @@ void GameManager::LoadGameData(int* highScore)
     fscanf(file, "%d", highScore);
     fclose(file);
 }
+
+
+void GameManager::Update() {
+
+}
+
+void GameManager::ChangeGameState(int index) {
+    state = static_cast<GameState>(index);
+}
