@@ -1,9 +1,16 @@
 #include "Entity.hpp"
 
-void Entity::Update() {}
-void Entity::LateUpdate() {}
-void Entity::Destroy()
+
+void Entity::Update()
 {
 }
-void Entity::Render() {}
-void Entity::Reset() {}
+
+void Entity::Render()
+{
+}
+void Entity::RenderDebug()
+{
+}
+void Entity::Reset()
+{
+}

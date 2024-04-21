@@ -1,71 +1,106 @@
-#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "LevelManager.hpp"
+#include "TextureManager.hpp"
+#include "GameConfiguration.h"
 #include <iostream>
-using namespace std;
 
-LevelManager::LevelManager(GameManager* gameManager) {
-	_gm = gameManager;
-	_gm->calls.updateCall.push_back(this);
-	_gm->calls.renderCall.push_back(this);
+
+LevelManager::LevelManager() {
+	TextureManager::Instance().CreateTexture("../Assets/Sprites/MapTileSet.png", "MapTileSet");
+	TextureManager::Instance().CreateTexture("../Assets/Sprites/MapShadowsTileSet.png", "MapShadowsTileSet");
+
+	LoadNewActiveLevel(1);
+	LoadNewWaitingLevel(2);
 }
+
+void LevelManager::LoadNewWaitingLevel(int loadedLevelIndex)
+{
+	if (nextLevel != nullptr) {
+		delete nextLevel;
+		nextLevel = nullptr;
+	}
+	nextLevel = new Level(CreateFilePathName(loadedLevelIndex), loadedLevelIndex-1);
+}
+
+void LevelManager::LoadNewActiveLevel(int loadedLevelIndex)
+{
+	if (actualLevel != nullptr) {
+		delete actualLevel;
+		actualLevel = nullptr;
+	}
+	actualLevel = new Level(CreateFilePathName(loadedLevelIndex), loadedLevelIndex-1);
+}
+
+void LevelManager::Update() {
+	if (!isOnTransition)
+		return;
+
+	actualLevel->position = { 0,(actualLevel->position.y - (GAME_TILE_WIDTH * TILE_SIZE / transitionTime) * deltaTime) };
+	nextLevel->position = { 0,(nextLevel->position.y - (GAME_TILE_HEIGHT * TILE_SIZE / transitionTime) * deltaTime) };
+
+
+	if (nextLevel->position.y <= 0)
+	{
+		LoadNewActiveLevel(nextLevelIndex);
+		actualLevel->position.y = 0;
+		EndTransition();
+	}
+}
+
+void LevelManager::Render() {
+	actualLevel->Render();
+	if (isOnTransition)
+		nextLevel->Render();
+}
+
+bool LevelManager::IsOnTransition()
+{
+	return isOnTransition;
+}
+
+Level* LevelManager::GetActiveLevel()
+{
+	return actualLevel;
+}
+
+Level* LevelManager::GetNextLoadedLevel()
+{
+	return nextLevel;
+}
+
+
+TextureRenderer* LevelManager::GetRenderer()
+{
+	return &renderer;
+}
+
 void LevelManager::StartTransition()
 {
-	if (isOnTransition)
+	if (isOnTransition || nextLevelIndex > MAX_LEVELS)
 		return;
 	isOnTransition = true;
-	_gm->player->SetStatus(1);
-	_gm->waitingLevel->position = { 0, (float)GetScreenHeight() + _gm->TILE_HEIGHT*2 };
+	nextLevel->position = { 0,GAME_TILE_HEIGHT * TILE_SIZE };
 }
+
 void LevelManager::EndTransition()
 {
 	isOnTransition = false;
 	nextLevelIndex++;
-	if(MAX_LEVELS>=nextLevelIndex)
+	if (MAX_LEVELS >= nextLevelIndex)
 		LoadNewWaitingLevel(nextLevelIndex);
-	_gm->player->SetStatus(0);
 }
-void LevelManager::Update()
-{
-	if (!isOnTransition)
-		return;
 
-	_gm->activeLevel->position = { 0,(_gm->activeLevel->position.y -GetScreenHeight()/180.f)};
-	_gm->waitingLevel->position = { 0,(_gm->waitingLevel->position.y - GetScreenHeight()/180.f)};
-
-
-	if(_gm->waitingLevel->position.y <=0)
-	{
-		*_gm->activeLevel = *_gm->waitingLevel;
-		_gm->activeLevel->position.y = 0;
-		EndTransition();
-	}
-}
-void LevelManager::Render() {
-	_gm->activeLevel->Render();
-	if(isOnTransition)
-		_gm->waitingLevel->Render();
-}
-void LevelManager::LoadNewWaitingLevel(int loadedLevelIndex)
+string LevelManager::CreateFilePathName(int levelToGetNamePath)
 {
-	char integer_String[32];
-	sprintf(integer_String, "%d", loadedLevelIndex);
-	char path[100] = "../Assets/Levels/Level";
-	char end[6] = ".json";
-	strcat(path, integer_String);
-	strcat(path, end);
-	loadedLevelIndex--;
-	(*_gm->waitingLevel) = Level((char*)path, loadedLevelIndex, _gm);
+	string path = "../Assets/Levels/Level";
+	path += to_string(levelToGetNamePath);
+	path += ".json";
+	return path;
 }
-void LevelManager::LoadNewActiveLevel(int loadedLevelIndex)
+
+LevelManager::~LevelManager()
 {
-	char integer_String[32];
-	sprintf(integer_String, "%d", loadedLevelIndex);
-	char path[100] = "../Assets/Levels/Level";
-	char end[6] = ".json";
-	strcat(path, integer_String);
-	strcat(path, end);
-	loadedLevelIndex--;
-	(*_gm->activeLevel) = Level((char*)path, loadedLevelIndex, _gm);
+	delete actualLevel;
+	delete nextLevel;
 }

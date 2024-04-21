@@ -1,79 +1,113 @@
 #pragma once
-#include <raylib.h>
-#include "VisualEntity.hpp"
-#include "SystemCalls.hpp"
-#include "TileMapData.hpp"
-#include "LevelManager.hpp"
+#include "Entity.hpp"
+#include "Renderer.hpp"
+#include "PuntuationHolder.hpp"
+#include "TilemapConfiguration.h"
 
-#include "GameManager.hpp"
+#define PLAYER_SHOOT_INTERVAL  0.5
+#define PLAYER_SHOOT_ANIMATION  0.4
 
-class GameManager;
+#define INMORTAL_TIME 2
+#define INMORTAL_BLINK_TIME 0.1
 
-class Player : public VisualEntity
+#define DYING_TIME 1.5
+#define DEAD_TIME 1
+#define POP_TIME 0.5
+
+class Player : public Entity
 {
-
 public:
-	Player(GameManager* gameManager);
-	void GetInput();
-	void Move();
-	void Jump();
-	void CheckCollisions();
-	void Update() override;
-	void Render() override;
-	void SetStatus(int index);
-	void TpToSpawnPoint();
-	void MoveToSpawnPoint();
 
-	enum PlayerStatus
-	{
-		Playing,
-		Dead,
-		ChangingLevel
+	struct Keys {
+		KeyboardKey Jump;
+		KeyboardKey Left;
+		KeyboardKey Right;
+		KeyboardKey Shoot;
 	};
 
-	
+	enum PlayerState {
+		Normal,
+		Dying,
+		Dead,
+		Pop,
+		Inmortal
+	};
 
+	Player(Keys controlScheme, bool player1, PuntuationHolder* controllerPoints);
+	~Player();
+	
+	void Update() override;
+	void Render() override;
+	void RenderDebug() override;
+	void SetState(int index);
+	void TpToSpawnPoint();
+	bool MoveToSpawnPoint();
+	int GetLifes();
+	void HitPlayer();
+	void HitPlayer(int amount);
+	bool CanBeHit();
+	bool CanBeHit_GOD_MODE();
+	void SetIfCanBeHitted(bool value);
+	void SetIfCanBeHitted_GOD_MODE(bool value);
+
+	Rectangle GetCollision();
+
+	void Reset() override;
+
+	PuntuationHolder* puntuationController;
 private:
-	PlayerStatus state = Playing;
-	Texture2D playerTexture = LoadTexture("../Assets/Sprites/Player.png");
-	GameManager* _gm;
 
-	float xOffset=0;
-	float yOffset=0;
+	void GetInput();
+	void Shoot();
+	void TryJump();
+	void Jump();
+	void Move();
+	void CheckCollisions();
 
-	int _speed = 5;
-	float _airSpeed =1.6;
+	PlayerState state = Normal;
 
-	int _gravity=4;
+	bool player1 = false;
+	int lifes = 3;
 
-	float _jumpInitialSpeed=7;
-	float _jumpSpeed=7;
-	float _jumpMaxSpeed=7;
-	float _jumpHeight = 30 *5.1;
-	float _jumpDistance = 0;
-	float _jumpMovilityDebuff=25.f;
+	Vector2 spawnPoint = { 3,27 };
+	Renderer renderer;
+	Keys controlScheme;
 
-	Vector2 _direction;
+	float shootTimer = PLAYER_SHOOT_INTERVAL;
+	float inmortalTimer = INMORTAL_TIME;
+	float deadRelatedTimer = 0;
 
-	/////AnimationConstants
-	const int WALK_FRAMES=5;
-	const int WALK_THROW_FRAMES=4;
-	const int IDLE_FRAMES=2;
-	const int FALLING_FRAMES=2;
-	const int JUMPING_FRAMES = 2;
+	Vector2 speed={0,0};
+	////Speeds X
+	float groundSpeed=TILE_SIZE*9.f;
+	float glidingSpeed = TILE_SIZE * 2.5f;
+	float jumpXSpeed = TILE_SIZE * 7.f;
 
-	bool isGrounded=false;
-	bool isJumping=false;
-	bool isFalling=false;
-	bool isMoving=false;
-	bool isShooting = false;
+	////Speeds Y
+	float gravity =TILE_SIZE * 9.f;
 
 
-	int bubbleState = 0;
-
-
-	////Sounds
-	Sound jumpSound = LoadSound("../Assets/Sounds/SFX/Jump.wav");
-	Sound shootSound = LoadSound("../Assets/Sounds/SFX/Shoot.wav");
+	////Jump
 	
+	float jumpStartYPoint = 0;
+	float jumpInitialSpeed = TILE_SIZE * 24.6;
+	float jumpCurrentSpeed=0;
+	float jumpHeight = TILE_SIZE * 5.f;
+
+	////States
+	bool isGrounded=true;
+	bool isShooting = false;
+	bool isJumping = false;
+	
+	bool hasBeenHit = false;
+	bool canBeHit = true;
+
+
+	bool canBeHit_GOD_MODE = true;
+
+	int frameCount = 0;
+
+
+
 };
+

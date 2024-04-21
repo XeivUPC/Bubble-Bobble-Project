@@ -1,16 +1,20 @@
 #pragma once
 #include "raylib.h"
+
 class Entity
 {
 public:
-    virtual void Update();
-    virtual void LateUpdate();
-    virtual void Destroy();
-    virtual void Render();
-    virtual void Reset();
 
-    ////// Variables
-    Vector2 position = { (float)GetScreenWidth() / 2.f ,(float)GetScreenHeight() / 2.f };
-    float rotation = 0;
-    bool isActive = false;
+	virtual void Update();
+	virtual void Render();
+	virtual void RenderDebug();
+	virtual void Reset();
+
+	Vector2 position = { 0,0 };
+	Vector2 direction = { 0,0 };
+	float rotation;
+	bool isActive = true;
+
+protected:
+	float internalTimer = 0;
 };

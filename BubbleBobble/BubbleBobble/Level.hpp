@@ -1,23 +1,33 @@
 #pragma once
 #include <raylib.h>
-#include "VisualEntity.hpp"
-#include "GameManager.hpp"
+#include "Entity.hpp"
+#include <string>
 
-class GameManager;
-
-class Level : public VisualEntity
+using namespace std;
+class Level : public Entity
 {
 public:
-	Level();
-	Level(char* levelJsonPath, int levelNumber, GameManager* levelManager);
+	Level(string levelJsonPath, int levelNumber);
+	~Level();
+
 	void Render() override;
-	void Destroy() override;
-	bool IsTile(int x, int y,int* dataMap);
-	int GetTile(int x, int y,int* dataMap);
-	int* Map;
-	int* Collisions;
-	int* Directions;
-	int* Enemies;
+
+	bool IsTile(int x, int y, int* dataMap);
+	int GetTile(int x, int y, int* dataMap);
+
+	int* GetCollisionsTilemap();
+	int* GetDirectionsTilemap();
+	int* GetEnemiesTilemap();
+
 private:
-	GameManager* _gm;
+	int* Map = nullptr;
+	int* Shadows = nullptr;
+	int* Collisions = nullptr;
+	int* Directions = nullptr;
+	int* Enemies = nullptr;
+
+	Color ShadowsColor=WHITE;
+
+	void LoadJSON(string levelJsonPath);
 };
+

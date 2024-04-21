@@ -1,57 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Level.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelManager.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="PuntuationManager.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="TextUI.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Scripts\BasicClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="VisualEntity.cpp">
-      <Filter>Scripts\BasicClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureRenderer.cpp">
-      <Filter>Scripts\BasicClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="PuntuationHolder.cpp">
-      <Filter>Scripts\BasicClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemCalls.cpp">
-      <Filter>Scripts\BasicClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="GameManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Level.hpp">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelManager.hpp">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="PuntuationManager.hpp">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="TextUI.hpp">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="libraries\raylib\include\raylib.h">
       <Filter>RayLib</Filter>
     </ClInclude>
@@ -61,22 +10,78 @@
     <ClInclude Include="libraries\raylib\include\raymath.h">
       <Filter>RayLib</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.hpp">
-      <Filter>Scripts\BasicClasses</Filter>
+    <ClInclude Include="TilemapConfiguration.h">
+      <Filter>Scripts\Configurations</Filter>
     </ClInclude>
-    <ClInclude Include="VisualEntity.hpp">
-      <Filter>Scripts\BasicClasses</Filter>
+    <ClInclude Include="GameConfiguration.h">
+      <Filter>Scripts\Configurations</Filter>
+    </ClInclude>
+    <ClInclude Include="MemLeaks.h">
+      <Filter>Scripts\Analysis</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.hpp">
+      <Filter>Scripts\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Bubble.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="GameController.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.hpp">
+      <Filter>Scripts\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleManager.hpp">
+      <Filter>Scripts\Managers</Filter>
     </ClInclude>
     <ClInclude Include="TextureRenderer.hpp">
-      <Filter>Scripts\BasicClasses</Filter>
+      <Filter>Scripts\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.hpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.hpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelManager.hpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.hpp">
+      <Filter>Scripts\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenChan.hpp">
+      <Filter>Scripts\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.hpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapController.hpp">
+      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="PuntuationHolder.hpp">
-      <Filter>Scripts\BasicClasses</Filter>
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="SystemCalls.hpp">
-      <Filter>Scripts\BasicClasses</Filter>
+    <ClInclude Include="PointsUI.hpp">
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.hpp" />
+    <ClInclude Include="Maita.hpp">
+      <Filter>Scripts\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsManager.hpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.hpp">
+      <Filter>Scripts\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Fruit.hpp">
+      <Filter>Scripts\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -85,8 +90,91 @@
     <Filter Include="RayLib">
       <UniqueIdentifier>{a80f7bc5-74c6-461a-aa09-d14392996b22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\BasicClasses">
-      <UniqueIdentifier>{c65bbdbc-323a-458d-a9f2-7dc9b7112317}</UniqueIdentifier>
+    <Filter Include="Scripts\Configurations">
+      <UniqueIdentifier>{d5b050ef-5508-4e1f-a02a-9f2999ef0031}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Analysis">
+      <UniqueIdentifier>{ce9b0acd-2990-4aca-b94c-738d1589f7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Basic">
+      <UniqueIdentifier>{4d38662e-d017-41b7-81e7-329c3e740878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Managers">
+      <UniqueIdentifier>{13027dd5-95b0-470a-9015-560753573e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemies">
+      <UniqueIdentifier>{cbe49a6a-c655-4f42-8e50-4eb664efc054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Objects">
+      <UniqueIdentifier>{32d9f375-2570-43ae-a4e6-e039bd3f70c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Scripts\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Scripts\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Bubble.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="GameController.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Scripts\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="BubbleManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureRenderer.cpp">
+      <Filter>Scripts\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Scripts\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenChan.cpp">
+      <Filter>Scripts\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="TilemapController.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="PointsUI.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="PuntuationHolder.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Maita.cpp">
+      <Filter>Scripts\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Scripts\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Fruit.cpp">
+      <Filter>Scripts\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

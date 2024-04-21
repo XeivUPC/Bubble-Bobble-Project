@@ -140,34 +140,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameManager.hpp" />
-    <ClInclude Include="Player.hpp" />
-    <ClInclude Include="PuntuationHolder.hpp" />
-    <ClInclude Include="PuntuationManager.hpp" />
-    <ClInclude Include="TextureRenderer.hpp" />
+    <ClInclude Include="AudioManager.hpp" />
+    <ClInclude Include="Bubble.hpp" />
+    <ClInclude Include="BubbleManager.hpp" />
+    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="EnemyManager.hpp" />
     <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Fruit.hpp" />
+    <ClInclude Include="GameConfiguration.h" />
+    <ClInclude Include="GameController.hpp" />
     <ClInclude Include="Level.hpp" />
     <ClInclude Include="LevelManager.hpp" />
+    <ClInclude Include="Maita.hpp" />
+    <ClInclude Include="MemLeaks.h" />
+    <ClInclude Include="Object.hpp" />
+    <ClInclude Include="ObjectsManager.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PointsUI.hpp" />
+    <ClInclude Include="PuntuationHolder.hpp" />
+    <ClInclude Include="Renderer.hpp" />
+    <ClInclude Include="TextureManager.hpp" />
+    <ClInclude Include="TextureRenderer.hpp" />
+    <ClInclude Include="TilemapConfiguration.h" />
     <ClInclude Include="libraries\raylib\include\raylib.h" />
     <ClInclude Include="libraries\raylib\include\raymath.h" />
     <ClInclude Include="libraries\raylib\include\rlgl.h" />
-    <ClInclude Include="SystemCalls.hpp" />
-    <ClInclude Include="TextUI.hpp" />
-    <ClInclude Include="VisualEntity.hpp" />
+    <ClInclude Include="TilemapController.hpp" />
+    <ClInclude Include="ZenChan.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PuntuationHolder.cpp" />
-    <ClCompile Include="PuntuationManager.cpp" />
-    <ClCompile Include="TextureRenderer.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="Bubble.cpp" />
+    <ClCompile Include="BubbleManager.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Fruit.cpp" />
+    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SystemCalls.cpp" />
-    <ClCompile Include="TextUI.cpp" />
-    <ClCompile Include="VisualEntity.cpp" />
+    <ClCompile Include="Maita.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PointsUI.cpp" />
+    <ClCompile Include="PuntuationHolder.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TextureRenderer.cpp" />
+    <ClCompile Include="TilemapController.cpp" />
+    <ClCompile Include="ZenChan.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

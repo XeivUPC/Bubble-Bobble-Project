@@ -1,392 +1,617 @@
 #include "Player.hpp"
-#include <iostream>
-#include <math.h>
+#include "TextureManager.hpp"
+#include "GameConfiguration.h"
+#include "AudioManager.hpp"
+#include "LevelManager.hpp"
+#include "BubbleManager.hpp"
 
-Player::Player(GameManager* gameManager) {
-	_gm = gameManager;
-	_gm->calls.updateCall.push_back(this);
-	_gm->calls.renderCall.push_back(this);
-	renderer = TextureRenderer(Vector2{ -16,16 }, Vector2{ (float)_gm->TILE_WIDTH ,(float)_gm->TILE_HEIGHT * 2 });
-	position = { (float)_gm->TILE_WIDTH * 3 ,(float)_gm->TILE_HEIGHT * 27 };
-
-}
-void Player::Update() {
-	switch (state) {
-		case Playing:
-
-			if (position.y > (_gm->MAP_HEIGHT - 0.5) *_gm->TILE_HEIGHT)
-				position.y = 0;
-			GetInput();
-			CheckCollisions();
-			Move();
-			break;
-		case ChangingLevel:
-			MoveToSpawnPoint();
-			break;
-		case Dead:
-			break;
-
-		default:
-			break;
-	}
+Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoints)
+{
+	this->controlScheme = controlScheme;
+	this->player1 = player1;
+	puntuationController = controllerPoints;
 	
+	const char* textureName;
+
+	if (this->player1)
+	{
+		spawnPoint = { 3,27 };
+		TextureManager::Instance().CreateTexture("../Assets/Sprites/Player.png", "Player1SpriteSheet");
+		textureName = "Player1SpriteSheet";
+		renderer.FlipX();
+	}
+	else
+	{
+		spawnPoint = { 29,27 };
+		TextureManager::Instance().CreateTexture("../Assets/Sprites/Player2.png", "Player2SpriteSheet");
+		textureName = "Player2SpriteSheet";
+	}
+	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Jump.wav", "Jump");
+	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Shoot.wav", "ShootBubble");
+	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Death.wav", "Death");
+
+	Animation walkAnim = { TextureManager::Instance().GetTexture(textureName) ,0.07f };
+	walkAnim.frames.push_back({ 0 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
+	walkAnim.frames.push_back({ 1 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
+	walkAnim.frames.push_back({ 2 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
+	walkAnim.frames.push_back({ 3 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
+	walkAnim.frames.push_back({ 4 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
+	walkAnim.frames.push_back({ 5 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
+
+	Animation fallAnim = { TextureManager::Instance().GetTexture(textureName) ,0.2f };
+	fallAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 1 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	fallAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 1 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation idleAnim = { TextureManager::Instance().GetTexture(textureName) ,0.2f };
+	idleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	idleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation jumpAnim = { TextureManager::Instance().GetTexture(textureName) ,0.2f };
+	jumpAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 3 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	jumpAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 3 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation shootStaticAnim = { TextureManager::Instance().GetTexture(textureName) ,0.07 };
+	shootStaticAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	shootStaticAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	shootStaticAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	shootStaticAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation shootMoveAnim = { TextureManager::Instance().GetTexture(textureName) ,0.07 };
+	shootMoveAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	shootMoveAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	shootMoveAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	shootMoveAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation dieAnim = { TextureManager::Instance().GetTexture(textureName) ,0.0625f };
+	dieAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	dieAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	dieAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	dieAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation deadAnim = { TextureManager::Instance().GetTexture(textureName) ,0.0625f };
+	deadAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	deadAnim.frames.push_back({ 5 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	deadAnim.frames.push_back({ 6 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	deadAnim.frames.push_back({ 7 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation popAnim = { TextureManager::Instance().GetTexture(textureName) ,0.166f };
+	popAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	popAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	popAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+
+	renderer.AddAnimation("PlayerWalk",walkAnim);
+	renderer.AddAnimation("PlayerIdle",idleAnim);
+	renderer.AddAnimation("PlayerFall",fallAnim);
+	renderer.AddAnimation("PlayerJump",jumpAnim);
+	renderer.AddAnimation("PlayerDie",dieAnim);
+	renderer.AddAnimation("PlayerStaticShoot",shootStaticAnim);
+	renderer.AddAnimation("PlayerMovingShoot",shootMoveAnim);
+
+	renderer.AddAnimation("PlayerDie", dieAnim);
+	renderer.AddAnimation("PlayerDead", deadAnim);
+	renderer.AddAnimation("PlayerPop", popAnim);
+
+	position.x = spawnPoint.x * TILE_SIZE;  
+	position.y = spawnPoint.y * TILE_SIZE;
+
 }
-void Player::GetInput() {
+
+Player::~Player()
+{
+
+}
+
+void Player::GetInput()
+{
 
 	if (!isJumping) {
-		if (IsKeyDown(KEY_D)) {
-			_direction.x = _speed;
-			if (!isGrounded) {
-				_direction.x = _airSpeed / 1.5;
-			}
-
-			renderer.FlipX(true);
-		}
-		else if (IsKeyDown(KEY_A)) {
-			_direction.x = -_speed;
-			if (!isGrounded) {
-				_direction.x = -_airSpeed / 1.5;
-			}
-			renderer.FlipX(false);
-		}
-		else {
-			_direction.x = 0;
+		direction.x = 0;
+		direction.y = 1;
+	}
+	else {
+		direction.x = 0;
+	}
+	if (IsKeyDown(controlScheme.Left))
+	{
+		direction.x = -1; renderer.FlipX(false);
+	}
+	if (IsKeyDown(controlScheme.Right))
+	{
+		direction.x = 1; renderer.FlipX(true);
+	}
+	if (IsKeyPressed(controlScheme.Jump))
+		TryJump();
+	if (PLAYER_SHOOT_INTERVAL <= shootTimer){
+		
+		if (IsKeyPressed(controlScheme.Shoot)) {
+			Shoot();
 		}
 	}
 	else {
-		if (isJumping) {
-			if (IsKeyDown(KEY_D)) {
-				_direction.x += _airSpeed / _jumpMovilityDebuff;
-				if (_direction.x > _airSpeed * 2)
-					_direction.x = _airSpeed * 2;
-				renderer.FlipX(true);
-			}
-			if (IsKeyDown(KEY_A)) {
-				_direction.x += -_airSpeed / _jumpMovilityDebuff;
-				if (_direction.x <  -_airSpeed * 2)
-					_direction.x = -_airSpeed * 2;
-				renderer.FlipX(false);
-			}
-		}
+		if (PLAYER_SHOOT_ANIMATION <= shootTimer)
+			isShooting = false;
+		else
+			isShooting = true;
 	}
 
-	
-	
-	if (IsKeyPressed(KEY_SPACE) && isGrounded && !isJumping && !isShooting) {
-		isJumping = true;
-		isFalling = false;
-		_jumpDistance = 0;
-		_jumpSpeed = _jumpInitialSpeed;
-		PlaySound(jumpSound);
-	}
-
-	_direction.y = _gravity; //g
 	if (isJumping)
 		Jump();
+}
 
-
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isShooting && isGrounded) {
-		isShooting = true;
-		xOffset = 0;
-		PlaySound(shootSound);
-		
+void Player::Shoot()
+{
+	AudioManager::Instance().PlaySoundByName("ShootBubble");
+	Vector2 bubbleSpawwnPoint = { position.x, position.y - TILE_SIZE };
+	Bubble* bubble = BubbleManager::Instance().GetBubble();
+	if (bubble != nullptr) {
+		bubble->isActive = true;
+		bubble->position = bubbleSpawwnPoint;
+		shootTimer = 0;
+		bubble->direction = { -(float)renderer.GetFlippedXValue(),0 };
+		bubble->SetPlayerPosession(player1);
 	}
-
 }
-void Player::Move() {
 
-	position.x += _direction.x * _gm->TILE_HEIGHT / 30;;
-	position.y += _direction.y * _gm->TILE_HEIGHT / 30;;
+void Player::TryJump()
+{
+	if (isGrounded) {
+		AudioManager::Instance().PlaySoundByName("Jump");
+		isGrounded = false;
+		isJumping = true;
+		jumpCurrentSpeed = jumpInitialSpeed;
+		jumpStartYPoint = position.y;
+		direction.y = -1;
+
+		if (direction.x != 0)
+			speed.x = jumpXSpeed * direction.x;
+		else
+			speed.x = 0;
+
+		frameCount = 0;
+		Jump();
+	}
 }
-void Player::Jump() {
-	_jumpDistance += abs(_jumpSpeed);
-	if (isFalling) {
-		_direction.y = -_jumpSpeed;
-		_jumpSpeed -= 0.4;
-		if (abs(_jumpSpeed) > _jumpMaxSpeed)
-			_jumpSpeed = -_jumpMaxSpeed;
-		if (_jumpDistance >= _jumpHeight*1.2 || isGrounded) {
-			isFalling = false;
+
+void Player::Jump()
+{
+	if (direction.y == 1) {
+		direction.y = 1;
+		jumpCurrentSpeed += (TILE_SIZE * 36) * deltaTime;
+		if (jumpStartYPoint < position.y || isGrounded) {
 			isJumping = false;
 		}
 	}
 	else {
-		_direction.y = -_jumpSpeed;
-		_jumpSpeed -= 0.07;
-		if (abs(_jumpSpeed) > _jumpMaxSpeed)
-			_jumpSpeed = -_jumpMaxSpeed;
-		if (_jumpDistance >= _jumpHeight) {
-			isFalling = true;
-			_jumpDistance = 0;
-			_jumpSpeed /= 2;
+		direction.y = -1;
+		jumpCurrentSpeed -= TILE_SIZE * 60 * deltaTime;
+		if (jumpCurrentSpeed <= 0)
+		{
+			direction.y = 1;
+			jumpCurrentSpeed = 0;
 		}
 	}
+	frameCount++;
 }
-void Player::CheckCollisions() {
-	Vector2 newDir = _direction;
-	Vector2 newPos = position;
-	Level level = *_gm->activeLevel;
 
-#pragma region Colliders
-	Rectangle PlayerCollisionBottom = { position.x - (_gm->TILE_WIDTH) * 0.8, position.y, _gm->TILE_WIDTH * 1.6, _gm->TILE_HEIGHT * 0.1 };
-	Rectangle PlayerCollisionLeft = { position.x - (_gm->TILE_WIDTH) - _gm->TILE_WIDTH * 0.1, position.y - _gm->TILE_HEIGHT * 1.5, _gm->TILE_WIDTH * 0.1 , _gm->TILE_HEIGHT * 1 };
-	Rectangle PlayerCollisionRight = { position.x + (_gm->TILE_WIDTH), position.y - _gm->TILE_HEIGHT * 1.5, _gm->TILE_WIDTH * 0.1 , _gm->TILE_HEIGHT * 1 };
+void Player::Move()
+{
+	switch (state) {
+		case Normal:
+			if (isGrounded)
+			{
+				speed.x = groundSpeed;
+				speed.y = 0;
+			}
+			else {
+				if (isJumping) {
 
-	Rectangle PlayerCollisionTop = { position.x - (_gm->TILE_WIDTH) * 0.8, position.y - _gm->TILE_HEIGHT * 2, _gm->TILE_WIDTH * 1.6, _gm->TILE_HEIGHT * 0.1 };
-	
+					if (direction.x != 0) {
+						speed.x += direction.x * jumpXSpeed * 2 * deltaTime;
+						if (speed.x > jumpXSpeed)
+							speed.x = jumpXSpeed;
+						if (speed.x < -jumpXSpeed)
+							speed.x = -jumpXSpeed;
+					}
+					if (speed.x != 0)
+						direction.x = speed.x / abs(speed.x);
+					speed.y = jumpCurrentSpeed;
+				}
+				else {
+					speed.x = glidingSpeed;
+					speed.y = gravity;
+				}
+			}
+			break;
+		case Dying:
+			direction.y = 1;
+			direction.x = 0;
+			speed.y = gravity;
+			break;
+		case Dead:
+		
+			break;
+		case Pop:
+		
+			break;
+		case Inmortal:
+			if (isGrounded)
+			{
+				speed.x = groundSpeed;
+				speed.y = 0;
+			}
+			else {
+				if (isJumping) {
 
-	int Offset = - _gm->TILE_WIDTH * 0.1f;
-	Rectangle PlayerCollision = { position.x - (_gm->TILE_WIDTH) + Offset ,position.y - (_gm->TILE_HEIGHT * 2) + Offset, _gm->TILE_WIDTH * 2 - Offset * 2, _gm->TILE_HEIGHT * 2 - Offset * 2 };
-#pragma endregiond
+					if (direction.x != 0) {
+						speed.x += direction.x * jumpXSpeed * 2 * deltaTime;
+						if (speed.x > jumpXSpeed)
+							speed.x = jumpXSpeed;
+						if (speed.x < -jumpXSpeed)
+							speed.x = -jumpXSpeed;
+					}
+					if (speed.x != 0)
+						direction.x = speed.x / abs(speed.x);
+					speed.y = jumpCurrentSpeed;
+				}
+				else {
+					speed.x = glidingSpeed;
+					speed.y = gravity;
+				}
+			}
+			break;
+		default:
+			break;
+	}
 
-	float xPoint = (float)floor(position.x) / _gm->TILE_WIDTH;
-	float yPoint = (float)floor(position.y - _gm->TILE_HEIGHT / 2) / _gm->TILE_HEIGHT;
 
-	bool isFullWall = false;
+	CheckCollisions();
+	position.x += direction.x  * abs(speed.x) * deltaTime;
+	position.y += direction.y * abs(speed.y) * deltaTime;
+}
+
+void Player::CheckCollisions()
+{
+
+	Level& level = *LevelManager::Instance().GetActiveLevel();
+
+	Rectangle PlayerCollisionBottom = { position.x - (TILE_SIZE) * 0.8, position.y, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
+	Rectangle PlayerCollisionLeft = { position.x - (TILE_SIZE) - TILE_SIZE * 0.1, position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+	Rectangle PlayerCollisionRight = { position.x + (TILE_SIZE), position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+	Rectangle PlayerCollisionTop = { position.x - (TILE_SIZE) * 0.8, position.y - TILE_SIZE * 2, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
+
+	int Offset = -TILE_SIZE * 0.1f;
+	Rectangle PlayerCollision = { position.x - (TILE_SIZE) + Offset ,position.y - (TILE_SIZE * 2) + Offset, TILE_SIZE * 2 - Offset * 2, TILE_SIZE * 2 - Offset * 2 };
+
+	int tileX = (float)floor(position.x) / TILE_SIZE;
+	int tileY = (float)floor(position.y - TILE_SIZE / 2) / TILE_SIZE;
+
+	isGrounded = false;
+	bool isBarrier = false;
 	bool checkMoreAxisX = true;
 	bool checkMoreAxisY = true;
-	isGrounded = false;
-	if (yPoint < 1)
+
+	Vector2 fixPosition = position;
+	Vector2 fixDirection = direction;
+
+	
+	if (tileY < 1)
 		return;
-	for (int y = yPoint - 3; y < yPoint + 3; y++)
+
+	for (int y = tileY - 3; y < tileY + 3; y++)
 	{
-		Vector2 yTileDataPosition = { (y)*_gm->TILE_HEIGHT ,_gm->TILE_HEIGHT };
-		for (int x = xPoint - 3; x < xPoint + 3; x++)
+		Vector2 yTilePosition = { y*TILE_SIZE ,TILE_SIZE };
+		for (int x = tileX - 3; x < tileX + 3; x++)
 		{
+			if (level.IsTile(x, y, level.GetCollisionsTilemap())) {
+				int tileValue = level.GetTile(x, y, level.GetCollisionsTilemap());
+				if (tileValue == 3)
+					continue;
+				Vector2 xTilePosition = { x * TILE_SIZE, TILE_SIZE };
+				Rectangle tileCollision{ xTilePosition.x, yTilePosition.x,xTilePosition.y,yTilePosition.y };
 
-			if (level.IsTile(x, y, level.Collisions)) {
-				int tileCollisionData = level.GetTile(x, y, level.Collisions);
-				Vector2 xTileDataPosition = { x * _gm->TILE_WIDTH, _gm->TILE_WIDTH };
-				Rectangle TileCollission{ xTileDataPosition.x, yTileDataPosition.x,xTileDataPosition.y,yTileDataPosition.y };
-
-				if (CheckCollisionRecs(PlayerCollisionBottom, TileCollission) && checkMoreAxisY) {
-					if (y > yPoint && _direction.y > 0 && ((position.y+ _gm->TILE_HEIGHT/2)-y* _gm->TILE_HEIGHT) <= _gm->TILE_HEIGHT/1.6) {
-						newDir.y = 0;
+				if (CheckCollisionRecs(PlayerCollisionBottom, tileCollision) && checkMoreAxisY) {
+					if (y > tileY && direction.y > 0 && ((position.y + TILE_SIZE / 2) - y * TILE_SIZE) <= TILE_SIZE / 1.4 && (tileValue==1 || tileValue == 2)) {
+						fixDirection.y = 0;
 						isGrounded = true;
-						newPos.y = y * _gm->TILE_HEIGHT;
+						fixPosition.y = y * TILE_SIZE;
 					}
 					else
 						isGrounded = false;
 				}
 				else {
-					if(!isGrounded)
+					if (!isGrounded)
 						isGrounded = false;
 				}
-
-				if (CheckCollisionRecs(PlayerCollision, TileCollission)) {
-					if (tileCollisionData == 2 || isFullWall || tileCollisionData == 3) {
-						isFullWall = true;
+				if (CheckCollisionRecs(PlayerCollision, tileCollision)) {
+					if (tileValue == 2 || isBarrier) {
+						isBarrier = true;
 						checkMoreAxisX = true;
 					}
 					else {
-						if (_direction.y < 0) {
+						if (direction.y < 0) {
 							checkMoreAxisX = false;
-							newDir.x = _direction.x;
+							fixDirection.x = direction.x;
 							continue;
 						}
 						checkMoreAxisX = true;
 					}
 				}
-
-				if (CheckCollisionRecs(PlayerCollisionTop, TileCollission) && tileCollisionData == 2 || !checkMoreAxisY) {
+				if (CheckCollisionRecs(PlayerCollisionTop, tileCollision) && tileValue == 2 || !checkMoreAxisY) {
 					checkMoreAxisY = false;
 					checkMoreAxisX = false;
 					isGrounded = false;
-					newDir.y = _direction.y;
+					fixDirection.y = direction.y;
 				}
-				if (checkMoreAxisX || tileCollisionData==3) {
-					if (_direction.x < 0 && CheckCollisionRecs(PlayerCollisionLeft, TileCollission)) {
-						if (tileCollisionData == 1 && _direction.y < 0 && !isFullWall) {
+				if (checkMoreAxisX ) {
+					
+					if (direction.x < 0 && CheckCollisionRecs(PlayerCollisionLeft, tileCollision)) {
+						if (tileValue == 1 && direction.y < 0 && !isBarrier) {
 							continue;
 						}
-						if (x < xPoint) {
-							newDir.x = 0;
+						if (x < tileX) {
+							fixDirection.x = 0;
+							if (isBarrier && isJumping)
+								speed.x = 0;
 						}
+					}
+					if (direction.x > 0 && CheckCollisionRecs(PlayerCollisionRight, tileCollision)) {
+						if (tileValue == 1 && direction.y < 0 && !isBarrier) {
+							continue;
+						}
+						if (x > tileX) {
+							fixDirection.x = 0;
+							if (isBarrier && isJumping)
+								speed.x = 0;
+						}
+					}
+				}
+			}
+		}
+	}
 
-					}
-					if (_direction.x > 0 && CheckCollisionRecs(PlayerCollisionRight, TileCollission)) {
-						if (tileCollisionData == 1 && _direction.y < 0 && !isFullWall) {
-							continue;
-						}
-						if (x > xPoint) {
-							newDir.x = 0;
-						}
-					}
-				}
+	direction = fixDirection;
+	if (isGrounded) {
+		isJumping = false;
+		position.y = fixPosition.y;
+	}
+}
+
+
+
+
+void Player::Update()
+{
+	internalTimer += deltaTime;
+	
+	
+	switch (state) {
+	case Normal:
+		shootTimer += deltaTime;
+		GetInput();
+		Move();
+		break;
+	case Dying:
+		deadRelatedTimer += deltaTime;
+		Move();
+		if (deadRelatedTimer >= DYING_TIME) {
+			SetState(2);
+		}
+		break;
+	case Dead:
+		deadRelatedTimer += deltaTime;
+		if (deadRelatedTimer >= DEAD_TIME) {
+			SetState(3);
+		}
+		break;
+	case Pop:
+		deadRelatedTimer += deltaTime;
+		if (deadRelatedTimer >= POP_TIME)
+		{
+			hasBeenHit = false;
+			if (lifes < 0) {
+				lifes = 3;
+				isActive = false;
+			}
+			else {
+				TpToSpawnPoint();
+				SetState(4);
+				///Inmortal
 			}
 			
 		}
+		break;
+	case Inmortal:
+		inmortalTimer += deltaTime;
+		shootTimer += deltaTime;
+		GetInput();
+		Move();
+		if (inmortalTimer >= INMORTAL_TIME) {
+			canBeHit = true;
+			renderer.isActive = true;
+			SetState(0);
+		}
+		break;
+	default:
+		break;
 	}
-	_direction = newDir;
-	if (isGrounded)
-		position.y = newPos.y;
+
+	if (position.y > (GAME_TILE_HEIGHT + 1.5) * TILE_SIZE)
+		position.y = 0;
+
+	
+	
+	
 }
-void Player::SetStatus(int index) {
-	switch (index) {
-		case 0:
-			renderer.ChangeTileSize(Vector2{ 16,16 });
-			renderer.ChangeOrigin(Vector2{ (float)_gm->TILE_WIDTH ,(float)_gm->TILE_HEIGHT * 2 });
-			renderer.FlipX(true);
-			state = Playing;
-			break;
-		case 1:
-			isGrounded = false;
-			isJumping = false;
-			isFalling = false;
-			isMoving = false;
-			isShooting = false;
-			bubbleState = 0;
-			renderer.ChangeTileSize(Vector2{32,32});
-			renderer.ChangeOrigin(Vector2{ (float)_gm->TILE_WIDTH*2 ,(float)_gm->TILE_HEIGHT * 3 });
-			renderer.FlipX(true);
-			state = ChangingLevel;
-			break;
-		case 2:
-			state = Dead;
-			break;
-		default:
-			break;
+
+void Player::Render()
+{
+	renderer.UpdateAnimation();
+	if (!canBeHit || !canBeHit_GOD_MODE) {
+		renderer.isActive = !renderer.isActive;
+	}
+	if (!renderer.isActive)
+		return;
+
+	if (hasBeenHit) {
+		if (deadRelatedTimer <= DYING_TIME && state == Dying) {
+			renderer.PlayAniamtion("PlayerDie");
+		}
+		else if (deadRelatedTimer <= DEAD_TIME && state == Dead) {
+			renderer.PlayAniamtion("PlayerDead");
+		}
+		else if (deadRelatedTimer <= POP_TIME && state == Pop) {
+			renderer.PlayAniamtion("PlayerPop");
+		}
+		else {
+			hasBeenHit = false;
+		}
+	}
+	else if (isShooting)
+	{
+		if (direction.x != 0)
+			renderer.PlayAniamtion("PlayerMovingShoot");
+		else
+			renderer.PlayAniamtion("PlayerStaticShoot");
+	}
+	else if (isGrounded) {
+		if(direction.x!=0)
+			renderer.PlayAniamtion("PlayerWalk");
+		else
+			renderer.PlayAniamtion("PlayerIdle");
+	}
+	else {
+		if (direction.y > 0) {
+			renderer.PlayAniamtion("PlayerFall");
+		}
+		else {
+			renderer.PlayAniamtion("PlayerJump");
+		}
+	}
+
+	renderer.Draw(position.x- TILE_SIZE, position.y - TILE_SIZE*2, 0, WHITE);
+	
+	
+}
+
+void Player::SetState(int index)
+{
+	state = static_cast<PlayerState>(index);
+
+	switch (state) {
+	case Normal:
+		renderer.isActive = true;
+		break;
+	case Dying:
+		AudioManager::Instance().PlaySoundByName("Death");
+		hasBeenHit = true;
+		deadRelatedTimer = 0;
+		break;
+	case Dead:
+		deadRelatedTimer = 0;
+		break;
+	case Pop:
+		deadRelatedTimer = 0;
+		break;
+	case Inmortal:
+		inmortalTimer = 0;
+		canBeHit = false;
+		break;
+	default:
+		break;
 	}
 }
+
+void Player::RenderDebug() {
+	DrawCircle(position.x, position.y, 4, BLUE);
+
+
+
+	Rectangle PlayerCollisionBottom = { position.x - (TILE_SIZE) * 0.8, position.y, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
+	Rectangle PlayerCollisionLeft = { position.x - (TILE_SIZE)-TILE_SIZE * 0.1, position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+	Rectangle PlayerCollisionRight = { position.x + (TILE_SIZE), position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+
+	Rectangle PlayerCollisionTop = { position.x - (TILE_SIZE) * 0.8, position.y - TILE_SIZE * 2, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
+
+
+	DrawRectangle(PlayerCollisionBottom.x, PlayerCollisionBottom.y, PlayerCollisionBottom.width, PlayerCollisionBottom.height, RED);
+	DrawRectangle(PlayerCollisionLeft.x, PlayerCollisionLeft.y, PlayerCollisionLeft.width, PlayerCollisionLeft.height, RED);
+	DrawRectangle(PlayerCollisionRight.x, PlayerCollisionRight.y, PlayerCollisionRight.width, PlayerCollisionRight.height, RED);
+	DrawRectangle(PlayerCollisionTop.x, PlayerCollisionTop.y, PlayerCollisionTop.width, PlayerCollisionTop.height, RED);
+
+	DrawRectangle(position.x - TILE_SIZE, position.y - (TILE_SIZE * 2), TILE_SIZE * 2, TILE_SIZE * 2, { 255,255,255,100 });
+}
+
 void Player::TpToSpawnPoint()
 {
-	position = { (float)_gm->TILE_WIDTH * 3 ,(float)_gm->TILE_HEIGHT * 27 };
+	position = { TILE_SIZE * spawnPoint.x ,TILE_SIZE * spawnPoint.y };
 }
-void Player::MoveToSpawnPoint()
+
+bool Player::MoveToSpawnPoint()
 {
 	bool arrived = true;
-	/// X
-	if (position.x > (float)_gm->TILE_WIDTH * 3) {
-		position.x -= _speed/1.2f;
-		arrived = false;
-	}
-	else if (position.x < (float)_gm->TILE_WIDTH * 3) {
-		position.x += _speed/ 1.2f;
-		arrived = false;
-	}
-
-	/// Y
-	if (position.y> (float)_gm->TILE_HEIGHT * 27) {
-		position.y -= _speed/ 1.2f;
-		arrived = false;
-	}
-	else if (position.y< (float)_gm->TILE_HEIGHT * 27) {
-		position.y += _speed/ 1.2f;
-		arrived = false;
-	}
-
-	if (position.y!= (float)_gm->TILE_HEIGHT * 27 && abs(position.y - (float)_gm->TILE_HEIGHT * 27) < 4)
-		position.y = (float)_gm->TILE_HEIGHT * 27;
-
-	if (position.x != (float)_gm->TILE_WIDTH * 3 && abs((float)position.x - (float)_gm->TILE_WIDTH * 3) <4)
-		position.x = (float)_gm->TILE_WIDTH * 3;
-	if (arrived) {
-		bubbleState = 3;
-	}
-
-	
-
+	return arrived;
 }
-void Player::Render() {
-	switch (state) {
-		case Playing:
-			if (_direction.x != 0 && _direction.y == 0 && isGrounded && !isShooting) {
-				xOffset += 0.2f;
-				yOffset = 0;
-				if (xOffset >= WALK_FRAMES)
-					xOffset = 0;
-			}
-			else if (_direction.x == 0 && _direction.y == 0 && isGrounded && !isShooting) {
-				xOffset += 0.07f;
-				yOffset = 2;
-				if (xOffset >= IDLE_FRAMES)
-					xOffset = 0;
-			}
-			else if (isGrounded && isShooting && _direction.x == 0) {
-				xOffset += 0.2f;
-				yOffset = 4;
-				if (xOffset >= WALK_THROW_FRAMES) {
-					xOffset = 0;
-					isShooting = false;
-				}
-			}
-			else if (isGrounded && isShooting && _direction.x != 0) {
-				xOffset += 0.2f;
-				yOffset = 5;
-				if (xOffset >= WALK_THROW_FRAMES) {
-					xOffset = 0;
-					isShooting = false;
-				}
-			}
-			else if (isJumping && !isFalling) {
-				xOffset += 0.07f;
-				yOffset = 3;
-				if (xOffset >= IDLE_FRAMES)
-					xOffset = 0;
-			}
-			else {
-				xOffset += 0.07f;
-				yOffset = 1;
-				if (xOffset >= IDLE_FRAMES)
-					xOffset = 0;
-			}
-			
-			renderer.Paint(playerTexture, position, Vector2{ (float)((int)xOffset) ,yOffset }, Vector2{ (float)_gm->TILE_WIDTH * 2, (float)(_gm->TILE_HEIGHT * 2) }, 0);
-			break;
-		case ChangingLevel:
-			if (bubbleState == 0) {
-				xOffset += 0.1f;
-				yOffset = 3;
-				if (xOffset >= 2) {
-					xOffset = 0;
-					bubbleState = 1;
-				}
 
-			}
-			else if (bubbleState == 1) {
-				xOffset += 0.1f;
-				yOffset = 4;
-				if (xOffset >= 4) {
-					xOffset = 0;
-					bubbleState = 2;
-				}
-			}
-			else if (bubbleState ==2) {
-				xOffset += 0.1f;
-				yOffset = 5;
-				if (xOffset >= 2) {
-					xOffset = 0;
-				}
-			}
-			else {
-				xOffset += 0.05f;
-				yOffset = 6;
-				if (xOffset >= 2) {
-					xOffset = 0;
-				}
-			}
-			renderer.Paint(playerTexture, position, Vector2{ (float)((int)xOffset) ,yOffset }, Vector2{ (float)_gm->TILE_WIDTH * 4, (float)(_gm->TILE_HEIGHT * 4) }, 0);
-			break;
-		case Dead:
+int Player::GetLifes()
+{
+	return lifes;
+}
 
-			break;
-		default:
-			break;
-	}
-	
-	
-	//int Offset = -_gm->TILE_WIDTH * 0.1f;
-	//DrawRectangle(position.x - (_gm->TILE_WIDTH) + Offset, position.y - (_gm->TILE_HEIGHT * 2) + Offset, _gm->TILE_WIDTH * 2 - Offset * 2, _gm->TILE_HEIGHT * 2 - Offset * 2, YELLOW); //Inside
+void Player::HitPlayer()
+{
+	if (hasBeenHit || !canBeHit || !canBeHit_GOD_MODE)
+		return;
+	lifes--;
+	SetState(1);
+}
 
-	//DrawRectangle(position.x - (_gm->TILE_WIDTH)*0.8, position.y, _gm->TILE_WIDTH*1.6, _gm->TILE_HEIGHT * 0.1, RED); //Bottom
-	//DrawRectangle(position.x + (_gm->TILE_WIDTH), position.y - _gm->TILE_HEIGHT * 1.5, _gm->TILE_WIDTH * 0.1, _gm->TILE_HEIGHT * 1, RED); //Right
-	//DrawRectangle(position.x - (_gm->TILE_WIDTH) - _gm->TILE_WIDTH * 0.1, position.y - _gm->TILE_HEIGHT * 1.5, _gm->TILE_WIDTH * 0.1, _gm->TILE_HEIGHT * 1, RED); //Left
+void Player::HitPlayer(int amount)
+{
+	if (hasBeenHit || !canBeHit || !canBeHit_GOD_MODE)
+		return;
 
-	//DrawRectangle(position.x - (_gm->TILE_WIDTH)*0.8, position.y- _gm->TILE_HEIGHT*2, _gm->TILE_WIDTH*1.6, _gm->TILE_HEIGHT * 0.1, RED); //Top1
-	
-	//DrawRectangle(position.x, position.y, 10, 10, RED);
-	//DrawRectangle((float)_gm->TILE_WIDTH * 3, (float)_gm->TILE_HEIGHT * 27, 10, 10, RED);
-	
+	lifes-= amount;
+	SetState(1);
+}
+
+bool Player::CanBeHit()
+{
+	return canBeHit;
+}
+
+bool Player::CanBeHit_GOD_MODE()
+{
+	return canBeHit_GOD_MODE;
+}
+
+void Player::SetIfCanBeHitted(bool value)
+{
+	canBeHit = value;
+	if(canBeHit)
+		renderer.isActive = true;
+}
+
+void Player::SetIfCanBeHitted_GOD_MODE(bool value)
+{
+	canBeHit_GOD_MODE = value;
+	if (canBeHit_GOD_MODE)
+		renderer.isActive = true;
+}
+
+Rectangle Player::GetCollision()
+{
+	return Rectangle({ position.x - TILE_SIZE, position.y - (TILE_SIZE * 2),  TILE_SIZE * 2, TILE_SIZE * 2});
+}
+
+void Player::Reset()
+{
+	lifes = 3;
+	isActive = true;
+	TpToSpawnPoint();
+	renderer.isActive = true;
+	canBeHit = true;
+	state = Normal;
 }
 
 
