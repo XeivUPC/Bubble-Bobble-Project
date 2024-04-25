@@ -1,12 +1,12 @@
 #pragma once
 #include "Enemy.hpp"
 
-#define ZENCHAN_IA_RECALCULATION_TIME 3
+#define MAITA_IA_RECALCULATION_TIME 3
 
 class Maita : public Enemy
 {
 public:
-	Maita(Vector2 tilePos);
+	Maita(Vector2 tilePos, int lookAt);
 	~Maita();
 	void Update() override;
 	void Render() override;
@@ -35,5 +35,7 @@ private:
 
 
 	bool isGrounded = true;
+
+
 };
 

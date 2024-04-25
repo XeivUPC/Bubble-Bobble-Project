@@ -37,6 +37,12 @@
          "id":1,
          "name":"BuildLayer",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"Enemies",
+                 "type":"string",
+                 "value":"ZenChan_15_7_-1\nZenChan_17_7_1\nZenChan_13_12_-1\nZenChan_19_12_1\nEND"
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":32,

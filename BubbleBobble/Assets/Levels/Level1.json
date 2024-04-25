@@ -37,6 +37,12 @@
          "id":1,
          "name":"BuildLayer",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"Enemies",
+                 "type":"string",
+                 "value":"ZenChan_16_12_-1\nZenChan_16_9_-1\nZenChan_16_6_-1\nEND"
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":32,
@@ -79,7 +85,7 @@
          "name":"CollisionLayer",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -120,7 +126,7 @@
          "name":"DirectionalLayer",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0

@@ -2,6 +2,7 @@
 #include "TilemapConfiguration.h"
 #include "LevelManager.hpp"
 #include "TextureManager.hpp"
+#include "EnemyManager.hpp"
 #include "json.hpp"
 #include <fstream>
 #include <iostream>
@@ -16,7 +17,6 @@ Level::Level(string levelJsonPath, int levelNumber)
 	Map = new int[(int)(GAME_TILE_WIDTH * GAME_TILE_HEIGHT)];
 	Collisions = new int[(int)(GAME_TILE_WIDTH * GAME_TILE_HEIGHT)];
 	Directions = new int[(int)(GAME_TILE_WIDTH * GAME_TILE_HEIGHT)];
-	Enemies = new int[(int)(GAME_TILE_WIDTH * GAME_TILE_HEIGHT)];
 	Shadows = new int[(int)(GAME_TILE_WIDTH * GAME_TILE_HEIGHT)];
 	LoadJSON(levelJsonPath);
 	position = { 0,0 };
@@ -27,7 +27,6 @@ Level::~Level()
 	delete[] Map;
 	delete[] Collisions;
 	delete[] Directions;
-	delete[] Enemies;
 	delete[] Shadows;
 }
 
@@ -65,6 +64,44 @@ void Level::Render()
 	}
 }
 
+void Level::LoadEnemies()
+{
+	char delimiter = '\n';
+
+	istringstream stream(enemiesData);
+	string enemyData;
+	int amountOfEnemies = std::count_if(enemiesData.begin(), enemiesData.end(), [](char c) {return c == '\n'; });
+
+	while (amountOfEnemies > 0)
+	{
+		getline(stream, enemyData, delimiter);
+		istringstream stream2(enemyData);
+		string enemyName;
+		string enemyPositions;
+		char delimiter2 = '_';
+		getline(stream2, enemyName, delimiter2);
+		getline(stream2, enemyPositions, delimiter2);
+		float xPos = stof(enemyPositions);
+		getline(stream2, enemyPositions, delimiter2);
+		float yPos = stof(enemyPositions);
+		getline(stream2, enemyPositions, delimiter2);
+		int enemyDir = stoi(enemyPositions);
+
+		if (enemyName == "ZenChan") {
+			EnemyManager::Instance().SpawnZenChan({ xPos,yPos, }, enemyDir);
+		}
+		if (enemyName == "Maita") {
+			EnemyManager::Instance().SpawnMaita({ xPos,yPos }, enemyDir);
+		}
+		amountOfEnemies--;
+	}
+}
+
+string Level::GetEnemiesData()
+{
+	return enemiesData;
+}
+
 bool Level::IsTile(int x, int y, int* dataMap)
 {
 	if (dataMap[y * (int)GAME_TILE_WIDTH + x] != 0)
@@ -87,11 +124,6 @@ int* Level::GetDirectionsTilemap()
 	return Directions;
 }
 
-int* Level::GetEnemiesTilemap()
-{
-	return Enemies;
-}
-
 void Level::LoadJSON(string levelJsonPath)
 {
 	try {
@@ -105,8 +137,6 @@ void Level::LoadJSON(string levelJsonPath)
 
 		auto json = nlohmann::json::parse(buffer.str());
 
-
-
 		auto layers = json["layers"];
 		auto tilesMap = layers[0]["data"];
 
@@ -116,6 +146,13 @@ void Level::LoadJSON(string levelJsonPath)
 			Map[index] = tilesMap[index];
 
 		}
+
+		////Enemies
+		enemiesData = layers[0]["properties"][0]["value"];
+		
+
+
+
 
 		auto tilesCollisions = layers[1]["data"];
 		auto offsetCollisions = json["tilesets"][1]["firstgid"];

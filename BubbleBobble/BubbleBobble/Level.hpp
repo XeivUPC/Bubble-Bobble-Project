@@ -11,21 +11,22 @@ public:
 	~Level();
 
 	void Render() override;
+	void LoadEnemies();
+	string GetEnemiesData();
 
 	bool IsTile(int x, int y, int* dataMap);
 	int GetTile(int x, int y, int* dataMap);
 
 	int* GetCollisionsTilemap();
 	int* GetDirectionsTilemap();
-	int* GetEnemiesTilemap();
 
 private:
 	int* Map = nullptr;
 	int* Shadows = nullptr;
 	int* Collisions = nullptr;
 	int* Directions = nullptr;
-	int* Enemies = nullptr;
 
+	string enemiesData;
 	Color ShadowsColor=WHITE;
 
 	void LoadJSON(string levelJsonPath);

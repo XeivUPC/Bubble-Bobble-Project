@@ -37,7 +37,7 @@ GameController::GameController()
 	highScorePointsMap.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	
 
-	ChangeState(8);
+	ChangeState(5);
 
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -122,8 +122,9 @@ void GameController::ChangeState(int stateIndex)
 
 		player1.Reset();
 		player2.Reset();
-		EnemyManager::Instance().Reset();
+		EnemyManager::Instance().DestroyAll();
 		ObjectsManager::Instance().Reset();
+		LevelManager::Instance().Reset();
 
 		break;
 	case GameController::Results:
@@ -218,21 +219,9 @@ void GameController::UpdateUI()
 
 void GameController::UpdateGame()
 {
-	LevelManager::Instance().Update();
-	BubbleManager::Instance().Update();
-	EnemyManager::Instance().Update();
-	ObjectsManager::Instance().Update();
-	if(player1.isActive)
-		player1.Update();
-	if (player2.isActive)
-		player2.Update();
 
-	if (!player2.isActive && !player1.isActive) {
-		////Lose
-		ChangeState(6);
-	}
 	if (IsKeyPressed(KEY_F3)) {
-		player1.HitPlayer(player1.GetLifes()+1);
+		player1.HitPlayer(player1.GetLifes() + 1);
 		player2.HitPlayer(player2.GetLifes() + 1);
 	}
 	if (IsKeyPressed(KEY_F4))
@@ -249,6 +238,24 @@ void GameController::UpdateGame()
 		player2.SetIfCanBeHitted_GOD_MODE(!player2.CanBeHit_GOD_MODE());
 
 	}
+
+	LevelManager::Instance().Update();
+
+	if (internalTimer < START_GAME_DELAY)
+		return;
+	BubbleManager::Instance().Update();
+	EnemyManager::Instance().Update();
+	ObjectsManager::Instance().Update();
+	if(player1.isActive)
+		player1.Update();
+	if (player2.isActive)
+		player2.Update();
+
+	if (!player2.isActive && !player1.isActive) {
+		////Lose
+		ChangeState(6);
+	}
+	
 
 
 }

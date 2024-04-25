@@ -101,4 +101,7 @@ private:
 
 	////Cover
 	#define COVER_SCREEN_TIME 3
+
+	/// Game
+	#define START_GAME_DELAY 1.5f
 };

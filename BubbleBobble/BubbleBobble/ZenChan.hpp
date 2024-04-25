@@ -6,7 +6,7 @@
 class ZenChan : public Enemy
 {
 public:
-	ZenChan(Vector2 tilePos);
+	ZenChan(Vector2 tilePos, int lookAt);
 	~ZenChan();
 	void Update() override;
 	void Render() override;
@@ -35,5 +35,6 @@ private:
 
 
 	bool isGrounded = true;
+
 };
 

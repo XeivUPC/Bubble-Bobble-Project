@@ -16,6 +16,7 @@ public:
     }
     void Update() override;
     void Render() override;
+    void Reset() override;
     void LoadNewWaitingLevel(int loadedLevelIndex);
     void LoadNewActiveLevel(int loadedLevelIndex);
     bool IsOnTransition();

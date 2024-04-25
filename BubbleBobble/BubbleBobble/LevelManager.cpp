@@ -9,9 +9,6 @@
 LevelManager::LevelManager() {
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/MapTileSet.png", "MapTileSet");
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/MapShadowsTileSet.png", "MapShadowsTileSet");
-
-	LoadNewActiveLevel(1);
-	LoadNewWaitingLevel(2);
 }
 
 void LevelManager::LoadNewWaitingLevel(int loadedLevelIndex)
@@ -30,6 +27,7 @@ void LevelManager::LoadNewActiveLevel(int loadedLevelIndex)
 		actualLevel = nullptr;
 	}
 	actualLevel = new Level(CreateFilePathName(loadedLevelIndex), loadedLevelIndex-1);
+	actualLevel->LoadEnemies();
 }
 
 void LevelManager::Update() {
@@ -52,6 +50,12 @@ void LevelManager::Render() {
 	actualLevel->Render();
 	if (isOnTransition)
 		nextLevel->Render();
+}
+
+void LevelManager::Reset()
+{
+	LoadNewActiveLevel(1);
+	LoadNewWaitingLevel(2);
 }
 
 bool LevelManager::IsOnTransition()

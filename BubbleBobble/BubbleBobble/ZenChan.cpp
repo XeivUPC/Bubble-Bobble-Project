@@ -5,13 +5,21 @@
 #include "GameConfiguration.h"
 
 
-ZenChan::ZenChan(Vector2 tilePos)
+ZenChan::ZenChan(Vector2 tilePos, int lookAt)
 {
 	position = tilePos;
 	walkSpeed = TILE_SIZE * 6.f;
 	walkAngrySpeed = walkSpeed * 2;
-	direction.x = 1;
+	direction.x = lookAt;
 	internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
+
+
+	if (direction.x < 0) {
+		renderer.FlipX(true);
+	}
+	if (direction.x > 0) {
+		renderer.FlipX(false);
+	}
 
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/Enemy1.png", "ZenChanSpriteSheet");
 
@@ -116,31 +124,36 @@ void ZenChan::Brain()
 				
 			}
 			else {
-				if (needsToGoLeft)
+				if (needsToGoLeft) {
 					direction.x = -1;
+				}
 				else {
 					direction.x = 1;
 				}
 			}
 			direction.y = 0;
-
-
 		}
 	}
 	else if (isGoingDown && isGrounded) {
 		isGoingDown = false;
 		direction.y = 0;
-		if (needsToGoLeft)
+		if (needsToGoLeft) {
 			direction.x = -1;
+
+		}
 		else {
 			direction.x = 1;
+
 		}
 	}
 	else if(!isGoingDown && direction.x==0 && !isWaitingClimbing && !isClimbing) {
-		if (needsToGoLeft)
+		if (needsToGoLeft) {
 			direction.x = -1;
+
+		}
 		else {
 			direction.x = 1;
+
 		}
 	}
 
@@ -173,22 +186,12 @@ void ZenChan::Brain()
 		needsToGoLeft = false;
 	}
 
-
-	////QUITAR RANDOM
-	int randomSelection = rand() % 2;
-
 	if (canGoUp && needsToGoUp && isGrounded ) {
-		if (randomSelection)
-			internalTimer = 0;
-		else {
 			direction.x = 0;
 			direction.y = -1;
 			climbPoint = position.y - 5 * TILE_SIZE;
 			isClimbing = true;
 			internalTimer = 0;
-		}
-		
-
 	}
 	else if (needsToGoDown && !isGrounded )
 	{
@@ -291,10 +294,9 @@ void ZenChan::CheckCollisions()
 
 void ZenChan::Reset()
 {
-	direction.x = 1;
+
 	internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
 
-	position = { TILE_SIZE * 20,TILE_SIZE * 12 };
 }
 
 void ZenChan::RenderDebug()

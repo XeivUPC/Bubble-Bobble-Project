@@ -16,10 +16,15 @@ public:
     void Update() override;
     void Render() override;
     void RenderDebug() override;
+    void SpawnZenChan(Vector2 tilePos,int direction);
+    void SpawnMaita(Vector2 tilePos, int direction);
+
     void AddTarget(Entity* entity);
     Entity* GetTarget(int index);
     int GetTargetsAmount();
+    void DestroyAll();
     void Reset() override;
+
 
     std::vector<Enemy*> enemies;
 

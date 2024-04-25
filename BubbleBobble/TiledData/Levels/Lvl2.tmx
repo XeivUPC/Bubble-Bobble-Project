@@ -8,6 +8,13 @@
  <tileset firstgid="521" source="Directions.tsx"/>
  <tileset firstgid="525" source="MapShadows.tsx"/>
  <layer id="1" name="BuildLayer" width="32" height="30">
+  <properties>
+   <property name="Enemies">ZenChan_15_7_-1
+ZenChan_17_7_1
+ZenChan_13_12_-1
+ZenChan_19_12_1
+END</property>
+  </properties>
   <data encoding="csv">
 135,136,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,135,136,
 167,168,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,167,168,

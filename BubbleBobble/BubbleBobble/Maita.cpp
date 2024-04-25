@@ -5,13 +5,13 @@
 #include "GameConfiguration.h"
 
 
-Maita::Maita(Vector2 tilePos)
+Maita::Maita(Vector2 tilePos, int lookAt)
 {
 	position = tilePos;
 	walkSpeed = TILE_SIZE * 6.f;
 	walkAngrySpeed = walkSpeed * 2;
-	direction.x = 1;
-	internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
+	direction.x = lookAt;
+	internalTimer = MAITA_IA_RECALCULATION_TIME;
 
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/Enemy3.png", "MaitaSpriteSheet");
 
@@ -112,15 +112,20 @@ void Maita::Brain()
 
 			position.y = climbPoint;
 			if (needsToGoUp) {
-				internalTimer = ZENCHAN_IA_RECALCULATION_TIME - 0.7f;
+				internalTimer = MAITA_IA_RECALCULATION_TIME - 0.7f;
 				isWaitingClimbing = true;
 				
 			}
 			else {
-				if (needsToGoLeft)
+				if (needsToGoLeft) {
 					direction.x = -1;
+					if (rand() % 4)
+						direction.x *= -1;
+				}
 				else {
 					direction.x = 1;
+					if (rand() % 4)
+						direction.x *= -1;
 				}
 			}
 			direction.y = 0;
@@ -131,29 +136,39 @@ void Maita::Brain()
 	else if (isGoingDown && isGrounded) {
 		isGoingDown = false;
 		direction.y = 0;
-		if (needsToGoLeft)
+		if (needsToGoLeft) {
 			direction.x = -1;
+			if (rand() % 4)
+				direction.x *= -1;
+		}
 		else {
 			direction.x = 1;
+			if (rand() % 4)
+				direction.x *= -1;
 		}
 	}
 	else if(!isGoingDown && direction.x==0 && !isWaitingClimbing && !isClimbing) {
-		if (needsToGoLeft)
+		if (needsToGoLeft) {
 			direction.x = -1;
+			if (rand() % 4)
+				direction.x *= -1;
+		}
 		else {
 			direction.x = 1;
+			if (rand() % 4)
+				direction.x *= -1;
 		}
 	}
 
 	if (needsToGoDown && !isGrounded && !isClimbing && !isWaitingClimbing && !isGoingDown) {
 
-		internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
+		internalTimer = MAITA_IA_RECALCULATION_TIME;
 	}
 
 	if (currentTarget == nullptr)
 		return;
 
-	if (ZENCHAN_IA_RECALCULATION_TIME > internalTimer) {
+	if (MAITA_IA_RECALCULATION_TIME > internalTimer) {
 		return;
 	}
 	isWaitingClimbing = false;
@@ -174,18 +189,13 @@ void Maita::Brain()
 		needsToGoLeft = false;
 	}
 
-	////QUITAR RANDOM
-	int randomSelection = rand() % 2;
 	if (canGoUp && needsToGoUp && isGrounded) {
-		if (randomSelection)
-			internalTimer = 0;
-		else {
+
 			direction.x = 0;
 			direction.y = -1;
 			climbPoint = position.y - 5 * TILE_SIZE;
 			isClimbing = true;
 			internalTimer = 0;
-		}
 	}
 	else if (needsToGoDown && !isGrounded)
 	{
@@ -286,9 +296,7 @@ void Maita::CheckCollisions()
 void Maita::Reset()
 {
 	direction.x = 1;
-	internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
-
-	position = { TILE_SIZE * 12,TILE_SIZE * 12 };
+	internalTimer = MAITA_IA_RECALCULATION_TIME;
 }
 
 void Maita::RenderDebug()
