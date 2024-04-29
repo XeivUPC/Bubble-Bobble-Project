@@ -70,6 +70,7 @@ private:
 	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController coinInsertedScreen = TilemapController("../Assets/UI/CoinInsertedScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController loadingGameScreen = TilemapController("../Assets/UI/LoadingGameScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController controlsScreen = TilemapController("../Assets/UI/ControlsUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 
 	TilemapController newRoundUI = TilemapController("../Assets/UI/NewRoundUI.json", 64, Vector2{ 8,3 });
 

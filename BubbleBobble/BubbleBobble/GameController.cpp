@@ -26,6 +26,7 @@ GameController::GameController()
 	insertCoinScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	coinInsertedScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	loadingGameScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
+	controlsScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 
 	lifesHUD.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
 	lifesHUD.ModifyRenderer().ChangeDisplacement({ 0,(GAME_TILE_HEIGHT-1) * TILE_SIZE });
@@ -95,6 +96,7 @@ void GameController::ChangeState(int stateIndex)
 	insertCoinScreen.isActive = false;
 	coinInsertedScreen.isActive = false;
 	loadingGameScreen.isActive = false;
+	controlsScreen.isActive = false;
 
 	std::cout << "Game State Changed --> " << state << std::endl;
 	switch (state)
@@ -111,7 +113,7 @@ void GameController::ChangeState(int stateIndex)
 		insertCoinScreen.isActive = true;
 		break;
 	case GameController::TutorialScreen:
-		
+		controlsScreen.isActive = true;
 		break;
 	case GameController::CoinInsertedScreen:
 		coinInsertedScreen.isActive = true;
@@ -306,6 +308,7 @@ void GameController::RenderUIEarly()
 	insertCoinScreen.Render();
 	coinInsertedScreen.Render();
 	loadingGameScreen.Render();
+	controlsScreen.Render();
 	
 	if (state == Cover) {
 		DrawTextureEx(*TextureManager::Instance().GetTexture("IntroductionCover"), { 0,0 }, 0, TILE_SCALE_FACTOR, WHITE);
