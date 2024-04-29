@@ -47,6 +47,8 @@ private:
 	void InsertCoin();
 	void CheckInsertedCoinsSound();
 
+	void ChangeNextLevelUI();
+
 	void SaveGameData(int highScore);
 	void LoadGameData(int* highScore);
 
@@ -68,6 +70,8 @@ private:
 	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController coinInsertedScreen = TilemapController("../Assets/UI/CoinInsertedScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController loadingGameScreen = TilemapController("../Assets/UI/LoadingGameScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+
+	TilemapController newRoundUI = TilemapController("../Assets/UI/NewRoundUI.json", 64, Vector2{ 8,3 });
 
 
 	TilemapController lifesHUD = TilemapController(nullptr, 64, Vector2{ GAME_TILE_WIDTH,1 });

@@ -156,6 +156,8 @@
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectsManager.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PointParticle.hpp" />
+    <ClInclude Include="PointsParticlesManager.hpp" />
     <ClInclude Include="PointsUI.hpp" />
     <ClInclude Include="PuntuationHolder.hpp" />
     <ClInclude Include="Renderer.hpp" />
@@ -184,6 +186,8 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PointParticle.cpp" />
+    <ClCompile Include="PointsParticlesManager.cpp" />
     <ClCompile Include="PointsUI.cpp" />
     <ClCompile Include="PuntuationHolder.cpp" />
     <ClCompile Include="Renderer.cpp" />

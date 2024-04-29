@@ -490,6 +490,7 @@ void Player::Update()
 			direction.x = 0;
 			direction.y = 0;
 			isJumping = false;
+			hasBeenHit = false;
 			renderer.ChangeDisplacement({ 0,0});
 			SetState(0);
 		}
@@ -586,6 +587,7 @@ void Player::SetState(int index)
 		break;
 
 	case StartBubble:
+		canBeHit = true;
 		renderer.FlipX(player1);
 		renderer.ChangeDisplacement({ -TILE_SIZE ,-TILE_SIZE });
 		bubbleTimer = 0;
@@ -633,14 +635,14 @@ bool Player::MoveToSpawnPoint()
 	Vector2 spawnPos = { TILE_SIZE * spawnPoint.x ,TILE_SIZE * spawnPoint.y };
 	Vector2 moveDir = { (spawnPos.x - position.x) / abs(spawnPos.x - position.x),(spawnPos.y - position.y) / abs(spawnPos.y - position.y) };
 	if (abs(spawnPos.x - position.x) > 0.2f) {
-		position.x += moveDir.x * groundSpeed * deltaTime;
+		position.x += moveDir.x * groundSpeed / 1.5f * deltaTime;
 		arrived = false;
 	}
 	else {
 		position.x = spawnPos.x;
 	}
 	if (abs(spawnPos.y - position.y) > 0.2f) {
-		position.y += moveDir.y * groundSpeed * deltaTime;
+		position.y += moveDir.y * groundSpeed/1.5f * deltaTime;
 		arrived = false;
 	}
 	else {

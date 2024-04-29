@@ -82,6 +82,10 @@
     <ClInclude Include="Fruit.hpp">
       <Filter>Scripts\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="PointsParticlesManager.hpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="PointParticle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -176,5 +180,9 @@
     <ClCompile Include="Fruit.cpp">
       <Filter>Scripts\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="PointsParticlesManager.cpp">
+      <Filter>Scripts\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PointParticle.cpp" />
   </ItemGroup>
 </Project>

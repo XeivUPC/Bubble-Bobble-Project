@@ -20,6 +20,7 @@ Level::Level(string levelJsonPath, int levelNumber)
 	Shadows = new int[(int)(GAME_TILE_WIDTH * GAME_TILE_HEIGHT)];
 	LoadJSON(levelJsonPath);
 	position = { 0,0 };
+	levelIndex = levelNumber+1;
 }
 
 Level::~Level()
@@ -136,6 +137,11 @@ int* Level::GetCollisionsTilemap()
 int* Level::GetDirectionsTilemap()
 {
 	return Directions;
+}
+
+int Level::GetLevelIndex()
+{
+	return levelIndex;
 }
 
 void Level::LoadJSON(string levelJsonPath)

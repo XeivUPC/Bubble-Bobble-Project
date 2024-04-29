@@ -25,6 +25,7 @@ public:
     Level* GetActiveLevel();
     Level* GetNextLoadedLevel();
     TextureRenderer* GetRenderer();
+    int GetActualLevelIndex();
 
 private:
     //Private constructor to prevent instantiation

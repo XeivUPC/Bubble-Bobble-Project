@@ -86,6 +86,11 @@ TextureRenderer* LevelManager::GetRenderer()
 	return &renderer;
 }
 
+int LevelManager::GetActualLevelIndex()
+{
+	return actualLevel->GetLevelIndex();
+}
+
 void LevelManager::StartTransition()
 {
 	if (isOnTransition || nextLevelIndex > MAX_LEVELS)

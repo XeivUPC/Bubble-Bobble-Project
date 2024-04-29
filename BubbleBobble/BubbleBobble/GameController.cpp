@@ -4,6 +4,7 @@
 #include "LevelManager.hpp"
 #include "TextureManager.hpp"
 #include "ObjectsManager.hpp"
+#include "PointsParticlesManager.hpp"
 #include "ZenChan.hpp"
 #include <iostream>
 
@@ -29,6 +30,11 @@ GameController::GameController()
 	lifesHUD.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
 	lifesHUD.ModifyRenderer().ChangeDisplacement({ 0,(GAME_TILE_HEIGHT-1) * TILE_SIZE });
 
+	newRoundUI.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
+	newRoundUI.ModifyRenderer().ChangeDisplacement({ ((GAME_TILE_WIDTH/ 2)-4) * TILE_SIZE,((GAME_TILE_HEIGHT/2)-1) * TILE_SIZE });
+	newRoundUI.isActive = false;
+	
+
 	player1PointsMap.ModifyRenderer().ChangeDisplacement({ 0, 1.f * TILE_SIZE });
 	player1PointsMap.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	player2PointsMap.ModifyRenderer().ChangeDisplacement(Vector2{ 21.f * TILE_SIZE,1.f * TILE_SIZE });
@@ -38,7 +44,7 @@ GameController::GameController()
 	
 
 	ChangeState(0);
-
+	
 
 	EnemyManager::Instance().AddTarget(&player1);
 	EnemyManager::Instance().AddTarget(&player2);
@@ -125,6 +131,7 @@ void GameController::ChangeState(int stateIndex)
 		EnemyManager::Instance().DestroyAll();
 		ObjectsManager::Instance().Reset();
 		LevelManager::Instance().Reset();
+		ChangeNextLevelUI();
 
 		break;
 	case GameController::Results:
@@ -240,20 +247,26 @@ void GameController::UpdateGame()
 	}
 
 	LevelManager::Instance().Update();
-
+	PointsParticlesManager::Instance().Update();
 	bool isInTransition = player1.IsInBubbleMode() || (!player2.isActive || player2.IsInBubbleMode());
 
 	if (isInTransition) {
-		if (player1.isActive)
+		if (player1.isActive && player1.IsInBubbleMode())
 			player1.Update();
-		if (player2.isActive)
+		if (player2.isActive && player2.IsInBubbleMode())
 			player2.Update();
 		internalTimer = 0;
+		return;
 	}
 
 	if (internalTimer < START_GAME_DELAY) {
+		if(!newRoundUI.isActive)
+			ChangeNextLevelUI();
+		newRoundUI.isActive = true;
 		return;
 	}
+	else
+		newRoundUI.isActive = false;
 
 	BubbleManager::Instance().Update();
 	EnemyManager::Instance().Update();
@@ -274,6 +287,8 @@ void GameController::UpdateGame()
 		EnemyManager::Instance().DestroyAll();
 		ObjectsManager::Instance().DestroyAll();
 		BubbleManager::Instance().DisableAll();
+		
+		
 	}
 
 
@@ -304,18 +319,20 @@ void GameController::RenderGameEarly()
 	ObjectsManager::Instance().Render();
 	BubbleManager::Instance().Render();
 	EnemyManager::Instance().Render();
-
+	PointsParticlesManager::Instance().Render();
 	if (DebugMode) {
 		LevelManager::Instance().RenderDebug();
 		ObjectsManager::Instance().RenderDebug();
 		BubbleManager::Instance().RenderDebug();
 		EnemyManager::Instance().RenderDebug();
+		PointsParticlesManager::Instance().RenderDebug();
 	}
 }
 
 void GameController::RenderUILate()
 {
 	topUI.Render();
+	newRoundUI.Render();
 	if (topUI.isActive) {
 		player1PointsMap.Render();
 		player2PointsMap.Render();
@@ -356,6 +373,25 @@ void GameController::CheckInsertedCoinsSound()
 			AudioManager::Instance().PlaySoundByName("InsertCoin");
 			coinsInsertedSound++;
 		}
+	}
+}
+
+void GameController::ChangeNextLevelUI()
+{
+	int levelNumber = LevelManager::Instance().GetActualLevelIndex();
+	if (levelNumber > 9) {
+		int num = levelNumber % 10;
+		int numTile = FromNumberToTile(num);
+		newRoundUI.ModifyTile(7, 0, FromNumberToTile(numTile));
+		levelNumber -= num;
+		levelNumber /= 10;
+		num = levelNumber % 10;
+		numTile = FromNumberToTile(num);
+		newRoundUI.ModifyTile(6, 0, FromNumberToTile(numTile));
+	}
+	else {
+		newRoundUI.ModifyTile(7, 0, FromNumberToTile(levelNumber));
+		newRoundUI.ModifyTile(6, 0, 336);
 	}
 }
 

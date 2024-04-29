@@ -20,13 +20,14 @@ public:
 
 	int* GetCollisionsTilemap();
 	int* GetDirectionsTilemap();
-
+	int GetLevelIndex();
 private:
 	int* Map = nullptr;
 	int* Shadows = nullptr;
 	int* Collisions = nullptr;
 	int* Directions = nullptr;
 
+	int levelIndex = 0;
 	string enemiesData;
 	Color ShadowsColor=WHITE;
 
