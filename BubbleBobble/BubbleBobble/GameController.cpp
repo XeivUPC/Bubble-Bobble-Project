@@ -97,6 +97,7 @@ void GameController::ChangeState(int stateIndex)
 	coinInsertedScreen.isActive = false;
 	loadingGameScreen.isActive = false;
 	controlsScreen.isActive = false;
+	newRoundUI.isActive = false;
 
 	std::cout << "Game State Changed --> " << state << std::endl;
 	switch (state)
@@ -127,6 +128,9 @@ void GameController::ChangeState(int stateIndex)
 	case GameController::LoadingGameScreen:
 		loadingGameScreen.isActive = true;
 		audioManager.PlayMusicByName("IntroSong");
+		player1.SetState(6);
+		player2.SetState(6);
+
 		break;
 	case GameController::GameScreen:
 		topUI.isActive = true;
@@ -189,6 +193,11 @@ void GameController::UpdateUI()
 			ChangeState(4);
 		break;
 	case GameController::LoadingGameScreen:
+		player1.position.x = 6 * TILE_SIZE + sin(internalTimer*6) * TILE_SIZE*1;
+		player1.position.y = 15 * TILE_SIZE + cos(internalTimer*6) * TILE_SIZE*1;
+
+		player2.position.x = (GAME_TILE_WIDTH-8) * TILE_SIZE - sin(internalTimer * 6) * TILE_SIZE * 1;
+		player2.position.y = 15 * TILE_SIZE + cos(internalTimer * 6) * TILE_SIZE * 1;
 		if (internalTimer > LOADING_GAME_TIME)
 			ChangeState(5);
 		break;
@@ -259,10 +268,13 @@ void GameController::UpdateGame()
 		player2.SetIfCanBeHitted_GOD_MODE(!player2.CanBeHit_GOD_MODE());
 
 	}
-
+	if (!player2.isActive && !player1.isActive) {
+		////Lose
+		ChangeState(6);
+	}
 	LevelManager::Instance().Update();
 	PointsParticlesManager::Instance().Update();
-	bool isInTransition = player1.IsInBubbleMode() || (!player2.isActive || player2.IsInBubbleMode());
+	bool isInTransition = player1.IsInBubbleMode() || ( player2.IsInBubbleMode());
 
 	if (isInTransition) {
 		if (player1.isActive && player1.IsInBubbleMode())
@@ -290,10 +302,7 @@ void GameController::UpdateGame()
 	if (player2.isActive)
 		player2.Update();
 
-	if (!player2.isActive && !player1.isActive) {
-		////Lose
-		ChangeState(6);
-	}
+	
 	
 
 	if (IsKeyPressed(KEY_ENTER)) {
@@ -355,6 +364,10 @@ void GameController::RenderUILate()
 	}
 	if (state == GameScreen)
 		lifesHUD.Render();
+	if (state == LoadingGameScreen) {
+		player1.Render();
+		player2.Render();
+	}
 }
 
 void GameController::RenderGameLate()
