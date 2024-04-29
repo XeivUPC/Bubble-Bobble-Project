@@ -16,6 +16,7 @@ public:
     void RenderDebug() override;
     void Reset() override;
     void RemoveObject(Object* object);
+    void DestroyAll();
 
     void AddCollector(Entity* entity);
     Entity* GetCollectors(int index);

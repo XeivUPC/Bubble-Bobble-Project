@@ -34,7 +34,7 @@ void LevelManager::Update() {
 	if (!isOnTransition)
 		return;
 
-	actualLevel->position = { 0,(actualLevel->position.y - (GAME_TILE_WIDTH * TILE_SIZE / transitionTime) * deltaTime) };
+	actualLevel->position = { 0,(actualLevel->position.y - (GAME_TILE_HEIGHT * TILE_SIZE / transitionTime) * deltaTime) };
 	nextLevel->position = { 0,(nextLevel->position.y - (GAME_TILE_HEIGHT * TILE_SIZE / transitionTime) * deltaTime) };
 
 
@@ -50,6 +50,13 @@ void LevelManager::Render() {
 	actualLevel->Render();
 	if (isOnTransition)
 		nextLevel->Render();
+}
+
+void LevelManager::RenderDebug()
+{
+	actualLevel->RenderDebug();
+	if (isOnTransition)
+		nextLevel->RenderDebug();
 }
 
 void LevelManager::Reset()

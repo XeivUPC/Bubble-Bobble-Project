@@ -27,8 +27,8 @@ private:
 
 	
 	Vector2 origin = { 0,0 };
-	Vector2 displacement = { 0,0 };
 protected:
+	Vector2 displacement = { 0,0 };
 	Rectangle sourceRec = {};
 	Rectangle destRec = {};
 	int flippedValueX = 1;

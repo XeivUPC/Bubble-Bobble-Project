@@ -8,11 +8,7 @@ ObjectsManager::ObjectsManager()
 
 ObjectsManager::~ObjectsManager()
 {
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		delete objects[i];
-	}
-	objects.clear();
+	DestroyAll();
 }
 
 void ObjectsManager::Update()
@@ -59,6 +55,14 @@ void ObjectsManager::RemoveObject(Object* object)
 		return;
 	objects.erase(objects.begin() + index);
 	delete object;
+}
+
+void ObjectsManager::DestroyAll() {
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		delete objects[i];
+	}
+	objects.clear();
 }
 
 void ObjectsManager::AddCollector(Entity* entity)

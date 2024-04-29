@@ -16,7 +16,9 @@ public:
     }
     void Update() override;
     void Render() override;
+    void RenderDebug() override;
     void Reset() override;
+    void StartTransition();
     void LoadNewWaitingLevel(int loadedLevelIndex);
     void LoadNewActiveLevel(int loadedLevelIndex);
     bool IsOnTransition();
@@ -30,7 +32,6 @@ private:
     //Destructor
     ~LevelManager();
 
-    void StartTransition();
     void EndTransition();
 
     string CreateFilePathName(int levelToGetNamePath);

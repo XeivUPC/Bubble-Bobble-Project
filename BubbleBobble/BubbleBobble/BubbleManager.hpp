@@ -16,6 +16,7 @@ public:
     void Update() override;
     void Render() override;
     void RenderDebug() override;
+    void DisableAll();
     Bubble* GetBubble();
     Bubble* GetBubbleByIndex(int index);
     void MoveBubbleToFront(Bubble* bubble);

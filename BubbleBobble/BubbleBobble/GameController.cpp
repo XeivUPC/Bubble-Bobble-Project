@@ -37,7 +37,7 @@ GameController::GameController()
 	highScorePointsMap.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	
 
-	ChangeState(5);
+	ChangeState(0);
 
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -221,13 +221,13 @@ void GameController::UpdateGame()
 {
 
 	if (IsKeyPressed(KEY_F3)) {
-		player1.HitPlayer(player1.GetLifes() + 1);
-		player2.HitPlayer(player2.GetLifes() + 1);
+		player1.HitPlayer_GOD_MODE(player1.GetLifes() + 1);
+		player2.HitPlayer_GOD_MODE(player2.GetLifes() + 1);
 	}
 	if (IsKeyPressed(KEY_F4))
-		player1.HitPlayer();
+		player1.HitPlayer_GOD_MODE();
 	if (IsKeyPressed(KEY_F5))
-		player2.HitPlayer();
+		player2.HitPlayer_GOD_MODE();
 
 	if (IsKeyPressed(KEY_F2)) {
 		DebugMode = !DebugMode;
@@ -241,8 +241,20 @@ void GameController::UpdateGame()
 
 	LevelManager::Instance().Update();
 
-	if (internalTimer < START_GAME_DELAY)
+	bool isInTransition = player1.IsInBubbleMode() || (!player2.isActive || player2.IsInBubbleMode());
+
+	if (isInTransition) {
+		if (player1.isActive)
+			player1.Update();
+		if (player2.isActive)
+			player2.Update();
+		internalTimer = 0;
+	}
+
+	if (internalTimer < START_GAME_DELAY) {
 		return;
+	}
+
 	BubbleManager::Instance().Update();
 	EnemyManager::Instance().Update();
 	ObjectsManager::Instance().Update();
@@ -256,6 +268,13 @@ void GameController::UpdateGame()
 		ChangeState(6);
 	}
 	
+
+	if (IsKeyPressed(KEY_ENTER)) {
+		LevelManager::Instance().StartTransition();
+		EnemyManager::Instance().DestroyAll();
+		ObjectsManager::Instance().DestroyAll();
+		BubbleManager::Instance().DisableAll();
+	}
 
 
 }

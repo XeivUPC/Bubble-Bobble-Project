@@ -71,8 +71,8 @@ void Renderer::Draw(float x, float y, int rotation, Color color)
         animations[currentAnim].frames[currentFrame].height * flippedValueY // Height of the tile
     };
     destRec = {
-        x, // X position on the screen (change this as needed)
-        y, // Y position on the screen (centered vertically)
+        x + displacement.x, // X position on the screen (change this as needed)
+        y + displacement.y, // Y position on the screen (centered vertically)
         abs(animations[currentAnim].frames[currentFrame].width) * TILE_SCALE_FACTOR,             // Width of the tile on the screen
          abs(animations[currentAnim].frames[currentFrame].height) * TILE_SCALE_FACTOR            // Height of the tile on the screen
     };

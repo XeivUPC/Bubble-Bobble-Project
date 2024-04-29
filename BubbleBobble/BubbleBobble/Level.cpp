@@ -64,6 +64,20 @@ void Level::Render()
 	}
 }
 
+void Level::RenderDebug()
+{
+	for (int y = 0; y < GAME_TILE_HEIGHT; y++)
+	{
+		for (int x = 0; x < GAME_TILE_WIDTH; x++)
+		{
+			float valueOfTile = GetTile(x, y, Map);
+			if (valueOfTile != 0) {
+				DrawRectangle(x * TILE_SIZE + position.x, (y)*TILE_SIZE + position.y, TILE_SIZE, TILE_SIZE, { 0,0,255,100 });				
+			}
+		}
+	}
+}
+
 void Level::LoadEnemies()
 {
 	char delimiter = '\n';

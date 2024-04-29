@@ -19,10 +19,12 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 		TextureManager::Instance().CreateTexture("../Assets/Sprites/Player.png", "Player1SpriteSheet");
 		textureName = "Player1SpriteSheet";
 		renderer.FlipX();
+		startPoint = { 9,21 };
 	}
 	else
 	{
 		spawnPoint = { 29,27 };
+		startPoint = { 23,21 };
 		TextureManager::Instance().CreateTexture("../Assets/Sprites/Player2.png", "Player2SpriteSheet");
 		textureName = "Player2SpriteSheet";
 	}
@@ -79,6 +81,24 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 	popAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	popAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
+	Animation bubbleStart = { TextureManager::Instance().GetTexture(textureName) ,0.1f };
+	bubbleStart.frames.push_back({ 0 * TILE_REAL_SIZE * 4, 4 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubbleStart.frames.push_back({ 1 * TILE_REAL_SIZE * 4, 4 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubbleStart.frames.push_back({ 0 * TILE_REAL_SIZE * 4, 5 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubbleStart.frames.push_back({ 1 * TILE_REAL_SIZE * 4, 5 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubbleStart.frames.push_back({ 2 * TILE_REAL_SIZE * 4, 5 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubbleStart.frames.push_back({ 3 * TILE_REAL_SIZE * 4, 5 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+
+	Animation bubbleHold = { TextureManager::Instance().GetTexture(textureName) ,0.2f };
+	bubbleHold.frames.push_back({ 0 * TILE_REAL_SIZE * 4, 6 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubbleHold.frames.push_back({ 1 * TILE_REAL_SIZE * 4, 6 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	
+
+	Animation bubblePop = { TextureManager::Instance().GetTexture(textureName) ,0.2f };
+	bubblePop.frames.push_back({ 0 * TILE_REAL_SIZE * 4, 7 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	bubblePop.frames.push_back({ 1 * TILE_REAL_SIZE * 4, 7 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
+	
+
 
 	renderer.AddAnimation("PlayerWalk",walkAnim);
 	renderer.AddAnimation("PlayerIdle",idleAnim);
@@ -91,10 +111,12 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 	renderer.AddAnimation("PlayerDie", dieAnim);
 	renderer.AddAnimation("PlayerDead", deadAnim);
 	renderer.AddAnimation("PlayerPop", popAnim);
+	renderer.AddAnimation("PlayerBubbleStart", bubbleStart);
+	renderer.AddAnimation("PlayerBubbleHold", bubbleHold);
+	renderer.AddAnimation("PlayerBubblePop", bubblePop);
 
-	position.x = spawnPoint.x * TILE_SIZE;  
-	position.y = spawnPoint.y * TILE_SIZE;
-
+	position.x = startPoint.x * TILE_SIZE;
+	position.y = startPoint.y * TILE_SIZE;
 }
 
 Player::~Player()
@@ -260,6 +282,19 @@ void Player::Move()
 				}
 			}
 			break;
+
+		case StartBubble:
+			direction.y = 0;
+			direction.x = 0;
+			break;
+		case HoldBubble:
+			direction.y = 0;
+			direction.x = 0;
+			break;
+		case PopBubble:
+			direction.y = 0;
+			direction.x = 0;
+			break;
 		default:
 			break;
 	}
@@ -384,6 +419,10 @@ void Player::Update()
 {
 	internalTimer += deltaTime;
 	
+	if (LevelManager::Instance().IsOnTransition() && !isInBubbleMode) {
+		isInBubbleMode = true;
+		SetState(5);
+	}
 	
 	switch (state) {
 	case Normal:
@@ -416,9 +455,7 @@ void Player::Update()
 			else {
 				TpToSpawnPoint();
 				SetState(4);
-				///Inmortal
 			}
-			
 		}
 		break;
 	case Inmortal:
@@ -432,16 +469,37 @@ void Player::Update()
 			SetState(0);
 		}
 		break;
+
+	case StartBubble:
+		bubbleTimer += deltaTime;
+		MoveToSpawnPoint();
+		if(bubbleTimer>= BUBBLE_START_TIME){
+			SetState(6);
+		}
+		break;
+	case HoldBubble:
+		bubbleTimer += deltaTime;
+		if (MoveToSpawnPoint() && bubbleTimer>= BUBBLE_HOLD_TIME && !LevelManager::Instance().IsOnTransition())
+			SetState(7);
+		break;
+	case PopBubble:
+		bubbleTimer += deltaTime;
+		if (bubbleTimer >= BUBBLE_POP_TIME) {
+			isGrounded = true;
+			isInBubbleMode = false;
+			direction.x = 0;
+			direction.y = 0;
+			isJumping = false;
+			renderer.ChangeDisplacement({ 0,0});
+			SetState(0);
+		}
+		break;
 	default:
 		break;
 	}
 
 	if (position.y > (GAME_TILE_HEIGHT + 1.5) * TILE_SIZE)
 		position.y = 0;
-
-	
-	
-	
 }
 
 void Player::Render()
@@ -453,42 +511,51 @@ void Player::Render()
 	if (!renderer.isActive)
 		return;
 
-	if (hasBeenHit) {
-		if (deadRelatedTimer <= DYING_TIME && state == Dying) {
-			renderer.PlayAniamtion("PlayerDie");
+	if (state == StartBubble) {
+		renderer.PlayAniamtion("PlayerBubbleStart");
+	}
+	else if (state == HoldBubble) {
+		renderer.PlayAniamtion("PlayerBubbleHold");
+	}
+	else if (state == PopBubble) {
+		renderer.PlayAniamtion("PlayerBubblePop");
+	}
+	else if (state == Dying) {
+		renderer.PlayAniamtion("PlayerDie");
+	}
+	else if (state == Dead) {
+		renderer.PlayAniamtion("PlayerDead");
+	}
+	else if (state == Dead) {
+		renderer.PlayAniamtion("PlayerPop");
+	}
+	else if (state == Normal || state == Inmortal) {
+		if (isShooting)
+		{
+			if (direction.x != 0)
+				renderer.PlayAniamtion("PlayerMovingShoot");
+			else
+				renderer.PlayAniamtion("PlayerStaticShoot");
 		}
-		else if (deadRelatedTimer <= DEAD_TIME && state == Dead) {
-			renderer.PlayAniamtion("PlayerDead");
-		}
-		else if (deadRelatedTimer <= POP_TIME && state == Pop) {
-			renderer.PlayAniamtion("PlayerPop");
+		else if (isGrounded) {
+			if (direction.x != 0)
+				renderer.PlayAniamtion("PlayerWalk");
+			else
+				renderer.PlayAniamtion("PlayerIdle");
 		}
 		else {
-			hasBeenHit = false;
+			if (direction.y > 0) {
+				renderer.PlayAniamtion("PlayerFall");
+			}
+			else {
+				renderer.PlayAniamtion("PlayerJump");
+			}
 		}
 	}
-	else if (isShooting)
-	{
-		if (direction.x != 0)
-			renderer.PlayAniamtion("PlayerMovingShoot");
-		else
-			renderer.PlayAniamtion("PlayerStaticShoot");
-	}
-	else if (isGrounded) {
-		if(direction.x!=0)
-			renderer.PlayAniamtion("PlayerWalk");
-		else
-			renderer.PlayAniamtion("PlayerIdle");
-	}
-	else {
-		if (direction.y > 0) {
-			renderer.PlayAniamtion("PlayerFall");
-		}
-		else {
-			renderer.PlayAniamtion("PlayerJump");
-		}
-	}
+	
 
+	
+	
 	renderer.Draw(position.x- TILE_SIZE, position.y - TILE_SIZE*2, 0, WHITE);
 	
 	
@@ -516,6 +583,18 @@ void Player::SetState(int index)
 	case Inmortal:
 		inmortalTimer = 0;
 		canBeHit = false;
+		break;
+
+	case StartBubble:
+		renderer.FlipX(player1);
+		renderer.ChangeDisplacement({ -TILE_SIZE ,-TILE_SIZE });
+		bubbleTimer = 0;
+		break;
+	case HoldBubble:
+		bubbleTimer = 0;
+		break;
+	case PopBubble:
+		bubbleTimer = 0;
 		break;
 	default:
 		break;
@@ -550,6 +629,23 @@ void Player::TpToSpawnPoint()
 bool Player::MoveToSpawnPoint()
 {
 	bool arrived = true;
+
+	Vector2 spawnPos = { TILE_SIZE * spawnPoint.x ,TILE_SIZE * spawnPoint.y };
+	Vector2 moveDir = { (spawnPos.x - position.x) / abs(spawnPos.x - position.x),(spawnPos.y - position.y) / abs(spawnPos.y - position.y) };
+	if (abs(spawnPos.x - position.x) > 0.2f) {
+		position.x += moveDir.x * groundSpeed * deltaTime;
+		arrived = false;
+	}
+	else {
+		position.x = spawnPos.x;
+	}
+	if (abs(spawnPos.y - position.y) > 0.2f) {
+		position.y += moveDir.y * groundSpeed * deltaTime;
+		arrived = false;
+	}
+	else {
+		position.y = spawnPos.y;
+	}
 	return arrived;
 }
 
@@ -566,6 +662,12 @@ void Player::HitPlayer()
 	SetState(1);
 }
 
+void Player::HitPlayer_GOD_MODE()
+{
+	lifes--;
+	SetState(1);
+}
+
 void Player::HitPlayer(int amount)
 {
 	if (hasBeenHit || !canBeHit || !canBeHit_GOD_MODE)
@@ -575,9 +677,20 @@ void Player::HitPlayer(int amount)
 	SetState(1);
 }
 
+void Player::HitPlayer_GOD_MODE(int amount)
+{
+	lifes -= amount;
+	SetState(1);
+}
+
 bool Player::CanBeHit()
 {
 	return canBeHit;
+}
+
+bool Player::IsInBubbleMode()
+{
+	return isInBubbleMode;
 }
 
 bool Player::CanBeHit_GOD_MODE()
@@ -608,10 +721,12 @@ void Player::Reset()
 {
 	lifes = 3;
 	isActive = true;
-	TpToSpawnPoint();
+	isInBubbleMode = true;
+	position.x = startPoint.x * TILE_SIZE;
+	position.y = startPoint.y * TILE_SIZE;
 	renderer.isActive = true;
 	canBeHit = true;
-	state = Normal;
+	SetState(5);
 }
 
 

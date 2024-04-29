@@ -14,6 +14,11 @@
 #define DEAD_TIME 1
 #define POP_TIME 0.5
 
+
+#define BUBBLE_START_TIME 0.6
+#define BUBBLE_HOLD_TIME 0.4
+#define BUBBLE_POP_TIME 0.4
+
 class Player : public Entity
 {
 public:
@@ -30,7 +35,12 @@ public:
 		Dying,
 		Dead,
 		Pop,
-		Inmortal
+		Inmortal,
+
+		///BubbleRelated
+		StartBubble,
+		HoldBubble,
+		PopBubble
 	};
 
 	Player(Keys controlScheme, bool player1, PuntuationHolder* controllerPoints);
@@ -44,8 +54,11 @@ public:
 	bool MoveToSpawnPoint();
 	int GetLifes();
 	void HitPlayer();
+	void HitPlayer_GOD_MODE();
 	void HitPlayer(int amount);
+	void HitPlayer_GOD_MODE(int amount);
 	bool CanBeHit();
+	bool IsInBubbleMode();
 	bool CanBeHit_GOD_MODE();
 	void SetIfCanBeHitted(bool value);
 	void SetIfCanBeHitted_GOD_MODE(bool value);
@@ -64,18 +77,20 @@ private:
 	void Move();
 	void CheckCollisions();
 
-	PlayerState state = Normal;
+	PlayerState state = StartBubble;
 
 	bool player1 = false;
 	int lifes = 3;
 
 	Vector2 spawnPoint = { 3,27 };
+	Vector2 startPoint = { 3,27 };
 	Renderer renderer;
 	Keys controlScheme;
 
 	float shootTimer = PLAYER_SHOOT_INTERVAL;
 	float inmortalTimer = INMORTAL_TIME;
 	float deadRelatedTimer = 0;
+	float bubbleTimer = 0;
 
 	Vector2 speed={0,0};
 	////Speeds X
@@ -101,6 +116,7 @@ private:
 	
 	bool hasBeenHit = false;
 	bool canBeHit = true;
+	bool isInBubbleMode = false;
 
 
 	bool canBeHit_GOD_MODE = true;
