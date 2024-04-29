@@ -107,6 +107,11 @@ void GameController::ChangeState(int stateIndex)
 		coinsInsertedSound = 0;
 		topUI.isActive = true;
 		initialScreen.isActive = true;
+
+		player1Points.SetPuntutation(0);
+		player1Points.SetMultiplier(1);
+		player2Points.SetPuntutation(0);
+		player2Points.SetMultiplier(1);
 		break;
 	case GameController::InsertCoinScreen:
 		topUI.isActive = true;
@@ -228,6 +233,13 @@ void GameController::UpdateUI()
 
 void GameController::UpdateGame()
 {
+	if (player1Points.GetPuntuation() > highScorePoints.GetPuntuation() || player2Points.GetPuntuation() > highScorePoints.GetPuntuation())
+	{
+		if (player1Points.GetPuntuation() > player2Points.GetPuntuation()) {
+			highScorePoints.SetPuntutation(player1Points.GetPuntuation());
+		}else
+			highScorePoints.SetPuntutation(player2Points.GetPuntuation());
+	}
 
 	if (IsKeyPressed(KEY_F3)) {
 		player1.HitPlayer_GOD_MODE(player1.GetLifes() + 1);

@@ -10,6 +10,11 @@ PointsUI::PointsUI(PuntuationHolder* points, TilemapController* UI)
 void PointsUI::Update()
 {
     /// ToDO --> newClass
+    for (int i = UI->GetDimensions().x - 1; i >= 0; i--)
+    {
+        UI->ModifyTile(i, 363);
+
+    }
     int playerPoints = points->GetPuntuation();
     if (playerPoints < 10) {
         int numTile = FromNumberToTile(0);
