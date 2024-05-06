@@ -82,12 +82,12 @@ void ZenChan::Update()
 		speed.y = climbSpeed;
 	}
 	else {
-		speed.x = walkSpeed;
+		speed.x = isAngry ? walkAngrySpeed : walkSpeed;
 		speed.y = gravity;
 	}
 
-	position.x += direction.x * walkSpeed * deltaTime;
-	position.y += direction.y * climbSpeed * deltaTime;
+	position.x += direction.x * speed.x * deltaTime;
+	position.y += direction.y * speed.y * deltaTime;
 
 }
 
@@ -96,7 +96,12 @@ void ZenChan::Render()
 	renderer.UpdateAnimation();
 
 	if (direction.x == 0 && direction.y==0) {
-		renderer.PlayAniamtion("ZenChanIdle");
+		if (isAngry) {
+			renderer.PlayAniamtion("ZenChanIdleAngry");
+		}
+		else {
+			renderer.PlayAniamtion("ZenChanIdle");
+		}
 	}
 	else {
 		if (isAngry) {

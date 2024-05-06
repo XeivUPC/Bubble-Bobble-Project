@@ -68,6 +68,13 @@ private:
 	Color logoColors[6]{ Color{255,248,65,255}, Color{241,181,0,255}, Color{255,136,45,255}, Color{255,126,88,255}, Color{255,116,122,255}, Color{221,43,50,255} };
 	float logoColorIndex = 0;
 
+	Entity hurryModeSprite;
+	AnimationRenderer hurryModeRenderer;
+	float hurryModeYTilePosition = 15 * TILE_SIZE;
+	float hurryModeMoveSpeed = 18*TILE_SIZE;
+	float hurryModeTimer = 0;
+	bool isHurryOnMode = false;
+
 	TilemapController topUI = TilemapController("../Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
 	TilemapController initialScreen = TilemapController("../Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
@@ -105,11 +112,12 @@ private:
 
 	#define MAX_COINS 9
 
-
-
 	////Cover
 	#define COVER_SCREEN_TIME 3
 
 	/// Game
 	#define START_GAME_DELAY 1.5f
+	#define HURRY_MODE_TIME_HOLD 2
+	#define HURRY_MODE_TIME_WAIT 5
+
 };

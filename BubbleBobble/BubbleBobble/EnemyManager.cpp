@@ -39,6 +39,18 @@ Entity* EnemyManager::GetTarget(int index)
 {
 	return targets[index];
 }
+void EnemyManager::SetAngry(bool status)
+{
+	for (size_t i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->isAngry=status;
+	}
+	angryModeStatus = status;
+}
+bool EnemyManager::IsAngryMode()
+{
+	return angryModeStatus;
+}
 int EnemyManager::GetTargetsAmount()
 {
 	return targets.size();

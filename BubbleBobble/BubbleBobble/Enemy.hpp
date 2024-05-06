@@ -17,10 +17,10 @@ public:
 	void virtual Brain();
 	void virtual SearchTargetTile();
 	void virtual CheckCollisions();
+	bool isAngry = false;
 protected:
 	void virtual DrawDebug();
 	AnimationRenderer renderer;
-	bool isAngry = false;
 
 	float walkSpeed;
 	float walkAngrySpeed;

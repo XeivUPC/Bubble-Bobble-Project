@@ -28,6 +28,8 @@ public:
 
     void AddTarget(Entity* entity);
     Entity* GetTarget(int index);
+    void SetAngry(bool status);
+    bool IsAngryMode();
     int GetTargetsAmount();
     void DestroyAll();
     void Reset() override;
@@ -36,6 +38,7 @@ public:
     std::vector<Enemy*> enemies;
 
 private:
+    bool angryModeStatus = false;
 	EnemyManager();
 	~EnemyManager();
 

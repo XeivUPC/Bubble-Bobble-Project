@@ -44,7 +44,14 @@ GameController::GameController()
 	highScorePointsMap.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	
 
-	ChangeState(0);
+	Animation animHUrryMode = { TextureManager::Instance().GetTexture("TextUITransparent") ,0.2f };
+	animHUrryMode.frames.push_back({ 2 * TILE_REAL_SIZE , 6 * TILE_REAL_SIZE , TILE_REAL_SIZE *7, TILE_REAL_SIZE  });
+	animHUrryMode.frames.push_back({2 * TILE_REAL_SIZE , 7 * TILE_REAL_SIZE , TILE_REAL_SIZE *7, TILE_REAL_SIZE });
+	hurryModeRenderer.AddAnimation("HurryMode",animHUrryMode);
+	hurryModeRenderer.PlayAniamtion("HurryMode");
+
+
+	ChangeState(5);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -242,6 +249,7 @@ void GameController::UpdateUI()
 
 void GameController::UpdateGame()
 {
+
 	if (player1Points.GetPuntuation() > highScorePoints.GetPuntuation() || player2Points.GetPuntuation() > highScorePoints.GetPuntuation())
 	{
 		if (player1Points.GetPuntuation() > player2Points.GetPuntuation()) {
@@ -294,23 +302,45 @@ void GameController::UpdateGame()
 	else
 		newRoundUI.isActive = false;
 
+	
+	hurryModeTimer += deltaTime;
+	if (!isHurryOnMode) {
+		if (hurryModeTimer > HURRY_MODE_TIME_WAIT) {
+			isHurryOnMode = true;
+			hurryModeSprite.position.y = GAME_TILE_HEIGHT * TILE_SIZE;
+			hurryModeTimer = 0;
+		}
+	}
+	else {
+		if (hurryModeTimer < HURRY_MODE_TIME_HOLD) {
+			if (hurryModeSprite.position.y <= hurryModeYTilePosition) {
+				hurryModeSprite.position.y = hurryModeYTilePosition;
+			}
+			hurryModeSprite.position.y -= hurryModeMoveSpeed * deltaTime;
+			return;
+		}else{
+			if (!EnemyManager::Instance().IsAngryMode())
+				EnemyManager::Instance().SetAngry(true);
+		}
+	}
+	
 	BubbleManager::Instance().Update();
 	EnemyManager::Instance().Update();
 	ObjectsManager::Instance().Update();
-	if(player1.isActive)
+	if (player1.isActive)
 		player1.Update();
 	if (player2.isActive)
 		player2.Update();
 
-	
-	
-
 	if (IsKeyPressed(KEY_ENTER)) {
+
 		LevelManager::Instance().StartTransition();
 		EnemyManager::Instance().DestroyAll();
 		ObjectsManager::Instance().DestroyAll();
 		BubbleManager::Instance().DisableAll();
-		
+		isHurryOnMode = false;
+		EnemyManager::Instance().SetAngry(false);
+		hurryModeTimer = 0;
 		
 	}
 
@@ -385,6 +415,12 @@ void GameController::RenderGameLate()
 			player2.Debug();
 		if (player1.isActive)
 			player1.Debug();
+	}
+
+	if (isHurryOnMode && hurryModeTimer < HURRY_MODE_TIME_HOLD) {
+		hurryModeSprite.position = { 14 * TILE_SIZE,hurryModeSprite.position.y };
+		hurryModeRenderer.UpdateAnimation();
+		hurryModeRenderer.Draw(hurryModeSprite.position.x - TILE_SIZE, hurryModeSprite.position.y - TILE_SIZE , 0, WHITE);
 	}
 }
 

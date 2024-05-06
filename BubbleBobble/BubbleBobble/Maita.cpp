@@ -36,10 +36,10 @@ Maita::Maita(Vector2 tilePos, int lookAt)
 	idleAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	idleAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
-	renderer.AddAnimation("ZenChanWalk", walkAnim);
-	renderer.AddAnimation("ZenChanIdle", idleAnim);
-	renderer.AddAnimation("ZenChanWalkAngry", walkAngryAnim);
-	renderer.AddAnimation("ZenChanIdleAngry", idleAngryAnim);
+	renderer.AddAnimation("MaitaWalk", walkAnim);
+	renderer.AddAnimation("MaitaIdle", idleAnim);
+	renderer.AddAnimation("MaitaWalkAngry", walkAngryAnim);
+	renderer.AddAnimation("MaitaIdleAngry", idleAngryAnim);
 }
 
 Maita::~Maita()
@@ -75,12 +75,12 @@ void Maita::Update()
 		speed.y = climbSpeed;
 	}
 	else {
-		speed.x = walkSpeed;
+		speed.x = isAngry ? walkAngrySpeed : walkSpeed;
 		speed.y = gravity;
 	}
 
-	position.x += direction.x * walkSpeed * deltaTime;
-	position.y += direction.y * climbSpeed * deltaTime;
+	position.x += direction.x * speed.x * deltaTime;
+	position.y += direction.y * speed.y * deltaTime;
 
 }
 
@@ -89,14 +89,21 @@ void Maita::Render()
 	renderer.UpdateAnimation();
 
 	if (direction.x == 0 && direction.y==0) {
-		renderer.PlayAniamtion("ZenChanIdle");
+		if (isAngry) {
+			renderer.PlayAniamtion("MaitaWalkAngry");
+		}
+		else
+		{
+			renderer.PlayAniamtion("MaitaIdle");
+		}
+		
 	}
 	else {
 		if (isAngry) {
-			renderer.PlayAniamtion("ZenChanWalkAngry");
+			renderer.PlayAniamtion("MaitaWalkAngry");
 		}
 		else {
-			renderer.PlayAniamtion("ZenChanWalk");
+			renderer.PlayAniamtion("MaitaWalk");
 		}
 	}
 	
