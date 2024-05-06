@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.hpp"
-#include "Renderer.hpp"
+#include "AnimationRenderer.hpp"
 #include "PuntuationHolder.hpp"
 #include "TilemapConfiguration.h"
 
@@ -48,7 +48,7 @@ public:
 	
 	void Update() override;
 	void Render() override;
-	void RenderDebug() override;
+	void Debug() override;
 	void SetState(int index);
 	void TpToSpawnPoint();
 	bool MoveToSpawnPoint();
@@ -84,7 +84,7 @@ private:
 
 	Vector2 spawnPoint = { 3,27 };
 	Vector2 startPoint = { 3,27 };
-	Renderer renderer;
+	AnimationRenderer renderer;
 	Keys controlScheme;
 
 	float shootTimer = PLAYER_SHOOT_INTERVAL;

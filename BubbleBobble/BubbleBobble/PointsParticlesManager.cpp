@@ -20,12 +20,12 @@ void PointsParticlesManager::Render()
 	}
 }
 
-void PointsParticlesManager::RenderDebug()
+void PointsParticlesManager::Debug()
 {
 	for (size_t i = 0; i < MAX_POINTS_PARTICLES_POOL; i++)
 	{
 		if (pointsParticlesPool[i].isActive)
-			pointsParticlesPool[i].RenderDebug();
+			pointsParticlesPool[i].Debug();
 	}
 }
 

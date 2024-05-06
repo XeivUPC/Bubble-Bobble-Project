@@ -1,9 +1,8 @@
 #pragma once
-#include "Entity.hpp"
 #include <unordered_map>
 #include "raylib.h"
 
-class TextureManager : public Entity
+class TextureManager
 {
 public:
     static TextureManager& Instance()

@@ -27,7 +27,7 @@ void Fruit::Render()
 	renderer.Paint(*TextureManager::Instance().GetTexture("ItemsSpriteSheet"), Vector2{position.x-TILE_SIZE,position.y-TILE_SIZE *2}, Vector2{ tileIndex.x,tileIndex.y }, { TILE_SIZE * 2,TILE_SIZE * 2 }, 0);
 }
 
-void Fruit::RenderDebug()
+void Fruit::Debug()
 {
 	DrawRectangle(position.x - TILE_SIZE * 0.8, position.y - TILE_SIZE * 1.7, TILE_SIZE * 0.8 * 2, TILE_SIZE * 0.8 * 2, { 255,255,255,100 });
 	DrawCircle(position.x, position.y, 3, BLUE);

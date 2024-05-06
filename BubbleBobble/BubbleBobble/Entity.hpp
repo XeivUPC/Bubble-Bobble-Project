@@ -1,14 +1,20 @@
 #pragma once
 #include "raylib.h"
 
-class Entity
+#include "IRendereable.h"
+#include "IUpdateable.h"
+#include "IReseteable.h"
+#include "IDebugeable.h"
+
+#include "IActivable.h"
+#include "ITimeable.h"
+class Entity : public IRendereable, public IUpdateable, public IDebugeable, public IReseteable, public IActivable, public ITimeable
 {
 public:
-
-	virtual void Update();
-	virtual void Render();
-	virtual void RenderDebug();
-	virtual void Reset();
+	void Update() override {};
+	void Render() override {};
+	void Debug() override {};
+	void Reset() override {};
 
 	Vector2 position = { 0,0 };
 	Vector2 direction = { 0,0 };
@@ -16,5 +22,5 @@ public:
 	bool isActive = true;
 
 protected:
-	float internalTimer = 0;
+
 };

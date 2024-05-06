@@ -52,11 +52,11 @@ void LevelManager::Render() {
 		nextLevel->Render();
 }
 
-void LevelManager::RenderDebug()
+void LevelManager::Debug()
 {
-	actualLevel->RenderDebug();
+	actualLevel->Debug();
 	if (isOnTransition)
-		nextLevel->RenderDebug();
+		nextLevel->Debug();
 }
 
 void LevelManager::Reset()
@@ -81,7 +81,7 @@ Level* LevelManager::GetNextLoadedLevel()
 }
 
 
-TextureRenderer* LevelManager::GetRenderer()
+Renderer* LevelManager::GetRenderer()
 {
 	return &renderer;
 }

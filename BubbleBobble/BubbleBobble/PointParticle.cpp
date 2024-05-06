@@ -20,7 +20,7 @@ void PointParticle::Render()
 
 }
 
-void PointParticle::RenderDebug()
+void PointParticle::Debug()
 {
 
 }

@@ -603,7 +603,7 @@ void Player::SetState(int index)
 	}
 }
 
-void Player::RenderDebug() {
+void Player::Debug() {
 	DrawCircle(position.x, position.y, 4, BLUE);
 
 

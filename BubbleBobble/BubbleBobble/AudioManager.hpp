@@ -1,9 +1,9 @@
 #pragma once
-#include "Entity.hpp"
 #include <unordered_map>
 #include "raylib.h"
 
-class AudioManager : public Entity
+#include "IUpdateable.h"
+class AudioManager : public IUpdateable
 {
 public:
     static AudioManager& Instance()

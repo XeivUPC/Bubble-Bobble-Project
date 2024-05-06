@@ -1,12 +1,18 @@
 #pragma once
 #include "Level.hpp"
-#include "TextureRenderer.hpp"
+#include "Renderer.hpp"
 #include "TilemapConfiguration.h"
 #include <string>
 
 using namespace std;
 #define MAX_LEVELS  8
-class LevelManager : public Entity
+
+
+#include "IRendereable.h"
+#include "IUpdateable.h"
+#include "IReseteable.h"
+#include "IDebugeable.h"
+class LevelManager : public IRendereable, public IUpdateable, public IDebugeable, public IReseteable
 { 
 public:
     static LevelManager& Instance()
@@ -16,7 +22,7 @@ public:
     }
     void Update() override;
     void Render() override;
-    void RenderDebug() override;
+    void Debug() override;
     void Reset() override;
     void StartTransition();
     void LoadNewWaitingLevel(int loadedLevelIndex);
@@ -24,7 +30,7 @@ public:
     bool IsOnTransition();
     Level* GetActiveLevel();
     Level* GetNextLoadedLevel();
-    TextureRenderer* GetRenderer();
+    Renderer* GetRenderer();
     int GetActualLevelIndex();
 
 private:
@@ -40,7 +46,7 @@ private:
     Level* actualLevel = nullptr;
     Level* nextLevel = nullptr;
 
-    TextureRenderer renderer = TextureRenderer(Vector2{ TILE_REAL_SIZE,TILE_REAL_SIZE }, Vector2{ 0.f, 0.f }, Vector2{ 0.f, 0.f });
+    Renderer renderer = Renderer(Vector2{ TILE_REAL_SIZE,TILE_REAL_SIZE }, Vector2{ 0.f, 0.f }, Vector2{ 0.f, 0.f });
     
     int nextLevelIndex = 2;
     bool isOnTransition = false;

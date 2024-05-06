@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.hpp"
 #include "Player.hpp"
-#include "Renderer.hpp"
+#include "AnimationRenderer.hpp"
 #include "TilemapConfiguration.h"
 #define RETARGET_TIME 4
 
@@ -12,14 +12,14 @@ public:
 	~Enemy();
 	void Update() override;
 	void Render() override;
-	void RenderDebug() override;
+	void Debug() override;
 	void Reset() override;
 	void virtual Brain();
 	void virtual SearchTargetTile();
 	void virtual CheckCollisions();
 protected:
 	void virtual DrawDebug();
-	Renderer renderer;
+	AnimationRenderer renderer;
 	bool isAngry = false;
 
 	float walkSpeed;

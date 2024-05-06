@@ -3,7 +3,13 @@
 #include "Fruit.hpp"
 #include <vector>
 
-class ObjectsManager : public Entity
+
+#include "IRendereable.h"
+#include "IUpdateable.h"
+#include "IReseteable.h"
+#include "IDebugeable.h"
+
+class ObjectsManager : public IRendereable, public IUpdateable, public IDebugeable, public IReseteable
 {
 public:
     static ObjectsManager& Instance()
@@ -13,7 +19,7 @@ public:
     }
     void Update() override;
     void Render() override;
-    void RenderDebug() override;
+    void Debug() override;
     void Reset() override;
     void RemoveObject(Object* object);
     void DestroyAll();

@@ -16,11 +16,11 @@ void EnemyManager::Render()
 		enemies[i]->Render();
 	}
 }
-void EnemyManager::RenderDebug()
+void EnemyManager::Debug()
 {
 	for (size_t i = 0; i < enemies.size(); i++)
 	{
-		enemies[i]->RenderDebug();
+		enemies[i]->Debug();
 	}
 }
 void EnemyManager::SpawnZenChan(Vector2 tilePos, int direction)

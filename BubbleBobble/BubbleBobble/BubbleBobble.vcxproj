@@ -149,6 +149,12 @@
     <ClInclude Include="Fruit.hpp" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameController.hpp" />
+    <ClInclude Include="IActivable.h" />
+    <ClInclude Include="IDebugeable.h" />
+    <ClInclude Include="IRendereable.h" />
+    <ClInclude Include="IReseteable.h" />
+    <ClInclude Include="ITimeable.h" />
+    <ClInclude Include="IUpdateable.h" />
     <ClInclude Include="Level.hpp" />
     <ClInclude Include="LevelManager.hpp" />
     <ClInclude Include="Maita.hpp" />
@@ -160,9 +166,9 @@
     <ClInclude Include="PointsParticlesManager.hpp" />
     <ClInclude Include="PointsUI.hpp" />
     <ClInclude Include="PuntuationHolder.hpp" />
-    <ClInclude Include="Renderer.hpp" />
+    <ClInclude Include="AnimationRenderer.hpp" />
     <ClInclude Include="TextureManager.hpp" />
-    <ClInclude Include="TextureRenderer.hpp" />
+    <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="TilemapConfiguration.h" />
     <ClInclude Include="libraries\raylib\include\raylib.h" />
     <ClInclude Include="libraries\raylib\include\raymath.h" />
@@ -176,7 +182,6 @@
     <ClCompile Include="BubbleManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -190,9 +195,9 @@
     <ClCompile Include="PointsParticlesManager.cpp" />
     <ClCompile Include="PointsUI.cpp" />
     <ClCompile Include="PuntuationHolder.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="AnimationRenderer.cpp" />
     <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="TextureRenderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TilemapController.cpp" />
     <ClCompile Include="ZenChan.cpp" />
   </ItemGroup>

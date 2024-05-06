@@ -65,7 +65,7 @@ void Level::Render()
 	}
 }
 
-void Level::RenderDebug()
+void Level::Debug()
 {
 	for (int y = 0; y < GAME_TILE_HEIGHT; y++)
 	{

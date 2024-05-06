@@ -25,10 +25,10 @@
     <ClInclude Include="GameController.hpp">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.hpp">
+    <ClInclude Include="AnimationRenderer.hpp">
       <Filter>Scripts\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="TextureRenderer.hpp">
+    <ClInclude Include="Renderer.hpp">
       <Filter>Scripts\Basic</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.hpp">
@@ -88,6 +88,24 @@
     <ClInclude Include="PointParticle.hpp">
       <Filter>Scripts\Managers\PointsParticles</Filter>
     </ClInclude>
+    <ClInclude Include="IUpdateable.h">
+      <Filter>Scripts\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IRendereable.h">
+      <Filter>Scripts\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IDebugeable.h">
+      <Filter>Scripts\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IReseteable.h">
+      <Filter>Scripts\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IActivable.h">
+      <Filter>Scripts\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ITimeable.h">
+      <Filter>Scripts\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -123,21 +141,21 @@
     <Filter Include="Scripts\Managers\PointsParticles">
       <UniqueIdentifier>{8c025b03-3bbf-4d48-8744-e276f4c8f72c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Interfaces">
+      <UniqueIdentifier>{a933acce-fac7-49b2-9df0-2bb760634284}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Scripts\Basic</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Scripts\Basic</Filter>
     </ClCompile>
     <ClCompile Include="GameController.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="AnimationRenderer.cpp">
       <Filter>Scripts\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="TextureRenderer.cpp">
+    <ClCompile Include="Renderer.cpp">
       <Filter>Scripts\Basic</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">

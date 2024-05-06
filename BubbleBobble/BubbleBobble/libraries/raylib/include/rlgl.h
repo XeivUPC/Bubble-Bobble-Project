@@ -1010,7 +1010,7 @@ typedef struct rlglData {
         int framebufferWidth;               // Current framebuffer width
         int framebufferHeight;              // Current framebuffer height
 
-    } State;            // Renderer state
+    } State;            // AnimationRenderer state
     struct {
         bool vao;                           // VAO support (OpenGL ES2 could not support VAO extension) (GL_ARB_vertex_array_object)
         bool instancing;                    // Instancing supported (GL_ANGLE_instanced_arrays, GL_EXT_draw_instanced + GL_EXT_instanced_arrays)
@@ -2397,7 +2397,7 @@ void rlLoadExtensions(void *loader)
     // Show current OpenGL and GLSL version
     TRACELOG(RL_LOG_INFO, "GL: OpenGL device information:");
     TRACELOG(RL_LOG_INFO, "    > Vendor:   %s", glGetString(GL_VENDOR));
-    TRACELOG(RL_LOG_INFO, "    > Renderer: %s", glGetString(GL_RENDERER));
+    TRACELOG(RL_LOG_INFO, "    > AnimationRenderer: %s", glGetString(GL_RENDERER));
     TRACELOG(RL_LOG_INFO, "    > Version:  %s", glGetString(GL_VERSION));
     TRACELOG(RL_LOG_INFO, "    > GLSL:     %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 

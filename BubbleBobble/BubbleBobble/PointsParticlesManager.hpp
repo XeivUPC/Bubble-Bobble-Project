@@ -12,7 +12,7 @@ public:
     }
     void Update() override;
     void Render() override;
-    void RenderDebug() override;
+    void Debug() override;
     void DisableAll();
     PointParticle* GetPointParticle();
 private:

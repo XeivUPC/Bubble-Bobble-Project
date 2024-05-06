@@ -299,7 +299,7 @@ void ZenChan::Reset()
 
 }
 
-void ZenChan::RenderDebug()
+void ZenChan::Debug()
 {
 	DrawCircle(position.x , position.y - (4.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
 	DrawCircle(position.x , position.y - (3.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug

@@ -208,7 +208,7 @@ void GameController::UpdateUI()
 			if(i< player1.GetLifes() && player1.isActive && player1.GetLifes()>=0)
 				lifesHUD.ModifyTile(Vector2{(float)i,0}, 385);
 			else {
-				lifesHUD.ModifyTile(Vector2{ (float)i,0 }, 387);
+				lifesHUD.ModifyTile(Vector2{ (float)i,0 }, 400);
 			}
 		}
 		for (int i = player2.GetLifes()-1; i >=0 ; i--)
@@ -345,25 +345,28 @@ void GameController::RenderGameEarly()
 	EnemyManager::Instance().Render();
 	PointsParticlesManager::Instance().Render();
 	if (DebugMode) {
-		LevelManager::Instance().RenderDebug();
-		ObjectsManager::Instance().RenderDebug();
-		BubbleManager::Instance().RenderDebug();
-		EnemyManager::Instance().RenderDebug();
-		PointsParticlesManager::Instance().RenderDebug();
+		LevelManager::Instance().Debug();
+		ObjectsManager::Instance().Debug();
+		BubbleManager::Instance().Debug();
+		EnemyManager::Instance().Debug();
+		PointsParticlesManager::Instance().Debug();
 	}
 }
 
 void GameController::RenderUILate()
 {
 	topUI.Render();
-	newRoundUI.Render();
+	
 	if (topUI.isActive) {
 		player1PointsMap.Render();
 		player2PointsMap.Render();
 		highScorePointsMap.Render();
 	}
-	if (state == GameScreen)
+	if (state == GameScreen) {
+		newRoundUI.Render();
 		lifesHUD.Render();
+	}
+
 	if (state == LoadingGameScreen) {
 		player1.Render();
 		player2.Render();
@@ -379,9 +382,9 @@ void GameController::RenderGameLate()
 
 	if (DebugMode) {
 		if (player2.isActive)
-			player2.RenderDebug();
+			player2.Debug();
 		if (player1.isActive)
-			player1.RenderDebug();
+			player1.Debug();
 	}
 }
 

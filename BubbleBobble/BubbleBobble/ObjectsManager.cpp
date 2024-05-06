@@ -27,11 +27,11 @@ void ObjectsManager::Render()
 	}
 }
 
-void ObjectsManager::RenderDebug()
+void ObjectsManager::Debug()
 {
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->RenderDebug();
+		objects[i]->Debug();
 	}
 }
 

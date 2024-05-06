@@ -16,7 +16,7 @@ void Object::Render()
 {
 }
 
-void Object::RenderDebug()
+void Object::Debug()
 {
 }
 

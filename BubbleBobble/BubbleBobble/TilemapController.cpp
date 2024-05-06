@@ -92,7 +92,7 @@ int TilemapController::GetTile(Vector2 position)
 	return tilemap[(int)(dimensions.x * position.y + position.x)];
 }
 
-TextureRenderer& TilemapController::ModifyRenderer()
+Renderer& TilemapController::ModifyRenderer()
 {
 	return renderer;
 }

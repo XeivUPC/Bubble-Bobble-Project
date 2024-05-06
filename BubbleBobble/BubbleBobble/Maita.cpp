@@ -299,7 +299,7 @@ void Maita::Reset()
 	internalTimer = MAITA_IA_RECALCULATION_TIME;
 }
 
-void Maita::RenderDebug()
+void Maita::Debug()
 {
 	DrawCircle(position.x , position.y - (4.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
 	DrawCircle(position.x , position.y - (3.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug

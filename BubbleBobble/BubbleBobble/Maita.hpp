@@ -10,7 +10,7 @@ public:
 	~Maita();
 	void Update() override;
 	void Render() override;
-	void RenderDebug() override;
+	void Debug() override;
 	void Brain() override;
 	void CheckCollisions() override;
 	void Reset() override;

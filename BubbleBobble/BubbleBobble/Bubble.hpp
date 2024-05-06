@@ -2,7 +2,7 @@
 #include "Entity.hpp"
 #include "TilemapConfiguration.h"
 #include "GameConfiguration.h"
-#include "Renderer.hpp"
+#include "AnimationRenderer.hpp"
 
 
 #define LIFE_TIME 16
@@ -20,7 +20,7 @@ public:
 	~Bubble();
 	void Update() override;
 	void Render() override;
-	void RenderDebug() override;
+	void Debug() override;
 	bool IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX);
 	void SetPlayerPosession(bool isPlayer1);
 private:
@@ -40,5 +40,5 @@ private:
 protected:
 	//// Collisions Info
 	Vector2 directionOffset = { 0,0 };
-	Renderer renderer;
+	AnimationRenderer renderer;
 };

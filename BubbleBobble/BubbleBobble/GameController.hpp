@@ -10,7 +10,10 @@
 
 #define MAX_COINS  9
 
-class GameController : public Entity
+#include "IRendereable.h"
+#include "IUpdateable.h"
+#include "ITimeable.h"
+class GameController : public IRendereable, public IUpdateable, public ITimeable
 {
 public:
 	enum GameState

@@ -33,12 +33,12 @@ void BubbleManager::Render()
 	}
 }
 
-void BubbleManager::RenderDebug()
+void BubbleManager::Debug()
 {
 	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)
 	{
 		if (bubblesPool[i].isActive)
-			bubblesPool[i].RenderDebug();
+			bubblesPool[i].Debug();
 	}
 }
 

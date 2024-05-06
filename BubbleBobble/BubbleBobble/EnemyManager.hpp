@@ -3,7 +3,14 @@
 #include "ZenChan.hpp"
 #include "Maita.hpp"
 #include <vector>
-class EnemyManager : public Entity
+
+
+
+#include "IRendereable.h"
+#include "IUpdateable.h"
+#include "IReseteable.h"
+#include "IDebugeable.h"
+class EnemyManager : public IRendereable, public IUpdateable, public IDebugeable, public IReseteable
 {
     friend class Enemy;
 public:
@@ -15,7 +22,7 @@ public:
 
     void Update() override;
     void Render() override;
-    void RenderDebug() override;
+    void Debug() override;
     void SpawnZenChan(Vector2 tilePos,int direction);
     void SpawnMaita(Vector2 tilePos, int direction);
 

@@ -1,9 +1,11 @@
 #pragma once
 #include "raylib.h"
-#include "TextureRenderer.hpp"
+#include "Renderer.hpp"
 #include "Entity.hpp"
 
-class TilemapController : public Entity
+#include "IRendereable.h"
+#include "IActivable.h"
+class TilemapController : public IRendereable, public IActivable
 {
 public:
 
@@ -18,7 +20,7 @@ public:
 	int GetTile(int index);
 	int GetTile(int x, int y);
 	int GetTile(Vector2 position);
-	TextureRenderer& ModifyRenderer();
+	Renderer& ModifyRenderer();
 	void SetTexture(Texture* texture);
 	Vector2 GetDimensions();
 	void Render() override;
@@ -29,6 +31,6 @@ private:
 	int* tilemap;
 	Vector2 dimensions{ 0,0};
 	Texture texture;
-	TextureRenderer renderer = TextureRenderer(Vector2{ 8.f,8.f }, Vector2{ 0.f, 0.f }, Vector2{ 0.f, 0.f });
+	Renderer renderer = Renderer(Vector2{ 8.f,8.f }, Vector2{ 0.f, 0.f }, Vector2{ 0.f, 0.f });
 };
 

@@ -1,43 +1,38 @@
 #pragma once
 #include <raylib.h>
-#include <vector>
-#include <unordered_map>
-#include "TextureRenderer.hpp"
-
-struct Animation {
-	Texture2D* texture;
-	float delay;
-	std::vector<Rectangle> frames;
-};
-
-class Renderer : public TextureRenderer
+class Renderer
 {
 public:
 	Renderer();
+	Renderer(Vector2 tileSize, Vector2 origin, Vector2 displacement);
 	~Renderer();
-
-	///Anim
-	void AddAnimation(const char* animID, Animation animationData);
-	void PlayAniamtion(const char* animID);
-	void PlayAniamtionForce(const char* animID);
-	void UpdateAnimation();
-	void Draw(float x, float y, int rotation, Color color);
-	
-	///Single
-
-
-	/// Getters
-
+	void Paint(Texture2D texture, Vector2 position, Vector2 textureOffset, Vector2 screenSize, float rotation);
+	void Paint(Texture2D texture, Vector2 position, Vector2 textureOffset, Vector2 screenSize, float rotation, Color color);
+	void ChangeColor(Color color);
+	void ChangeOrigin(Vector2 origin);
+	void ChangeDisplacement(Vector2 displacement);
+	void ChangeTileSize(Vector2 tileSize);
+	void FlipX();
+	void FlipY();
+	void FlipX(bool flip);
+	void FlipY(bool flip);
+	bool IsFlippedX();
+	bool IsFlippedY();
+	int GetFlippedXValue();
+	int GetFlippedYValue();
+	bool isActive = true;
 private:
-	bool IsAnimationLoaded(const char* animID);
+	Vector2 tileSize;
+	Color color = WHITE;
+
 	
-	/// Variables
-	std::unordered_map<const char*,Animation> animations;
-
-	const char* currentAnim;
-	int currentFrame;
-	float currentDelay;
+	Vector2 origin = { 0,0 };
+protected:
+	Vector2 displacement = { 0,0 };
+	Rectangle sourceRec = {};
+	Rectangle destRec = {};
+	int flippedValueX = 1;
+	int flippedValueY = 1;
+	
 };
-
-
 

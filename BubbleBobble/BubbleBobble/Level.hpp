@@ -11,7 +11,7 @@ public:
 	~Level();
 
 	void Render() override;
-	void RenderDebug() override;
+	void Debug() override;
 	void LoadEnemies();
 	string GetEnemiesData();
 

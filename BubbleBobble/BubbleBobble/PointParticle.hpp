@@ -7,7 +7,7 @@ public:
     ~PointParticle();
     void Update() override;
     void Render() override;
-    void RenderDebug() override;
+    void Debug() override;
     void SetPointsValue(int value);
 private:
     int pointsValue;

@@ -183,7 +183,7 @@ void Bubble::Render()
 	
 }
 
-void Bubble::RenderDebug() {
+void Bubble::Debug() {
 	DrawRectangleLines(position.x - TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2, GREEN);
 
 	DrawCircleLines(position.x , position.y , TILE_SIZE/2.5f, RED);

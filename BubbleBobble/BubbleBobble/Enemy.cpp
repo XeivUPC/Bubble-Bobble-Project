@@ -16,7 +16,7 @@ void Enemy::Update()
 void Enemy::Render()
 {
 }
-void Enemy::RenderDebug()
+void Enemy::Debug()
 {
 }
 

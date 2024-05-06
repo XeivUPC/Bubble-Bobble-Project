@@ -3,7 +3,13 @@
 #include "Entity.hpp"
 #include "Bubble.hpp"
 #define MAX_BUBBLES_POOL  100
-class BubbleManager : public Entity
+
+
+
+#include "IRendereable.h"
+#include "IUpdateable.h"
+#include "IDebugeable.h"
+class BubbleManager : public IRendereable, public IUpdateable, public IDebugeable
 {
 
 public:
@@ -15,7 +21,7 @@ public:
     }
     void Update() override;
     void Render() override;
-    void RenderDebug() override;
+    void Debug() override;
     void DisableAll();
     Bubble* GetBubble();
     Bubble* GetBubbleByIndex(int index);
