@@ -5,9 +5,9 @@
 #include "TilemapConfiguration.h"
 #include "GameConfiguration.h"
 #include "AudioManager.hpp"
-#include "MemLeaks.h"
 #include "GameController.hpp"
 
+#include "MemLeaks.h"
 int main() {
     ReportMemoryLeaks();
 

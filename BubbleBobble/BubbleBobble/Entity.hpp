@@ -11,6 +11,8 @@
 class Entity : public IRendereable, public IUpdateable, public IDebugeable, public IReseteable, public IActivable, public ITimeable
 {
 public:
+	Entity() {};
+	~Entity() {};
 	void Update() override {};
 	void Render() override {};
 	void Debug() override {};

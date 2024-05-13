@@ -6,21 +6,24 @@ void EnemyManager::Update()
 {
 	for (size_t i = 0; i < enemies.size(); i++)
 	{
-		enemies[i]->Update();
+		if (enemies[i]->isActive)
+			enemies[i]->Update();
 	}
 }
 void EnemyManager::Render()
 {
 	for (size_t i = 0; i < enemies.size(); i++)
 	{
-		enemies[i]->Render();
+		if (enemies[i]->isActive)
+			enemies[i]->Render();
 	}
 }
 void EnemyManager::Debug()
 {
 	for (size_t i = 0; i < enemies.size(); i++)
 	{
-		enemies[i]->Debug();
+		if (enemies[i]->isActive)
+			enemies[i]->Debug();
 	}
 }
 void EnemyManager::SpawnZenChan(Vector2 tilePos, int direction)
@@ -68,6 +71,23 @@ void EnemyManager::Reset()
 	for (size_t i = 0; i < enemies.size(); i++)
 	{
 		enemies[i]->Reset();
+	}
+}
+int EnemyManager::EnemiesAlive()
+{
+	int amount = 0;
+	for (size_t i = 0; i < enemies.size(); i++)
+	{
+		if (enemies[i]->isActive)
+			amount++;
+	}
+	return amount;
+}
+void EnemyManager::KillAllEnemies()
+{
+	for (size_t i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->isActive = false;
 	}
 }
 EnemyManager::EnemyManager()

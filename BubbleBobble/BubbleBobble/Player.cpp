@@ -76,11 +76,6 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 	deadAnim.frames.push_back({ 6 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	deadAnim.frames.push_back({ 7 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
-	Animation popAnim = { TextureManager::Instance().GetTexture(textureName) ,0.166f };
-	popAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
-	popAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
-	popAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
-
 	Animation bubbleStart = { TextureManager::Instance().GetTexture(textureName) ,0.1f };
 	bubbleStart.frames.push_back({ 0 * TILE_REAL_SIZE * 4, 4 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
 	bubbleStart.frames.push_back({ 1 * TILE_REAL_SIZE * 4, 4 * TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4, TILE_REAL_SIZE * 4 });
@@ -110,7 +105,6 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 
 	renderer.AddAnimation("PlayerDie", dieAnim);
 	renderer.AddAnimation("PlayerDead", deadAnim);
-	renderer.AddAnimation("PlayerPop", popAnim);
 	renderer.AddAnimation("PlayerBubbleStart", bubbleStart);
 	renderer.AddAnimation("PlayerBubbleHold", bubbleHold);
 	renderer.AddAnimation("PlayerBubblePop", bubblePop);
@@ -527,8 +521,8 @@ void Player::Render()
 	else if (state == Dead) {
 		renderer.PlayAniamtion("PlayerDead");
 	}
-	else if (state == Dead) {
-		renderer.PlayAniamtion("PlayerPop");
+	else if (state == Pop) {
+		return;
 	}
 	else if (state == Normal || state == Inmortal) {
 		if (isShooting)
@@ -577,9 +571,16 @@ void Player::SetState(int index)
 		break;
 	case Dead:
 		deadRelatedTimer = 0;
+		Vector2 confusePos = position;
+		confusePos.y -= TILE_SIZE*2;
+		ParticleManager::Instance().AddParticle(new PlayerConfuseParticle(confusePos));
 		break;
 	case Pop:
 		deadRelatedTimer = 0;
+		ParticleManager::Instance().AddParticle(new PlayerDeadParticle(position));
+
+		renderer.FlipX(this->player1);
+
 		break;
 	case Inmortal:
 		inmortalTimer = 0;

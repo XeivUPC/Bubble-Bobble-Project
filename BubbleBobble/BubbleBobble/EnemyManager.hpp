@@ -33,7 +33,8 @@ public:
     int GetTargetsAmount();
     void DestroyAll();
     void Reset() override;
-
+    int EnemiesAlive();
+    void KillAllEnemies();
 
     std::vector<Enemy*> enemies;
 

@@ -106,6 +106,21 @@
     <ClInclude Include="ITimeable.h">
       <Filter>Scripts\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleManager.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleExplodeParticle.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerConfuseParticle.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDeadParticle.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -143,6 +158,9 @@
     </Filter>
     <Filter Include="Scripts\Interfaces">
       <UniqueIdentifier>{a933acce-fac7-49b2-9df0-2bb760634284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Managers\Particles">
+      <UniqueIdentifier>{4fb7bdd1-be78-49db-a70b-dde4570be0d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +232,21 @@
     </ClCompile>
     <ClCompile Include="PointParticle.cpp">
       <Filter>Scripts\Managers\PointsParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="BubbleExplodeParticle.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerConfuseParticle.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDeadParticle.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

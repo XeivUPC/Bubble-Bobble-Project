@@ -13,6 +13,7 @@ public:
 	void Debug() override;
 	void Brain() override;
 	void CheckCollisions() override;
+	Rectangle GetCollider() override;
 	void Reset() override;
 private:
 

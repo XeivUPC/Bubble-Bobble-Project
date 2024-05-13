@@ -14,10 +14,16 @@ public:
 	void Render() override;
 	void Debug() override;
 	void Reset() override;
+	bool TryToBubble(bool player1bubble);
+	void RemoveFromBubble();
+	bool IsInsideBubble();
+	void SetBubbleTime(float time);
 	void virtual Brain();
 	void virtual SearchTargetTile();
 	void virtual CheckCollisions();
+	Rectangle virtual GetCollider();
 	bool isAngry = false;
+
 protected:
 	void virtual DrawDebug();
 	AnimationRenderer renderer;
@@ -28,5 +34,11 @@ protected:
 	float speed;
 	Entity* currentTarget = nullptr;
 	float retargetTimer = RETARGET_TIME;
+
+
+	bool isInsideBubble=false;
+	bool canBeInsideBubble = true;
+	float bubbleTime = 0;
+	float player1Bubble = false;
 };
 

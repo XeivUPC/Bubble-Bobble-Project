@@ -42,6 +42,14 @@ void BubbleManager::Debug()
 	}
 }
 
+void BubbleManager::Reset()
+{
+	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)
+	{
+		bubblesPool[i].Reset();
+	}
+}
+
 void BubbleManager::DisableAll()
 {
 	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)

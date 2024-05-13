@@ -9,7 +9,8 @@
 #include "IRendereable.h"
 #include "IUpdateable.h"
 #include "IDebugeable.h"
-class BubbleManager : public IRendereable, public IUpdateable, public IDebugeable
+#include "IReseteable.h"
+class BubbleManager : public IRendereable, public IUpdateable, public IDebugeable, public IReseteable
 {
 
 public:
@@ -22,6 +23,7 @@ public:
     void Update() override;
     void Render() override;
     void Debug() override;
+    void Reset() override;
     void DisableAll();
     Bubble* GetBubble();
     Bubble* GetBubbleByIndex(int index);

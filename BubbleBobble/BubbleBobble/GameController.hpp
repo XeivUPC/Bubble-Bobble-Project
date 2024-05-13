@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 #include "AudioManager.hpp"
 #include "BubbleManager.hpp"
+#include "ParticleManager.hpp"
 #include "TilemapController.hpp"
 #include "EnemyManager.hpp"
 #include "PuntuationHolder.hpp"
@@ -75,6 +76,9 @@ private:
 	float hurryModeTimer = 0;
 	bool isHurryOnMode = false;
 
+
+	float endLevelTimer = 0;
+
 	TilemapController topUI = TilemapController("../Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
 	TilemapController initialScreen = TilemapController("../Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
@@ -118,6 +122,7 @@ private:
 	/// Game
 	#define START_GAME_DELAY 1.5f
 	#define HURRY_MODE_TIME_HOLD 2
-	#define HURRY_MODE_TIME_WAIT 5
+	#define HURRY_MODE_TIME_WAIT 30
+	#define END_LEVEL_TIME_WAIT 4
 
 };

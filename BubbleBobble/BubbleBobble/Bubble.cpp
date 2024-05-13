@@ -67,7 +67,11 @@ void Bubble::Update()
 	LevelManager& levelManager = LevelManager::Instance();
 	int tileX;
 	int tileY;
-	internalTimer += deltaTime;
+	if(enemyInside!=nullptr)
+		internalTimer += deltaTime/2;
+	else
+		internalTimer += deltaTime;
+
 	switch (state)
 	{
 	case Bubble::ShootInertia:
@@ -94,25 +98,31 @@ void Bubble::Update()
 			}
 		}
 
+		if (CheckEnemyCollisions()) {
+			state = Idle;
+			SetDirectionByTile();
+		}
+
 		break;
 	case Bubble::Idle:
 		if (internalTimer > LIFE_TIME) {
 			isActive = false;
-			hasPop = false;
 			internalTimer = 0;
 			direction = { 0,0 };
 			directionOffset = { 0,0 };
 			state = ShootInertia;
-			return;
-		}
-		if (internalTimer > EXPLODING_BUBBLE_PHASE_TIME) {
-			if (!hasPop)
-			{
-				BubbleManager::Instance().MoveBubbleToFront(this);
-				hasPop = true;
+			ParticleManager::Instance().AddParticle(new BubbleExplodeParticle(position));
+			if (enemyInside != nullptr) {
+				//enemyInside->isActive = false; //Remove THIS
+				enemyInside->RemoveFromBubble();
+				enemyInside = nullptr;
 			}
+			
 			return;
 		}
+
+		if (enemyInside != nullptr)
+			enemyInside->position = position;
 
 		tileX = (int)(position.x / TILE_SIZE);
 		tileY = (int)(position.y / TILE_SIZE);
@@ -148,6 +158,11 @@ void Bubble::Update()
 		}
 
 		position.y += (direction.y + directionOffset.y) * bubbleSpeed * TILE_SCALE_FACTOR * deltaTime;
+
+		if (enemyInside != nullptr) {
+			enemyInside->SetBubbleTime(internalTimer);
+		}
+
 		break;
 	default:
 		break;
@@ -159,6 +174,8 @@ void Bubble::Update()
 
 void Bubble::Render()
 {
+	if (enemyInside != nullptr)\
+		return;
 	renderer.UpdateAnimation();
 	if (state == ShootInertia) {
 		isPlayer1Bubble ? renderer.PlayAniamtion("BubbleGreenInertiaMode") : renderer.PlayAniamtion("BubbleBlueInertiaMode");
@@ -172,11 +189,8 @@ void Bubble::Render()
 	else if (internalTimer < RED_BUBBLE_PHASE_TIME) {
 		renderer.PlayAniamtion("BubbleRedMode");
 	}
-	else if (internalTimer < EXPLODING_BUBBLE_PHASE_TIME) {
+	else if (internalTimer > RED_BUBBLE_PHASE_TIME) {
 		renderer.PlayAniamtion("BubbleExplodeMode");
-	}
-	else if (internalTimer> EXPLODING_BUBBLE_PHASE_TIME) {
-		renderer.PlayAniamtion("BubblePop");
 	}
 	
 	renderer.Draw(position.x- TILE_SIZE, position.y - TILE_SIZE, 0, WHITE);
@@ -194,6 +208,11 @@ void Bubble::Debug() {
 	DrawCircle(position.x - TILE_SIZE / 1.5f, position.y , TILE_SIZE / 5, YELLOW);
 
 	DrawCircle(position.x , position.y , TILE_SIZE / 5, RED);
+}
+
+void Bubble::Reset()
+{
+	enemyInside = nullptr;
 }
 
 bool Bubble::IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX)
@@ -225,7 +244,7 @@ void Bubble::CheckCollisions()
 		for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)
 		{
 			Bubble* bubble = bubbleManager.GetBubbleByIndex(i);
-			if (!bubble->isActive || directionOffset.x != 0 || directionOffset.y != 0 || bubble->hasPop || bubble->state==ShootInertia || bubble == this)
+			if (!bubble->isActive || directionOffset.x != 0 || directionOffset.y != 0 || bubble->state==ShootInertia || bubble == this)
 				continue;
 			Vector2 redCenter = { position.x , position.y };
 			Vector2 otherRedCenter = { bubble->position.x , bubble->position.y };
@@ -368,4 +387,25 @@ void Bubble::SetDirectionByTile()
 		direction.y = 0;
 		break;
 	}
+}
+
+bool Bubble::CheckEnemyCollisions()
+{
+	if (enemyInside != nullptr)
+		return false;
+
+	EnemyManager& manager = EnemyManager::Instance();
+	for (size_t i = 0; i < manager.enemies.size(); i++)
+	{
+		if (manager.enemies[i]->isActive && !manager.enemies[i]->IsInsideBubble()) {
+			Rectangle enemyCollision = manager.enemies[i]->GetCollider();
+			if (CheckCollisionCircleRec(position, TILE_SIZE / 2.5f, enemyCollision)) {
+
+				enemyInside = manager.enemies[i];
+				enemyInside->TryToBubble(isPlayer1Bubble);
+				return true;
+			}
+		}
+	}
+	return false;
 }

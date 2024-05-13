@@ -43,10 +43,49 @@ ZenChan::ZenChan(Vector2 tilePos, int lookAt)
 	idleAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 1 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	idleAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 1 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
+	///
+
+	Animation greenBubbleAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.2f };
+	greenBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	greenBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	greenBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 4 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation blueBubbleAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.2f };
+	blueBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	blueBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	blueBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 5 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation orangeBubbleAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.2f };
+	orangeBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	orangeBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	orangeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation redBubbleAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.2f };
+	redBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation explodeBubbleAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.1f };
+	explodeBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+
 	renderer.AddAnimation("ZenChanWalk", walkAnim);
 	renderer.AddAnimation("ZenChanIdle", idleAnim);
 	renderer.AddAnimation("ZenChanWalkAngry", walkAngryAnim);
 	renderer.AddAnimation("ZenChanIdleAngry", idleAngryAnim);
+
+	///
+
+	renderer.AddAnimation("ZenChanGreenBubble", greenBubbleAnim);
+	renderer.AddAnimation("ZenChanBlueBubble", blueBubbleAnim);
+	renderer.AddAnimation("ZenChanOrangeBubble", orangeBubbleAnim);
+	renderer.AddAnimation("ZenChanRedBubble", redBubbleAnim);
+	renderer.AddAnimation("ZenChanExplodeBubble", explodeBubbleAnim);
 }
 
 ZenChan::~ZenChan()
@@ -55,7 +94,9 @@ ZenChan::~ZenChan()
 
 void ZenChan::Update()
 {
-	
+	if (isInsideBubble)
+		return;
+
 	retargetTimer += deltaTime;
 	internalTimer += deltaTime;
 
@@ -95,25 +136,46 @@ void ZenChan::Render()
 {
 	renderer.UpdateAnimation();
 
-	if (direction.x == 0 && direction.y==0) {
-		if (isAngry) {
-			renderer.PlayAniamtion("ZenChanIdleAngry");
+	if (isInsideBubble)
+	{
+		if (bubbleTime < 10) {
+			player1Bubble ? renderer.PlayAniamtion("ZenChanGreenBubble") : renderer.PlayAniamtion("ZenChanBlueBubble");
 		}
-		else {
-			renderer.PlayAniamtion("ZenChanIdle");
+		else if (bubbleTime < 13) {
+			renderer.PlayAniamtion("ZenChanOrangeBubble");
 		}
+		else if (bubbleTime < 14) {
+			renderer.PlayAniamtion("ZenChanRedBubble");
+		}
+		else if (bubbleTime > 14) {
+			renderer.PlayAniamtion("ZenChanExplodeBubble");
+		}
+
+		renderer.Draw(position.x - TILE_SIZE, position.y - TILE_SIZE, 0, WHITE);
 	}
 	else {
-		if (isAngry) {
-			renderer.PlayAniamtion("ZenChanWalkAngry");
+		if (direction.x == 0 && direction.y == 0) {
+			if (isAngry) {
+				renderer.PlayAniamtion("ZenChanIdleAngry");
+			}
+			else {
+				renderer.PlayAniamtion("ZenChanIdle");
+			}
 		}
 		else {
-			renderer.PlayAniamtion("ZenChanWalk");
+			if (isAngry) {
+				renderer.PlayAniamtion("ZenChanWalkAngry");
+			}
+			else {
+				renderer.PlayAniamtion("ZenChanWalk");
+			}
 		}
+		renderer.Draw(position.x - TILE_SIZE, position.y - TILE_SIZE * 2, 0, WHITE);
 	}
 	
+	
 
-	renderer.Draw(position.x - TILE_SIZE, position.y - TILE_SIZE * 2, 0, WHITE);
+	
 }
 
 void ZenChan::Brain()
@@ -295,6 +357,12 @@ void ZenChan::CheckCollisions()
 		}
 	}
 
+}
+
+Rectangle ZenChan::GetCollider()
+{
+	Rectangle collider = { position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE * 2 * 0.8, TILE_SIZE * 2 * 0.7, TILE_SIZE * 2 * 0.8 };
+	return collider;
 }
 
 void ZenChan::Reset()

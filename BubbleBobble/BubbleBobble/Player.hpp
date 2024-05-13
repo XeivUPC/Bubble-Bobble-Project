@@ -3,6 +3,8 @@
 #include "AnimationRenderer.hpp"
 #include "PuntuationHolder.hpp"
 #include "TilemapConfiguration.h"
+#include "PlayerDeadParticle.hpp"
+#include "PlayerConfuseParticle.hpp"
 
 #define PLAYER_SHOOT_INTERVAL  0.5
 #define PLAYER_SHOOT_ANIMATION  0.4

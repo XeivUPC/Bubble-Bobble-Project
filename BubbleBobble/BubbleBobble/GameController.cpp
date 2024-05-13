@@ -267,6 +267,9 @@ void GameController::UpdateGame()
 	if (IsKeyPressed(KEY_F5))
 		player2.HitPlayer_GOD_MODE();
 
+	if (IsKeyPressed(KEY_F6))\
+		EnemyManager::Instance().KillAllEnemies();
+
 	if (IsKeyPressed(KEY_F2)) {
 		DebugMode = !DebugMode;
 	}
@@ -282,6 +285,7 @@ void GameController::UpdateGame()
 	}
 	LevelManager::Instance().Update();
 	PointsParticlesManager::Instance().Update();
+	ParticleManager::Instance().Update();
 	bool isInTransition = player1.IsInBubbleMode() || ( player2.IsInBubbleMode());
 
 	if (isInTransition) {
@@ -332,15 +336,23 @@ void GameController::UpdateGame()
 	if (player2.isActive)
 		player2.Update();
 
-	if (IsKeyPressed(KEY_ENTER)) {
-
-		LevelManager::Instance().StartTransition();
-		EnemyManager::Instance().DestroyAll();
-		ObjectsManager::Instance().DestroyAll();
-		BubbleManager::Instance().DisableAll();
-		isHurryOnMode = false;
-		EnemyManager::Instance().SetAngry(false);
+	if (EnemyManager::Instance().EnemiesAlive() == 0) {
+		endLevelTimer += deltaTime;
 		hurryModeTimer = 0;
+		isHurryOnMode = false;
+		if (endLevelTimer >= END_LEVEL_TIME_WAIT) {
+			LevelManager::Instance().StartTransition();
+			EnemyManager::Instance().DestroyAll();
+			ObjectsManager::Instance().DestroyAll();
+			BubbleManager::Instance().DisableAll();
+			BubbleManager::Instance().Reset();
+			ParticleManager::Instance().DestroyAll();
+			isHurryOnMode = false;
+			EnemyManager::Instance().SetAngry(false);
+			hurryModeTimer = 0;
+			endLevelTimer = 0;
+		}
+		
 		
 	}
 
@@ -374,12 +386,14 @@ void GameController::RenderGameEarly()
 	BubbleManager::Instance().Render();
 	EnemyManager::Instance().Render();
 	PointsParticlesManager::Instance().Render();
+	ParticleManager::Instance().Render();
 	if (DebugMode) {
 		LevelManager::Instance().Debug();
 		ObjectsManager::Instance().Debug();
 		BubbleManager::Instance().Debug();
 		EnemyManager::Instance().Debug();
 		PointsParticlesManager::Instance().Debug();
+		ParticleManager::Instance().Debug();
 	}
 }
 

@@ -1,17 +1,18 @@
 #pragma once
 #include "Entity.hpp"
+#include "EnemyManager.hpp"
 #include "TilemapConfiguration.h"
 #include "GameConfiguration.h"
 #include "AnimationRenderer.hpp"
+#include "BubbleExplodeParticle.hpp"
 
 
-#define LIFE_TIME 16
+#define LIFE_TIME 15
 #define INERTIA_TIME 0.4
 
 #define DEFAULT_BUBBLE_PHASE_TIME 10
 #define ORANGE_BUBBLE_PHASE_TIME 13
 #define RED_BUBBLE_PHASE_TIME 14
-#define EXPLODING_BUBBLE_PHASE_TIME 15
 
 class Bubble : public Entity
 {
@@ -21,6 +22,7 @@ public:
 	void Update() override;
 	void Render() override;
 	void Debug() override;
+	void Reset() override;
 	bool IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX);
 	void SetPlayerPosession(bool isPlayer1);
 private:
@@ -33,10 +35,11 @@ private:
 	BubbleState state = ShootInertia;
 	void CheckCollisions();
 	void SetDirectionByTile();
+	bool CheckEnemyCollisions();
 	float bubbleSpeed = 24;
 	float bubbleInertiaSpeed = 16*10;
-	bool hasPop=false;
 	bool isPlayer1Bubble = true;
+	Enemy* enemyInside = nullptr;
 protected:
 	//// Collisions Info
 	Vector2 directionOffset = { 0,0 };

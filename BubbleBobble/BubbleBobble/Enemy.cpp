@@ -24,6 +24,32 @@ void Enemy::Reset()
 {
 }
 
+bool Enemy::TryToBubble(bool player1bubble)
+{
+	if (!canBeInsideBubble)
+		return false;
+	if (isInsideBubble)
+		return false;
+	isInsideBubble = true;
+	player1Bubble = player1bubble;
+	return true;
+}
+
+void Enemy::RemoveFromBubble()
+{
+	isInsideBubble = false;
+}
+
+bool Enemy::IsInsideBubble()
+{
+	return isInsideBubble;
+}
+
+void Enemy::SetBubbleTime(float time)
+{
+	bubbleTime = time;
+}
+
 void Enemy::Brain()
 {
 }
@@ -73,6 +99,11 @@ void Enemy::SearchTargetTile()
 
 void Enemy::CheckCollisions()
 {
+}
+
+Rectangle Enemy::GetCollider()
+{
+	return Rectangle{0,0,0,0};
 }
 
 void Enemy::DrawDebug()
