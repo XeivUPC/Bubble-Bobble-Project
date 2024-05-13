@@ -109,7 +109,7 @@ private:
 	float jumpStartYPoint = 0;
 	float jumpInitialSpeed = TILE_SIZE * 24.6;
 	float jumpCurrentSpeed=0;
-	float jumpHeight = TILE_SIZE * 5.f;
+	float jumpHeight = TILE_SIZE * 5.1f;
 
 	////States
 	bool isGrounded=true;

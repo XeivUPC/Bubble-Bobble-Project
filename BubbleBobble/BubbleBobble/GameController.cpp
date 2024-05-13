@@ -5,6 +5,7 @@
 #include "TextureManager.hpp"
 #include "ObjectsManager.hpp"
 #include "PointsParticlesManager.hpp"
+#include "LoadingScreenParticle.hpp"
 #include "ZenChan.hpp"
 #include <iostream>
 
@@ -14,8 +15,10 @@ GameController::GameController()
 	AudioManager& audioManager = AudioManager::Instance();
 	audioManager.CreateSound("../Assets/Sounds/SFX/Pause.wav","StartGame");
 	audioManager.CreateSound("../Assets/Sounds/SFX/Credito.wav","InsertCoin");
+	audioManager.CreateSound("../Assets/Sounds/SFX/HurryMode.wav","GameHurryModeStart");
 	audioManager.CreateMusic("../Assets/Sounds/Music/02_Room Theme (The Quest Begins).ogg","IntroSong");
 	audioManager.CreateMusic("../Assets/Sounds/Music/03_Room Theme.ogg","GameSong");
+	audioManager.CreateMusic("../Assets/Sounds/Music/06_Room Theme - Hurry (No Intro).ogg","GameHurryModeSong");
 
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/Text.png","TextUI");
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/TextTransparent.png","TextUITransparent");
@@ -51,7 +54,7 @@ GameController::GameController()
 	hurryModeRenderer.PlayAniamtion("HurryMode");
 
 
-	ChangeState(5);
+	ChangeState(0);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -140,6 +143,7 @@ void GameController::ChangeState(int stateIndex)
 
 		break;
 	case GameController::GameScreen:
+		ParticleManager::Instance().DestroyAll();
 		topUI.isActive = true;
 		audioManager.StopMusicByName("IntroSong");
 		audioManager.PlayMusicByName("GameSong");
@@ -155,6 +159,7 @@ void GameController::ChangeState(int stateIndex)
 		break;
 	case GameController::Results:
 		audioManager.StopMusicByName("GameSong");
+		AudioManager::Instance().StopMusicByName("GameHurryModeSong");
 		ChangeState(7);
 		break;
 	case GameController::GameOver:
@@ -206,6 +211,16 @@ void GameController::UpdateUI()
 
 		player2.position.x = (GAME_TILE_WIDTH-8) * TILE_SIZE - sin(internalTimer * 6) * TILE_SIZE * 1;
 		player2.position.y = 15 * TILE_SIZE + cos(internalTimer * 6) * TILE_SIZE * 1;
+
+		loadingShootTimer += deltaTime;
+		if (loadingShootTimer >= LOADING_GAME_SHOOT_TIME) {
+			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { - sin(internalTimer * 6),0+ cos(internalTimer * 6) }));
+			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(PI / 2 + internalTimer * 6), cos(PI / 2 + internalTimer * 6) }));
+			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, {  -sin(PI + internalTimer * 6), cos(PI + internalTimer * 6) }));
+			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(3 * PI / 2 + internalTimer * 6), cos(3 * PI / 2 + internalTimer * 6) }));
+			loadingShootTimer = 0;
+		}
+		ParticleManager::Instance().Update();
 		if (internalTimer > LOADING_GAME_TIME)
 			ChangeState(5);
 		break;
@@ -314,6 +329,8 @@ void GameController::UpdateGame()
 			isHurryOnMode = true;
 			hurryModeSprite.position.y = GAME_TILE_HEIGHT * TILE_SIZE;
 			hurryModeTimer = 0;
+			AudioManager::Instance().PlaySoundByName("GameHurryModeStart");
+			AudioManager::Instance().StopMusicByName("GameSong");
 		}
 	}
 	else {
@@ -325,7 +342,10 @@ void GameController::UpdateGame()
 			return;
 		}else{
 			if (!EnemyManager::Instance().IsAngryMode())
+			{
 				EnemyManager::Instance().SetAngry(true);
+				AudioManager::Instance().PlayMusicByName("GameHurryModeSong");
+			}
 		}
 	}
 	
@@ -338,8 +358,10 @@ void GameController::UpdateGame()
 		player2.Update();
 
 	if (EnemyManager::Instance().EnemiesAlive() == 0) {
-		if (!levelEnded)
+		if (!levelEnded) {
 			BubbleManager::Instance().PopAll();
+
+		}
 		levelEnded = true;
 		endLevelTimer += deltaTime;
 		hurryModeTimer = 0;
@@ -351,10 +373,16 @@ void GameController::UpdateGame()
 			EnemyManager::Instance().DestroyAll();
 			ObjectsManager::Instance().DestroyAll();
 			EnemyManager::Instance().SetAngry(false);
-			isHurryOnMode = false;
+			
 			hurryModeTimer = 0;
 			endLevelTimer = 0;
 			levelEnded = false;
+
+			if (isHurryOnMode) {
+				AudioManager::Instance().StopMusicByName("GameHurryModeSong");
+				AudioManager::Instance().PlayMusicByName("GameSong");
+			}
+			isHurryOnMode = false;
 		}	
 	}
 
@@ -416,6 +444,7 @@ void GameController::RenderUILate()
 	if (state == LoadingGameScreen) {
 		player1.Render();
 		player2.Render();
+		ParticleManager::Instance().Render();
 	}
 }
 

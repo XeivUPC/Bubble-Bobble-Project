@@ -73,6 +73,14 @@ ZenChan::ZenChan(Vector2 tilePos, int lookAt)
 	explodeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	explodeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
+	///
+
+	Animation throwAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.06f };
+	redBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 3 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 3 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 3 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 2, 3 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
 
 	renderer.AddAnimation("ZenChanWalk", walkAnim);
 	renderer.AddAnimation("ZenChanIdle", idleAnim);
@@ -86,6 +94,10 @@ ZenChan::ZenChan(Vector2 tilePos, int lookAt)
 	renderer.AddAnimation("ZenChanOrangeBubble", orangeBubbleAnim);
 	renderer.AddAnimation("ZenChanRedBubble", redBubbleAnim);
 	renderer.AddAnimation("ZenChanExplodeBubble", explodeBubbleAnim);
+
+	///
+
+	renderer.AddAnimation("ZenChanThrow", throwAnim);
 }
 
 ZenChan::~ZenChan()

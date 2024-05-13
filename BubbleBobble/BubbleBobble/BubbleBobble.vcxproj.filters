@@ -121,6 +121,7 @@
     <ClInclude Include="PlayerDeadParticle.hpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="LoadingScreenParticle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -248,5 +249,6 @@
     <ClCompile Include="PlayerDeadParticle.cpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingScreenParticle.cpp" />
   </ItemGroup>
 </Project>

@@ -80,6 +80,8 @@ private:
 	float endLevelTimer = 0;
 	bool levelEnded = false;
 
+	float loadingShootTimer = 0;
+
 	TilemapController topUI = TilemapController("../Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
 	TilemapController initialScreen = TilemapController("../Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
@@ -114,6 +116,7 @@ private:
 	#define INSERT_COIN_TIME 1
 	#define TUTORIAL_TIME 15
 	#define LOADING_GAME_TIME 8
+	#define LOADING_GAME_SHOOT_TIME 0.2
 
 	#define MAX_COINS 9
 
@@ -123,7 +126,7 @@ private:
 	/// Game
 	#define START_GAME_DELAY 1.5f
 	#define HURRY_MODE_TIME_HOLD 2
-	#define HURRY_MODE_TIME_WAIT 30
+	#define HURRY_MODE_TIME_WAIT 5
 	#define END_LEVEL_TIME_WAIT 4
 
 };
