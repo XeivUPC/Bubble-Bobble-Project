@@ -25,6 +25,7 @@ public:
     void Debug() override;
     void Reset() override;
     void DisableAll();
+    void PopAll();
     Bubble* GetBubble();
     Bubble* GetBubbleByIndex(int index);
     void MoveBubbleToFront(Bubble* bubble);

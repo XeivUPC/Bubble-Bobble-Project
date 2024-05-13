@@ -23,6 +23,7 @@ public:
 	void Render() override;
 	void Debug() override;
 	void Reset() override;
+	void Pop();
 	bool IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX);
 	void SetPlayerPosession(bool isPlayer1);
 private:

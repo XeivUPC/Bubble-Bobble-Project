@@ -106,18 +106,7 @@ void Bubble::Update()
 		break;
 	case Bubble::Idle:
 		if (internalTimer > LIFE_TIME) {
-			isActive = false;
-			internalTimer = 0;
-			direction = { 0,0 };
-			directionOffset = { 0,0 };
-			state = ShootInertia;
-			ParticleManager::Instance().AddParticle(new BubbleExplodeParticle(position));
-			if (enemyInside != nullptr) {
-				//enemyInside->isActive = false; //Remove THIS
-				enemyInside->RemoveFromBubble();
-				enemyInside = nullptr;
-			}
-			
+			Pop();	
 			return;
 		}
 
@@ -212,7 +201,23 @@ void Bubble::Debug() {
 
 void Bubble::Reset()
 {
+	
+	isActive = false;
+	internalTimer = 0;
+	direction = { 0,0 };
+	directionOffset = { 0,0 };
+	state = ShootInertia;
+	if (enemyInside != nullptr) {
+		enemyInside->RemoveFromBubble();
+		enemyInside = nullptr;
+	}
 	enemyInside = nullptr;
+}
+
+void Bubble::Pop()
+{	if(state==Idle)
+		ParticleManager::Instance().AddParticle(new BubbleExplodeParticle(position));
+	Reset();
 }
 
 bool Bubble::IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX)

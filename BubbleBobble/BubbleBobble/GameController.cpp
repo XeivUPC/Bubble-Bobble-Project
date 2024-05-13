@@ -146,6 +146,7 @@ void GameController::ChangeState(int stateIndex)
 
 		player1.Reset();
 		player2.Reset();
+		BubbleManager::Instance().DisableAll();
 		EnemyManager::Instance().DestroyAll();
 		ObjectsManager::Instance().Reset();
 		LevelManager::Instance().Reset();
@@ -337,23 +338,24 @@ void GameController::UpdateGame()
 		player2.Update();
 
 	if (EnemyManager::Instance().EnemiesAlive() == 0) {
+		if (!levelEnded)
+			BubbleManager::Instance().PopAll();
+		levelEnded = true;
 		endLevelTimer += deltaTime;
 		hurryModeTimer = 0;
 		isHurryOnMode = false;
 		if (endLevelTimer >= END_LEVEL_TIME_WAIT) {
 			LevelManager::Instance().StartTransition();
-			EnemyManager::Instance().DestroyAll();
-			ObjectsManager::Instance().DestroyAll();
 			BubbleManager::Instance().DisableAll();
 			BubbleManager::Instance().Reset();
-			ParticleManager::Instance().DestroyAll();
-			isHurryOnMode = false;
+			EnemyManager::Instance().DestroyAll();
+			ObjectsManager::Instance().DestroyAll();
 			EnemyManager::Instance().SetAngry(false);
+			isHurryOnMode = false;
 			hurryModeTimer = 0;
 			endLevelTimer = 0;
-		}
-		
-		
+			levelEnded = false;
+		}	
 	}
 
 

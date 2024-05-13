@@ -78,6 +78,7 @@ private:
 
 
 	float endLevelTimer = 0;
+	bool levelEnded = false;
 
 	TilemapController topUI = TilemapController("../Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
 	TilemapController initialScreen = TilemapController("../Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });

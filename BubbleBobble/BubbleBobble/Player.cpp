@@ -588,6 +588,8 @@ void Player::SetState(int index)
 		break;
 
 	case StartBubble:
+		isShooting = false;
+		isJumping = false;
 		canBeHit = true;
 		renderer.FlipX(player1);
 		renderer.ChangeDisplacement({ -TILE_SIZE ,-TILE_SIZE });

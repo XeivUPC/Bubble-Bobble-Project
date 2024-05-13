@@ -58,6 +58,15 @@ void BubbleManager::DisableAll()
 	}
 }
 
+void BubbleManager::PopAll()
+{
+	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)
+	{
+		if (bubblesPool[i].isActive)
+			bubblesPool[i].Pop();
+	}
+}
+
 Bubble* BubbleManager::GetBubble()
 {
 	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)
