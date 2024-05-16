@@ -82,12 +82,6 @@
     <ClInclude Include="Level.hpp">
       <Filter>Scripts\Managers\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="PointsParticlesManager.hpp">
-      <Filter>Scripts\Managers\PointsParticles</Filter>
-    </ClInclude>
-    <ClInclude Include="PointParticle.hpp">
-      <Filter>Scripts\Managers\PointsParticles</Filter>
-    </ClInclude>
     <ClInclude Include="IUpdateable.h">
       <Filter>Scripts\Interfaces</Filter>
     </ClInclude>
@@ -127,6 +121,9 @@
     <ClInclude Include="LoadingScreenStaticParticle.hpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="PointParticle.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -158,9 +155,6 @@
     </Filter>
     <Filter Include="Scripts\Managers\Levels">
       <UniqueIdentifier>{b3874cc7-1d66-4e71-b6ab-7b2bd1d57ca3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Managers\PointsParticles">
-      <UniqueIdentifier>{8c025b03-3bbf-4d48-8744-e276f4c8f72c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Interfaces">
       <UniqueIdentifier>{a933acce-fac7-49b2-9df0-2bb760634284}</UniqueIdentifier>
@@ -233,12 +227,6 @@
     <ClCompile Include="Level.cpp">
       <Filter>Scripts\Managers\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="PointsParticlesManager.cpp">
-      <Filter>Scripts\Managers\PointsParticles</Filter>
-    </ClCompile>
-    <ClCompile Include="PointParticle.cpp">
-      <Filter>Scripts\Managers\PointsParticles</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
@@ -258,6 +246,9 @@
       <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
     <ClCompile Include="LoadingScreenStaticParticle.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointParticle.cpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
   </ItemGroup>

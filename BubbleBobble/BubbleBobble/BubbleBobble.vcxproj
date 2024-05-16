@@ -170,7 +170,6 @@
     <ClInclude Include="PlayerConfuseParticle.hpp" />
     <ClInclude Include="PlayerDeadParticle.hpp" />
     <ClInclude Include="PointParticle.hpp" />
-    <ClInclude Include="PointsParticlesManager.hpp" />
     <ClInclude Include="PointsUI.hpp" />
     <ClInclude Include="PuntuationHolder.hpp" />
     <ClInclude Include="AnimationRenderer.hpp" />
@@ -206,7 +205,6 @@
     <ClCompile Include="PlayerConfuseParticle.cpp" />
     <ClCompile Include="PlayerDeadParticle.cpp" />
     <ClCompile Include="PointParticle.cpp" />
-    <ClCompile Include="PointsParticlesManager.cpp" />
     <ClCompile Include="PointsUI.cpp" />
     <ClCompile Include="PuntuationHolder.cpp" />
     <ClCompile Include="AnimationRenderer.cpp" />

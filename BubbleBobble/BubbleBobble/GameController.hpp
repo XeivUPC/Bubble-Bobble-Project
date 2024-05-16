@@ -83,6 +83,23 @@ private:
 
 	float loadingShootTimer = 0;
 
+	int currentLevelRecord;
+
+	bool resultsProgressionDone = false;
+	float  resultsProgressionSpeed = 3 * TILE_SIZE;
+	Vector2  resultsProgressionInitialPos = { 13 * TILE_SIZE,5 * TILE_SIZE };
+	Vector2 greenResultProgressionPos;
+	Vector2 greenResultProgressionTargetPos;
+	Vector2 blueResultProgressionPos;
+	Vector2 blueResultProgressionTargetPos;
+	Vector2 recordResultProgressionPos;
+	bool resultProgressionUIShow = true;
+	float resultProgressionUIAnimationTimer = 0;
+	AnimationRenderer greenResultFlagRenderer;
+	AnimationRenderer blueResultFlagRenderer;
+
+
+
 	TilemapController topUI = TilemapController("../Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
 	TilemapController initialScreen = TilemapController("../Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
@@ -98,6 +115,7 @@ private:
 
 	TilemapController resultScreen = TilemapController("../Assets/UI/ResultsScreen.json", 32, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController resultScreenUI = TilemapController("../Assets/UI/ResultsScreenUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController recordLevelUI = TilemapController("../Assets/UI/RecordLevelUI.json", 64, Vector2{ 11,1 });
 
 
 	TilemapController player1PointsMap = TilemapController(nullptr,64 ,Vector2{ 8,1,});
@@ -123,6 +141,7 @@ private:
 	#define LOADING_GAME_TIME 8
 	#define LOADING_GAME_SHOOT_TIME 0.2
 	#define RESULTS_TIME 6
+	#define RESULTS_TIME_UI_ANIMATIONS 0.5
 	#define GAME_OVER_TIME 3
 
 	#define MAX_COINS 9

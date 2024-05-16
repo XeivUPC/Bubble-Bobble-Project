@@ -4,7 +4,6 @@
 #include "LevelManager.hpp"
 #include "TextureManager.hpp"
 #include "ObjectsManager.hpp"
-#include "PointsParticlesManager.hpp"
 #include "LoadingScreenParticle.hpp"
 #include "LoadingScreenStaticParticle.hpp"
 #include "ZenChan.hpp"
@@ -29,6 +28,7 @@ GameController::GameController()
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/Text.png","TextUI");
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/TextTransparent.png","TextUITransparent");
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/IntroductionCover.png","IntroductionCover");
+	TextureManager::Instance().CreateTexture("../Assets/Sprites/Points.png", "PointsParticlesTileSet");
 
 	topUI.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	initialScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
@@ -47,6 +47,8 @@ GameController::GameController()
 
 	resultScreen.SetTexture(TextureManager::Instance().GetTexture("MapTileSet"));
 	resultScreenUI.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
+	recordLevelUI.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
+	recordLevelUI.ModifyRenderer().ChangeDisplacement({ 19 * TILE_SIZE,3 * TILE_SIZE });
 	
 
 	player1PointsMap.ModifyRenderer().ChangeDisplacement({ 0, 1.f * TILE_SIZE });
@@ -63,10 +65,23 @@ GameController::GameController()
 	hurryModeRenderer.AddAnimation("HurryMode",animHUrryMode);
 	hurryModeRenderer.PlayAniamtion("HurryMode");
 
-	
+	Animation greenRoundFlag = { TextureManager::Instance().GetTexture("TextUITransparent"),4 };
+	greenRoundFlag.frames.push_back({10* TILE_REAL_SIZE,4* TILE_REAL_SIZE,11* TILE_REAL_SIZE,4* TILE_REAL_SIZE});
+	Animation greenClearFlag = { TextureManager::Instance().GetTexture("TextUITransparent"),4 };
+	greenClearFlag.frames.push_back({ 22 * TILE_REAL_SIZE,4 * TILE_REAL_SIZE,11 * TILE_REAL_SIZE,4 * TILE_REAL_SIZE });
+	greenResultFlagRenderer.AddAnimation("GreenResultRound", greenRoundFlag);
+	greenResultFlagRenderer.AddAnimation("GreenResultClear", greenClearFlag);
+	greenResultFlagRenderer.PlayAniamtion("GreenResultRound");
 
+	Animation blueRoundFlag = { TextureManager::Instance().GetTexture("TextUITransparent"),4 };
+	blueRoundFlag.frames.push_back({ 33 * TILE_REAL_SIZE,4 * TILE_REAL_SIZE,11 * TILE_REAL_SIZE,4 * TILE_REAL_SIZE });
+	Animation blueClearFlag = { TextureManager::Instance().GetTexture("TextUITransparent"),4 };
+	blueClearFlag.frames.push_back({ 44 * TILE_REAL_SIZE,4 * TILE_REAL_SIZE,11 * TILE_REAL_SIZE,4 * TILE_REAL_SIZE });
+	blueResultFlagRenderer.AddAnimation("BlueResultRound", blueRoundFlag);
+	blueResultFlagRenderer.AddAnimation("BlueResultClear", blueClearFlag);
+	blueResultFlagRenderer.PlayAniamtion("BlueResultRound");
 
-	ChangeState(5);
+	ChangeState(8);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -124,8 +139,6 @@ void GameController::ChangeState(int stateIndex)
 	resultScreenUI.isActive = false;
 	gameOverScreen.isActive = false;
 
-	int record = 0;
-	int* actualRecord = &record;
 
 	std::cout << "Game State Changed --> " << state << std::endl;
 	switch (state)
@@ -183,14 +196,30 @@ void GameController::ChangeState(int stateIndex)
 		resultScreen.isActive = true;
 		resultScreenUI.isActive = true;
 
-		
-		LoadGameData(actualRecord, "LevelRecord.txt");
-		if (*actualRecord < LevelManager::Instance().GetActualLevelIndex()) {
+		greenResultFlagRenderer.PlayAniamtion("GreeResultRound");
+		blueResultFlagRenderer.PlayAniamtion("BlueResultRound");
+
+
+		LoadGameData(&currentLevelRecord, "LevelRecord.txt");
+		if (currentLevelRecord < LevelManager::Instance().GetActualLevelIndex()) {
 			SaveGameData(LevelManager::Instance().GetActualLevelIndex(), "LevelRecord.txt");
-			*actualRecord = LevelManager::Instance().GetActualLevelIndex();
+			currentLevelRecord = LevelManager::Instance().GetActualLevelIndex();
 		}
 		/// SetRecord
-		ChangeLevelRecordUI(record);
+		ChangeLevelRecordUI(currentLevelRecord);
+
+		greenResultProgressionPos = resultsProgressionInitialPos;
+		blueResultProgressionPos = resultsProgressionInitialPos;
+		blueResultProgressionPos.x += 4 * TILE_SIZE;
+		recordResultProgressionPos = resultsProgressionInitialPos;
+
+		resultProgressionUIAnimationTimer = 0;
+		resultsProgressionDone = false;
+
+
+		greenResultProgressionTargetPos = { greenResultProgressionPos.x,greenResultProgressionPos.y + ((player1.GetLevel() - 1) * ((20.f * TILE_SIZE) / 100.f))};
+		blueResultProgressionTargetPos = { blueResultProgressionPos.x,blueResultProgressionPos.y + ((player2.GetLevel() - 1) * ((20.f * TILE_SIZE) / 100.f))};
+		recordResultProgressionPos = { recordResultProgressionPos.x,recordResultProgressionPos.y + (currentLevelRecord - 1) * ((20.f * TILE_SIZE) / 100.f)};
 
 		break;
 	case GameController::GameOver:
@@ -280,6 +309,31 @@ void GameController::UpdateUI()
 
 		break;
 	case GameController::Results:
+		resultProgressionUIAnimationTimer += deltaTime;
+
+		if (resultProgressionUIAnimationTimer > RESULTS_TIME_UI_ANIMATIONS)
+		{
+			resultProgressionUIAnimationTimer = 0;
+			resultProgressionUIShow= !resultProgressionUIShow;
+		}
+
+
+		if (!resultsProgressionDone) {
+			internalTimer = 0;
+			greenResultProgressionPos.y += resultsProgressionSpeed * deltaTime;
+			blueResultProgressionPos.y += resultsProgressionSpeed * deltaTime;
+			if (greenResultProgressionPos.y > greenResultProgressionTargetPos.y) {
+				greenResultProgressionPos.y = greenResultProgressionTargetPos.y;	
+				greenResultFlagRenderer.PlayAniamtion("GreenResultClear");
+			}
+			if (blueResultProgressionPos.y > blueResultProgressionTargetPos.y) {
+				blueResultProgressionPos.y = blueResultProgressionTargetPos.y;
+				blueResultFlagRenderer.PlayAniamtion("BlueResultClear");
+			}
+			if (greenResultProgressionPos.y >= greenResultProgressionTargetPos.y && blueResultProgressionPos.y >= blueResultProgressionTargetPos.y) {
+				resultsProgressionDone = true;
+			}
+		}
 		if (internalTimer >= RESULTS_TIME)
 			ChangeState(7);
 		break;
@@ -340,7 +394,6 @@ void GameController::UpdateGame()
 		ChangeState(6);
 	}
 	LevelManager::Instance().Update();
-	PointsParticlesManager::Instance().Update();
 	ParticleManager::Instance().Update();
 	bool isInTransition = player1.IsInBubbleMode() || ( player2.IsInBubbleMode());
 
@@ -424,6 +477,11 @@ void GameController::UpdateGame()
 
 			}
 			isHurryOnMode = false;
+
+			if(player1.isActive)
+				player1.SetLevel(LevelManager::Instance().GetActualLevelIndex());
+			if(player2.isActive)
+				player2.SetLevel(LevelManager::Instance().GetActualLevelIndex());
 		}	
 	}
 
@@ -452,12 +510,19 @@ void GameController::RenderUIEarly()
 	}
 
 	if (state == Results) {
-		float totalHeight = 20 * TILE_SIZE;
-		float stepHeight = totalHeight/100;
-		float currentHeight = (LevelManager::Instance().GetActualLevelIndex() - 1) * stepHeight;
-		Vector2 offset = { 13 * TILE_SIZE,5 * TILE_SIZE };
+		
+		greenResultFlagRenderer.UpdateAnimation();
+		blueResultFlagRenderer.UpdateAnimation();
 
-		DrawRectangle(offset.x, offset.y + currentHeight, TILE_SIZE * 2, TILE_SIZE / TILE_REAL_SIZE, GREEN);
+		greenResultFlagRenderer.Draw(greenResultProgressionPos.x - TILE_SIZE * 12, greenResultProgressionPos.y - TILE_SIZE,0,WHITE);
+		blueResultFlagRenderer.Draw(blueResultProgressionPos.x + TILE_SIZE * 2, blueResultProgressionPos.y - TILE_SIZE,0,WHITE);
+		DrawRectangle(greenResultProgressionPos.x, greenResultProgressionPos.y, TILE_SIZE * 2, TILE_SIZE / TILE_REAL_SIZE, GREEN);
+		DrawRectangle(blueResultProgressionPos.x, blueResultProgressionPos.y, TILE_SIZE * 2, TILE_SIZE / TILE_REAL_SIZE, {0,176,255,255});
+		if (resultProgressionUIShow) {
+			DrawRectangle(recordResultProgressionPos.x, recordResultProgressionPos.y, TILE_SIZE * 2, TILE_SIZE / TILE_REAL_SIZE, { 255 ,0,115,255});
+			recordLevelUI.Render();
+		}
+			
 	}
 
 }
@@ -468,14 +533,12 @@ void GameController::RenderGameEarly()
 	ObjectsManager::Instance().Render();
 	BubbleManager::Instance().Render();
 	EnemyManager::Instance().Render();
-	PointsParticlesManager::Instance().Render();
 	ParticleManager::Instance().Render();
 	if (DebugMode) {
 		LevelManager::Instance().Debug();
 		ObjectsManager::Instance().Debug();
 		BubbleManager::Instance().Debug();
 		EnemyManager::Instance().Debug();
-		PointsParticlesManager::Instance().Debug();
 		ParticleManager::Instance().Debug();
 	}
 }
@@ -566,16 +629,16 @@ void GameController::ChangeLevelRecordUI(int level)
 	if (levelNumber > 9) {
 		int num = levelNumber % 10;
 		int numTile = FromNumberToTile(num);
-		resultScreenUI.ModifyTile(28, 3, FromNumberToTile(numTile)-64);
+		recordLevelUI.ModifyTile(9, 0, FromNumberToTile(numTile)-64);
 		levelNumber -= num;
 		levelNumber /= 10;
 		num = levelNumber % 10;
 		numTile = FromNumberToTile(num);
-		resultScreenUI.ModifyTile(27, 3, FromNumberToTile(numTile)-64);
+		recordLevelUI.ModifyTile(8, 0, FromNumberToTile(numTile)-64);
 	}
 	else {
-		resultScreenUI.ModifyTile(28, 3, FromNumberToTile(levelNumber)-64);
-		resultScreenUI.ModifyTile(27, 3, 63);
+		recordLevelUI.ModifyTile(9, 0, FromNumberToTile(levelNumber)-64);
+		recordLevelUI.ModifyTile(8, 0, 63);
 	}
 }
 

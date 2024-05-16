@@ -797,3 +797,10 @@ void Player::Reset()
 }
 
 
+void Player::SetLevel(int level) {
+	levelArrived = level;
+}
+int Player::GetLevel() {
+	return levelArrived;
+}
+

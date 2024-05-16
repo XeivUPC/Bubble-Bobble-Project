@@ -3,6 +3,7 @@
 #include "TextureManager.hpp"
 #include "AudioManager.hpp"
 #include "Player.hpp"
+#include "PointParticle.hpp"
 
 Fruit::Fruit(Vector2 tileIndex, Vector2 pos, int points)
 {
@@ -56,6 +57,7 @@ void Fruit::CheckCollisions()
 
 void Fruit::Use(Entity* user)
 {
+	ParticleManager::Instance().AddParticle(new PointParticle({position.x, position.y -TILE_SIZE}, pointValue));
 	Player* player = dynamic_cast<Player*>(user);
 	player->puntuationController->ModifyPuntutation(pointValue);
 	ObjectsManager::Instance().RemoveObject(this);

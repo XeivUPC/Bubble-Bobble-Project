@@ -1,15 +1,16 @@
 #pragma once
-#include "Entity.hpp"
-class PointParticle : public Entity
+#include "Particle.hpp"
+class PointParticle : public Particle
 {
+#define LIFE_TIME 2
 public:
-    PointParticle();
+    PointParticle(Vector2 position, int points);
     ~PointParticle();
     void Update() override;
     void Render() override;
-    void Debug() override;
-    void SetPointsValue(int value);
 private:
     int pointsValue;
+    AnimationRenderer renderer;
+    float speed = 8 * TILE_SIZE;
 };
 

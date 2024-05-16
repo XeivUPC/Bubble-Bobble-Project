@@ -5,6 +5,7 @@
 #include "TilemapConfiguration.h"
 #include "PlayerDeadParticle.hpp"
 #include "PlayerConfuseParticle.hpp"
+#include "PointParticle.hpp"
 
 #define PLAYER_SHOOT_INTERVAL  0.5
 #define PLAYER_SHOOT_ANIMATION  0.4
@@ -67,6 +68,8 @@ public:
 	bool CanBeHit_GOD_MODE();
 	void SetIfCanBeHitted(bool value);
 	void SetIfCanBeHitted_GOD_MODE(bool value);
+	void SetLevel(int level);
+	int GetLevel();
 
 	Rectangle GetCollision();
 
@@ -86,6 +89,7 @@ private:
 
 	bool player1 = false;
 	int lifes = 3;
+	int levelArrived = 1;
 
 	Vector2 spawnPoint = { 3,27 };
 	Vector2 startPoint = { 3,27 };
