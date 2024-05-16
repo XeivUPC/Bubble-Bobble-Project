@@ -196,7 +196,20 @@ void Bubble::Debug() {
 	DrawCircle(position.x + TILE_SIZE / 1.5f, position.y , TILE_SIZE / 5, YELLOW);
 	DrawCircle(position.x - TILE_SIZE / 1.5f, position.y , TILE_SIZE / 5, YELLOW);
 
-	DrawCircle(position.x , position.y , TILE_SIZE / 5, RED);
+	DrawCircle(position.x, position.y, TILE_SIZE / 5, RED);
+
+	Rectangle collision = GetJumpCollision();
+	DrawRectangle(collision.x, collision.y, collision.width, collision.height, { 0,0,255,100});
+
+	collision = GetLeftCollision();
+	DrawRectangle(collision.x, collision.y, collision.width, collision.height, { 255,255,0,100 });
+
+	collision = GetRightCollision();
+	DrawRectangle(collision.x, collision.y, collision.width, collision.height, { 255,255,0,100 });
+
+	collision = GetBottomCollision();
+	DrawRectangle(collision.x, collision.y, collision.width, collision.height, { 255,255,0,100 });
+
 }
 
 void Bubble::Reset()
@@ -236,6 +249,61 @@ bool Bubble::IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX)
 void Bubble::SetPlayerPosession(bool isPlayer1)
 {
 	isPlayer1Bubble = isPlayer1;
+}
+
+Rectangle Bubble::GetJumpCollision()
+{
+	Rectangle collision = { position.x - TILE_SIZE*0.7, position.y - TILE_SIZE, TILE_SIZE*1.4, TILE_SIZE / 1.5 };
+	return collision;
+}
+
+Rectangle Bubble::GetRightCollision()
+{
+	Rectangle collision = { position.x + TILE_SIZE - TILE_SIZE / 1.5, position.y - TILE_SIZE * 0.7f, TILE_SIZE / 1.5f, TILE_SIZE * 1.4 };
+	return collision;
+}
+
+Rectangle Bubble::GetLeftCollision()
+{
+	Rectangle collision = { position.x - TILE_SIZE, position.y - TILE_SIZE * 0.7f, TILE_SIZE / 1.5f, TILE_SIZE * 1.4 };
+	return collision;
+}
+
+Rectangle Bubble::GetBottomCollision()
+{
+	Rectangle collision = { position.x - TILE_SIZE * 0.7, position.y + TILE_SIZE - TILE_SIZE / 1.5, TILE_SIZE * 1.4, TILE_SIZE / 1.5 };
+	return collision;
+}
+
+Rectangle Bubble::GetKillCollision()
+{
+	Rectangle collision = { position.x - TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2 };
+	return collision;
+}
+
+int Bubble::GetState()
+{
+	return state;
+}
+
+bool Bubble::KillEnemyInside(int* points)
+{
+	if (enemyInside != nullptr) {
+		enemyInside->isActive=false;
+		enemyInside->RemoveFromBubble();
+		*points = enemyInside->GetPoints();
+		enemyInside = nullptr;
+		return true;
+	}
+	*points = 0;
+	enemyInside = nullptr;
+	return false;
+}
+
+void Bubble::SetDirectionOffset(Vector2 offset)
+{
+	directionOffset.x = offset.x;
+	directionOffset.y = offset.y;
 }
 
 void Bubble::CheckCollisions()

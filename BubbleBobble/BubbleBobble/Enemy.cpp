@@ -106,6 +106,11 @@ Rectangle Enemy::GetCollider()
 	return Rectangle{0,0,0,0};
 }
 
+int Enemy::GetPoints()
+{
+	return pointsToGive;
+}
+
 void Enemy::DrawDebug()
 {
 }

@@ -67,6 +67,11 @@ void BubbleManager::PopAll()
 	}
 }
 
+int BubbleManager::GetBubbleAmount()
+{
+	return MAX_BUBBLES_POOL;
+}
+
 Bubble* BubbleManager::GetBubble()
 {
 	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)

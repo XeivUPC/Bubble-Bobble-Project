@@ -14,9 +14,11 @@
 #define ORANGE_BUBBLE_PHASE_TIME 13
 #define RED_BUBBLE_PHASE_TIME 14
 
+
 class Bubble : public Entity
 {
 public:
+	
 	Bubble();
 	~Bubble();
 	void Update() override;
@@ -26,6 +28,14 @@ public:
 	void Pop();
 	bool IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX);
 	void SetPlayerPosession(bool isPlayer1);
+	Rectangle GetJumpCollision();
+	Rectangle GetRightCollision();
+	Rectangle GetLeftCollision();
+	Rectangle GetBottomCollision();
+	Rectangle GetKillCollision();
+	int GetState();
+	bool KillEnemyInside(int* points);
+	void SetDirectionOffset(Vector2 offset);
 private:
 	
 	enum BubbleState
@@ -37,7 +47,7 @@ private:
 	void CheckCollisions();
 	void SetDirectionByTile();
 	bool CheckEnemyCollisions();
-	float bubbleSpeed = 24;
+	float bubbleSpeed = 20;
 	float bubbleInertiaSpeed = 16*10;
 	bool isPlayer1Bubble = true;
 	Enemy* enemyInside = nullptr;

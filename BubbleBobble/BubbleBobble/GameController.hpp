@@ -88,11 +88,15 @@ private:
 	TilemapController coinInsertedScreen = TilemapController("../Assets/UI/CoinInsertedScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController loadingGameScreen = TilemapController("../Assets/UI/LoadingGameScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController controlsScreen = TilemapController("../Assets/UI/ControlsUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController gameOverScreen = TilemapController("../Assets/UI/GameOverScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 
 	TilemapController newRoundUI = TilemapController("../Assets/UI/NewRoundUI.json", 64, Vector2{ 8,3 });
 
 
 	TilemapController lifesHUD = TilemapController(nullptr, 64, Vector2{ GAME_TILE_WIDTH,1 });
+
+	TilemapController resultScreen = TilemapController("../Assets/UI/ResultsScreen.json", 32, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController resultScreenUI = TilemapController("../Assets/UI/ResultsScreenUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 
 
 	TilemapController player1PointsMap = TilemapController(nullptr,64 ,Vector2{ 8,1,});
@@ -117,6 +121,8 @@ private:
 	#define TUTORIAL_TIME 15
 	#define LOADING_GAME_TIME 8
 	#define LOADING_GAME_SHOOT_TIME 0.2
+	#define RESULTS_TIME 6
+	#define GAME_OVER_TIME 3
 
 	#define MAX_COINS 9
 
@@ -126,7 +132,7 @@ private:
 	/// Game
 	#define START_GAME_DELAY 1.5f
 	#define HURRY_MODE_TIME_HOLD 2
-	#define HURRY_MODE_TIME_WAIT 5
+	#define HURRY_MODE_TIME_WAIT 30
 	#define END_LEVEL_TIME_WAIT 4
 
 };

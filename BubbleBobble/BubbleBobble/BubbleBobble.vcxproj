@@ -159,6 +159,7 @@
     <ClInclude Include="Level.hpp" />
     <ClInclude Include="LevelManager.hpp" />
     <ClInclude Include="LoadingScreenParticle.hpp" />
+    <ClInclude Include="LoadingScreenStaticParticle.hpp" />
     <ClInclude Include="Maita.hpp" />
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="Object.hpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LoadingScreenParticle.cpp" />
+    <ClCompile Include="LoadingScreenStaticParticle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maita.cpp" />
     <ClCompile Include="Object.cpp" />

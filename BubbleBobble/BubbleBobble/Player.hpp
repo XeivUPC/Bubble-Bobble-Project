@@ -21,6 +21,9 @@
 #define BUBBLE_HOLD_TIME 0.4
 #define BUBBLE_POP_TIME 0.4
 
+
+#define BUBBLE_JUMP_COYOTE 0.05
+
 class Player : public Entity
 {
 public:
@@ -126,6 +129,10 @@ private:
 	int frameCount = 0;
 
 
+
+	///BubbleMove
+	float bubbleJumpTimer;
+	bool isOnBubble=false;
 
 };
 

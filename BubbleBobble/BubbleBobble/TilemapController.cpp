@@ -116,8 +116,8 @@ void TilemapController::Render() {
 		{
 			float valueOfTile = GetTile((int)y * dimensions.x + (int)x);
 			if (valueOfTile != 0) {
-				float yOffset = floor(valueOfTile / rowTiles);
-				float xOffset = floor(valueOfTile - yOffset * rowTiles);
+				float yOffset = floor((valueOfTile-1) / rowTiles);
+				float xOffset = floor((valueOfTile) - yOffset * rowTiles);
 				xOffset--;
 				renderer.Paint(texture, Vector2{ (x)*TILE_SIZE,(y)*TILE_SIZE }, Vector2{ xOffset,yOffset }, {TILE_SIZE,TILE_SIZE}, 0);
 			}

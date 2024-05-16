@@ -31,6 +31,7 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Jump.wav", "Jump");
 	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Shoot.wav", "ShootBubble");
 	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Death.wav", "Death");
+	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/KillEnemy.wav", "KillEnemy");
 
 	Animation walkAnim = { TextureManager::Instance().GetTexture(textureName) ,0.07f };
 	walkAnim.frames.push_back({ 0 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });
@@ -171,14 +172,14 @@ void Player::Shoot()
 
 void Player::TryJump()
 {
-	if (isGrounded) {
+	if (isGrounded || (direction.y>0 && bubbleJumpTimer < BUBBLE_JUMP_COYOTE)) {
 		AudioManager::Instance().PlaySoundByName("Jump");
 		isGrounded = false;
 		isJumping = true;
 		jumpCurrentSpeed = jumpInitialSpeed;
 		jumpStartYPoint = position.y;
 		direction.y = -1;
-
+		bubbleJumpTimer = 0;
 		if (direction.x != 0)
 			speed.x = jumpXSpeed * direction.x;
 		else
@@ -305,8 +306,10 @@ void Player::CheckCollisions()
 	Level& level = *LevelManager::Instance().GetActiveLevel();
 
 	Rectangle PlayerCollisionBottom = { position.x - (TILE_SIZE) * 0.8, position.y, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
-	Rectangle PlayerCollisionLeft = { position.x - (TILE_SIZE) - TILE_SIZE * 0.1, position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+	Rectangle PlayerCollisionLeft = { position.x - (TILE_SIZE)-TILE_SIZE * 0.1, position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+	Rectangle PlayerCollisionLeftFull = { position.x - (TILE_SIZE) - TILE_SIZE * 0.1, position.y - TILE_SIZE * 2, TILE_SIZE * 0.1 , TILE_SIZE * 2 };
 	Rectangle PlayerCollisionRight = { position.x + (TILE_SIZE), position.y - TILE_SIZE * 1.5, TILE_SIZE * 0.1 , TILE_SIZE * 1 };
+	Rectangle PlayerCollisionRightFull = { position.x + (TILE_SIZE), position.y - TILE_SIZE * 2, TILE_SIZE * 0.1 , TILE_SIZE * 2 };
 	Rectangle PlayerCollisionTop = { position.x - (TILE_SIZE) * 0.8, position.y - TILE_SIZE * 2, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
 
 	int Offset = -TILE_SIZE * 0.1f;
@@ -404,6 +407,54 @@ void Player::CheckCollisions()
 		isJumping = false;
 		position.y = fixPosition.y;
 	}
+
+	//// Bubbles
+
+	Rectangle BubbleKill = { position.x - (TILE_SIZE) * 0.6, position.y - TILE_SIZE * 1.6, TILE_SIZE * 1.4, TILE_SIZE * 1 };
+
+	isOnBubble = false;
+	BubbleManager& bubbleManager = BubbleManager::Instance();
+	for (size_t i = 0; i < bubbleManager.GetBubbleAmount(); i++)
+	{
+		Bubble* bubble = bubbleManager.GetBubbleByIndex(i);
+		if (bubble->isActive) {
+			if (!isOnBubble) {
+				if (CheckCollisionRecs(bubble->GetJumpCollision(), PlayerCollisionBottom)) {
+					isOnBubble = true;
+				}
+			}
+			if (bubble->GetState() == 1) {
+				if (CheckCollisionRecs(bubble->GetKillCollision(), BubbleKill)) {
+					int points = 0;
+					if (bubble->KillEnemyInside(&points)) {
+						puntuationController->ModifyPuntutation(points);
+						AudioManager::Instance().PlaySoundByName("KillEnemy");
+					}
+					else {
+						puntuationController->ModifyPuntutation(10);
+					}
+					bubble->Pop();
+					
+				}
+				else
+				{
+					if (CheckCollisionRecs(bubble->GetLeftCollision(), PlayerCollisionRightFull)) {
+						bubble->SetDirectionOffset({direction.x*3,0});
+					}
+					if (CheckCollisionRecs(bubble->GetRightCollision(), PlayerCollisionLeftFull)) {
+						bubble->SetDirectionOffset({ direction.x*3,0 });
+					}
+					if (CheckCollisionRecs(bubble->GetBottomCollision(), PlayerCollisionTop)) {
+						bubble->SetDirectionOffset({ 0,direction.y*4 });
+					}
+
+				}
+			}
+			
+			
+		}
+	}
+	
 }
 
 
@@ -421,6 +472,10 @@ void Player::Update()
 	switch (state) {
 	case Normal:
 		shootTimer += deltaTime;
+		if (!isOnBubble)
+			bubbleJumpTimer += deltaTime;
+		else
+			bubbleJumpTimer = 0;
 		GetInput();
 		Move();
 		break;
@@ -617,6 +672,11 @@ void Player::Debug() {
 
 	Rectangle PlayerCollisionTop = { position.x - (TILE_SIZE) * 0.8, position.y - TILE_SIZE * 2, TILE_SIZE * 1.6, TILE_SIZE * 0.1 };
 
+	Rectangle PlayerCollisionLeftFull = { position.x - (TILE_SIZE)-TILE_SIZE * 0.1, position.y - TILE_SIZE * 2, TILE_SIZE * 0.1 , TILE_SIZE * 2 };
+	Rectangle PlayerCollisionRightFull = { position.x + (TILE_SIZE), position.y - TILE_SIZE * 2, TILE_SIZE * 0.1 , TILE_SIZE * 2 };
+
+	DrawRectangle(PlayerCollisionLeftFull.x, PlayerCollisionLeftFull.y, PlayerCollisionLeftFull.width, PlayerCollisionLeftFull.height, GREEN);
+	DrawRectangle(PlayerCollisionRightFull.x, PlayerCollisionRightFull.y, PlayerCollisionRightFull.width, PlayerCollisionRightFull.height, GREEN);
 
 	DrawRectangle(PlayerCollisionBottom.x, PlayerCollisionBottom.y, PlayerCollisionBottom.width, PlayerCollisionBottom.height, RED);
 	DrawRectangle(PlayerCollisionLeft.x, PlayerCollisionLeft.y, PlayerCollisionLeft.width, PlayerCollisionLeft.height, RED);
@@ -624,6 +684,8 @@ void Player::Debug() {
 	DrawRectangle(PlayerCollisionTop.x, PlayerCollisionTop.y, PlayerCollisionTop.width, PlayerCollisionTop.height, RED);
 
 	DrawRectangle(position.x - TILE_SIZE, position.y - (TILE_SIZE * 2), TILE_SIZE * 2, TILE_SIZE * 2, { 255,255,255,100 });
+
+	DrawRectangle(position.x - (TILE_SIZE) * 0.6, position.y - TILE_SIZE * 1.6, TILE_SIZE * 1.4, TILE_SIZE * 1, { 255,0,0,100 });
 }
 
 void Player::TpToSpawnPoint()

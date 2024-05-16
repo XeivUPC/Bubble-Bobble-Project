@@ -119,6 +119,8 @@ string Level::GetEnemiesData()
 
 bool Level::IsTile(int x, int y, int* dataMap)
 {
+	if (x < 0 || x >= GAME_TILE_WIDTH || y < 0 || y >= GAME_TILE_HEIGHT)
+		return false;
 	if (dataMap[y * (int)GAME_TILE_WIDTH + x] != 0)
 		return true;
 	return false;

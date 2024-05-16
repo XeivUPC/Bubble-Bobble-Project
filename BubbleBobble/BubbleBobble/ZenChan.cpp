@@ -12,7 +12,7 @@ ZenChan::ZenChan(Vector2 tilePos, int lookAt)
 	walkAngrySpeed = walkSpeed * 2;
 	direction.x = lookAt;
 	internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
-
+	pointsToGive = 1000;
 
 	if (direction.x < 0) {
 		renderer.FlipX(true);

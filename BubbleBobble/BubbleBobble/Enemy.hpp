@@ -23,7 +23,7 @@ public:
 	void virtual CheckCollisions();
 	Rectangle virtual GetCollider();
 	bool isAngry = false;
-
+	int GetPoints();
 protected:
 	void virtual DrawDebug();
 	AnimationRenderer renderer;
@@ -34,7 +34,7 @@ protected:
 	float speed;
 	Entity* currentTarget = nullptr;
 	float retargetTimer = RETARGET_TIME;
-
+	float pointsToGive = 100;
 
 	bool isInsideBubble=false;
 	bool canBeInsideBubble = true;

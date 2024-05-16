@@ -6,12 +6,16 @@
 #include "ObjectsManager.hpp"
 #include "PointsParticlesManager.hpp"
 #include "LoadingScreenParticle.hpp"
+#include "LoadingScreenStaticParticle.hpp"
 #include "ZenChan.hpp"
 #include <iostream>
 
 
 GameController::GameController()
 {
+	ParticleManager::Instance();
+	LevelManager::Instance();
+
 	AudioManager& audioManager = AudioManager::Instance();
 	audioManager.CreateSound("../Assets/Sounds/SFX/Pause.wav","StartGame");
 	audioManager.CreateSound("../Assets/Sounds/SFX/Credito.wav","InsertCoin");
@@ -19,6 +23,8 @@ GameController::GameController()
 	audioManager.CreateMusic("../Assets/Sounds/Music/02_Room Theme (The Quest Begins).ogg","IntroSong");
 	audioManager.CreateMusic("../Assets/Sounds/Music/03_Room Theme.ogg","GameSong");
 	audioManager.CreateMusic("../Assets/Sounds/Music/06_Room Theme - Hurry (No Intro).ogg","GameHurryModeSong");
+	audioManager.CreateMusic("../Assets/Sounds/Music/10_Thanks.ogg","ResultsSong");
+	audioManager.CreateMusic("../Assets/Sounds/Music/12_Game Over.ogg","GameOverSong");
 
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/Text.png","TextUI");
 	TextureManager::Instance().CreateTexture("../Assets/Sprites/TextTransparent.png","TextUITransparent");
@@ -30,6 +36,7 @@ GameController::GameController()
 	coinInsertedScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	loadingGameScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	controlsScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
+	gameOverScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 
 	lifesHUD.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
 	lifesHUD.ModifyRenderer().ChangeDisplacement({ 0,(GAME_TILE_HEIGHT-1) * TILE_SIZE });
@@ -37,6 +44,9 @@ GameController::GameController()
 	newRoundUI.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
 	newRoundUI.ModifyRenderer().ChangeDisplacement({ ((GAME_TILE_WIDTH/ 2)-4) * TILE_SIZE,((GAME_TILE_HEIGHT/2)-1) * TILE_SIZE });
 	newRoundUI.isActive = false;
+
+	resultScreen.SetTexture(TextureManager::Instance().GetTexture("MapTileSet"));
+	resultScreenUI.SetTexture(TextureManager::Instance().GetTexture("TextUITransparent"));
 	
 
 	player1PointsMap.ModifyRenderer().ChangeDisplacement({ 0, 1.f * TILE_SIZE });
@@ -53,8 +63,10 @@ GameController::GameController()
 	hurryModeRenderer.AddAnimation("HurryMode",animHUrryMode);
 	hurryModeRenderer.PlayAniamtion("HurryMode");
 
+	
 
-	ChangeState(0);
+
+	ChangeState(5);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -108,6 +120,10 @@ void GameController::ChangeState(int stateIndex)
 	loadingGameScreen.isActive = false;
 	controlsScreen.isActive = false;
 	newRoundUI.isActive = false;
+	resultScreen.isActive = false;
+	resultScreenUI.isActive = false;
+	gameOverScreen.isActive = false;
+
 
 	std::cout << "Game State Changed --> " << state << std::endl;
 	switch (state)
@@ -140,7 +156,7 @@ void GameController::ChangeState(int stateIndex)
 		audioManager.PlayMusicByName("IntroSong");
 		player1.SetState(6);
 		player2.SetState(6);
-
+		ParticleManager::Instance().AddParticle(new LoadingScreenStaticParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, LOADING_GAME_TIME - 2));
 		break;
 	case GameController::GameScreen:
 		ParticleManager::Instance().DestroyAll();
@@ -159,11 +175,18 @@ void GameController::ChangeState(int stateIndex)
 		break;
 	case GameController::Results:
 		audioManager.StopMusicByName("GameSong");
-		AudioManager::Instance().StopMusicByName("GameHurryModeSong");
-		ChangeState(7);
+		audioManager.StopMusicByName("GameHurryModeSong");
+		audioManager.PlayMusicByName("ResultsSong");
+		topUI.isActive = true;
+		resultScreen.isActive = true;
+		resultScreenUI.isActive = true;
 		break;
 	case GameController::GameOver:
-		ChangeState(0);
+		audioManager.StopMusicByName("ResultsSong");
+		audioManager.PlayMusicByName("GameOverSong");
+		audioManager.SetMusicLoopStatus("GameOverSong", false);
+		topUI.isActive = true;
+		gameOverScreen.isActive = true;
 		break;
 	default:
 		break;
@@ -212,14 +235,17 @@ void GameController::UpdateUI()
 		player2.position.x = (GAME_TILE_WIDTH-8) * TILE_SIZE - sin(internalTimer * 6) * TILE_SIZE * 1;
 		player2.position.y = 15 * TILE_SIZE + cos(internalTimer * 6) * TILE_SIZE * 1;
 
-		loadingShootTimer += deltaTime;
-		if (loadingShootTimer >= LOADING_GAME_SHOOT_TIME) {
-			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { - sin(internalTimer * 6),0+ cos(internalTimer * 6) }));
-			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(PI / 2 + internalTimer * 6), cos(PI / 2 + internalTimer * 6) }));
-			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, {  -sin(PI + internalTimer * 6), cos(PI + internalTimer * 6) }));
-			ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(3 * PI / 2 + internalTimer * 6), cos(3 * PI / 2 + internalTimer * 6) }));
-			loadingShootTimer = 0;
+		if (internalTimer < LOADING_GAME_TIME - 2) {
+			loadingShootTimer += deltaTime;
+			if (loadingShootTimer >= LOADING_GAME_SHOOT_TIME) {
+				ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(internalTimer * 6),0 + cos(internalTimer * 6) }));
+				ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(PI / 2 + internalTimer * 6), cos(PI / 2 + internalTimer * 6) }));
+				ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(PI + internalTimer * 6), cos(PI + internalTimer * 6) }));
+				ParticleManager::Instance().AddParticle(new LoadingScreenParticle({ GAME_TILE_WIDTH / 2 * TILE_SIZE, 15 * TILE_SIZE }, { -sin(3 * PI / 2 + internalTimer * 6), cos(3 * PI / 2 + internalTimer * 6) }));
+				loadingShootTimer = 0;
+			}
 		}
+		
 		ParticleManager::Instance().Update();
 		if (internalTimer > LOADING_GAME_TIME)
 			ChangeState(5);
@@ -242,10 +268,12 @@ void GameController::UpdateUI()
 
 		break;
 	case GameController::Results:
-
+		if (internalTimer >= RESULTS_TIME)
+			ChangeState(7);
 		break;
 	case GameController::GameOver:
-
+		if (internalTimer >= GAME_OVER_TIME)
+			ChangeState(0);
 		break;
 	case GameController::Cover:
 		if (internalTimer >= COVER_SCREEN_TIME)
@@ -381,6 +409,7 @@ void GameController::UpdateGame()
 			if (isHurryOnMode) {
 				AudioManager::Instance().StopMusicByName("GameHurryModeSong");
 				AudioManager::Instance().PlayMusicByName("GameSong");
+
 			}
 			isHurryOnMode = false;
 		}	
@@ -402,9 +431,21 @@ void GameController::RenderUIEarly()
 	coinInsertedScreen.Render();
 	loadingGameScreen.Render();
 	controlsScreen.Render();
+	resultScreen.Render();
+	resultScreenUI.Render();
+	gameOverScreen.Render();
 	
 	if (state == Cover) {
 		DrawTextureEx(*TextureManager::Instance().GetTexture("IntroductionCover"), { 0,0 }, 0, TILE_SCALE_FACTOR, WHITE);
+	}
+
+	if (state == Results) {
+		float totalHeight = 20 * TILE_SIZE;
+		float stepHeight = totalHeight/100;
+		float currentHeight = (LevelManager::Instance().GetActualLevelIndex() - 1) * stepHeight;
+		Vector2 offset = { 13 * TILE_SIZE,5 * TILE_SIZE };
+
+		DrawRectangle(offset.x, offset.y + currentHeight, TILE_SIZE * 2, TILE_SIZE / TILE_REAL_SIZE, GREEN);
 	}
 
 }
