@@ -78,14 +78,14 @@ GameController::GameController()
 
 	int highScore = 0;
 	int* highScore_ptr = &highScore;
-	LoadGameData(highScore_ptr);
+	LoadGameData(highScore_ptr,"HighScore.txt");
 	highScorePoints.SetPuntutation(highScore);
 
 }
 
 GameController::~GameController()
 {
-	SaveGameData(highScorePoints.GetPuntuation());
+	SaveGameData(highScorePoints.GetPuntuation(),"HighScore.txt");
 }
 
 void GameController::Update()
@@ -124,6 +124,8 @@ void GameController::ChangeState(int stateIndex)
 	resultScreenUI.isActive = false;
 	gameOverScreen.isActive = false;
 
+	int record = 0;
+	int* actualRecord = &record;
 
 	std::cout << "Game State Changed --> " << state << std::endl;
 	switch (state)
@@ -180,6 +182,16 @@ void GameController::ChangeState(int stateIndex)
 		topUI.isActive = true;
 		resultScreen.isActive = true;
 		resultScreenUI.isActive = true;
+
+		
+		LoadGameData(actualRecord, "LevelRecord.txt");
+		if (*actualRecord < LevelManager::Instance().GetActualLevelIndex()) {
+			SaveGameData(LevelManager::Instance().GetActualLevelIndex(), "LevelRecord.txt");
+			*actualRecord = LevelManager::Instance().GetActualLevelIndex();
+		}
+		/// SetRecord
+		ChangeLevelRecordUI(record);
+
 		break;
 	case GameController::GameOver:
 		audioManager.StopMusicByName("ResultsSong");
@@ -544,22 +556,45 @@ void GameController::ChangeNextLevelUI()
 	}
 	else {
 		newRoundUI.ModifyTile(7, 0, FromNumberToTile(levelNumber));
-		newRoundUI.ModifyTile(6, 0, 336);
+		newRoundUI.ModifyTile(6, 0, 63);
 	}
 }
 
-void GameController::SaveGameData(int highScore)
+void GameController::ChangeLevelRecordUI(int level)
 {
+	int levelNumber =level;
+	if (levelNumber > 9) {
+		int num = levelNumber % 10;
+		int numTile = FromNumberToTile(num);
+		resultScreenUI.ModifyTile(28, 3, FromNumberToTile(numTile)-64);
+		levelNumber -= num;
+		levelNumber /= 10;
+		num = levelNumber % 10;
+		numTile = FromNumberToTile(num);
+		resultScreenUI.ModifyTile(27, 3, FromNumberToTile(numTile)-64);
+	}
+	else {
+		resultScreenUI.ModifyTile(28, 3, FromNumberToTile(levelNumber)-64);
+		resultScreenUI.ModifyTile(27, 3, 63);
+	}
+}
+
+void GameController::SaveGameData(int highScore, const char* name)
+{
+	string path = "../Assets/SaveData/";
+	path.append(name);
 	FILE* file;
-	file = fopen("../Assets/SaveData/HighScore.txt", "w");
+	file = fopen(path.c_str(), "w");
 	fprintf(file, "%d", highScore);
 	fclose(file);
 }
 
-void GameController::LoadGameData(int* highScore)
+void GameController::LoadGameData(int* highScore, const char* name)
 {
+	string path = "../Assets/SaveData/";
+	path.append(name);
 	FILE* file;
-	file = fopen("../Assets/SaveData/HighScore.txt", "r");
+	file = fopen(path.c_str(), "r");
 	fscanf(file, "%d", highScore);
 	fclose(file);
 }

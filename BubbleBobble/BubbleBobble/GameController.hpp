@@ -52,9 +52,10 @@ private:
 	void CheckInsertedCoinsSound();
 
 	void ChangeNextLevelUI();
+	void ChangeLevelRecordUI(int level);
 
-	void SaveGameData(int highScore);
-	void LoadGameData(int* highScore);
+	void SaveGameData(int highScore, const char* name);
+	void LoadGameData(int* highScore, const char* name);
 
 	int FromNumberToTile(int num);
 
