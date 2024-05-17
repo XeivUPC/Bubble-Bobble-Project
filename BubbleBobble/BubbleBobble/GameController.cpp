@@ -482,6 +482,9 @@ void GameController::UpdateGame()
 				player1.SetLevel(LevelManager::Instance().GetActualLevelIndex());
 			if(player2.isActive)
 				player2.SetLevel(LevelManager::Instance().GetActualLevelIndex());
+
+			if (LevelManager::Instance().IsLastLevel())
+				ChangeState(6);
 		}	
 	}
 

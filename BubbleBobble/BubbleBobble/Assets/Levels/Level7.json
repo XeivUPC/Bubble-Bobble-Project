@@ -41,7 +41,7 @@
                 {
                  "name":"Enemies",
                  "type":"string",
-                 "value":""
+                 "value":"ZenChan_3_7_1\nZenChan_29_7_-1\nZenChan_5_12_1\nZenChan_27_12_-1\nEND"
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -188,24 +188,24 @@
          "value":"#ff63638c"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.10.2",
  "tileheight":8,
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/TiledData\/Levels\/MapBlocks.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/MapBlocks.tsx"
         }, 
         {
          "firstgid":513,
-         "source":"..\/..\/TiledData\/Levels\/Collisions.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/Collisions.tsx"
         }, 
         {
          "firstgid":521,
-         "source":"..\/..\/TiledData\/Levels\/Directions.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/Directions.tsx"
         }, 
         {
          "firstgid":525,
-         "source":"..\/..\/TiledData\/Levels\/MapShadows.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/MapShadows.tsx"
         }],
  "tilewidth":8,
  "type":"map",

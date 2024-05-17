@@ -142,6 +142,10 @@ void ZenChan::Update()
 	position.x += direction.x * speed.x * deltaTime;
 	position.y += direction.y * speed.y * deltaTime;
 
+
+	if (position.y > (GAME_TILE_HEIGHT + 1.5) * TILE_SIZE)
+		position.y = 0;
+
 }
 
 void ZenChan::Render()
@@ -354,6 +358,10 @@ void ZenChan::CheckCollisions()
 			isGrounded = true;
 		}
 		
+	}
+
+	if (position.y > (GAME_TILE_HEIGHT ) * TILE_SIZE) {
+		isGrounded = false;
 	}
 
 	Rectangle collision = { position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE * 2 * 0.8, TILE_SIZE * 2 * 0.7, TILE_SIZE * 2 * 0.8 };

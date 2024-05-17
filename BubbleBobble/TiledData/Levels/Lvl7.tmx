@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="1">
  <editorsettings>
   <export target="../../Assets/Levels/Level4.json" format="json"/>
  </editorsettings>
@@ -12,7 +12,11 @@
  <tileset firstgid="525" source="MapShadows.tsx"/>
  <layer id="1" name="BuildLayer" width="32" height="30">
   <properties>
-   <property name="Enemies" value=""/>
+   <property name="Enemies">ZenChan_3_7_1
+ZenChan_29_7_-1
+ZenChan_5_12_1
+ZenChan_27_12_-1
+END</property>
   </properties>
   <data encoding="csv">
 455,456,193,193,193,193,193,193,193,0,0,0,0,193,193,193,193,193,193,0,0,0,0,193,193,193,193,193,193,193,455,456,

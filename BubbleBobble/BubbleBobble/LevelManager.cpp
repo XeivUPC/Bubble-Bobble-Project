@@ -70,6 +70,11 @@ bool LevelManager::IsOnTransition()
 	return isOnTransition;
 }
 
+bool LevelManager::IsLastLevel()
+{
+	return !(MAX_LEVELS >= nextLevelIndex);
+}
+
 Level* LevelManager::GetActiveLevel()
 {
 	return actualLevel;

@@ -28,6 +28,7 @@ public:
     void LoadNewWaitingLevel(int loadedLevelIndex);
     void LoadNewActiveLevel(int loadedLevelIndex);
     bool IsOnTransition();
+    bool IsLastLevel();
     Level* GetActiveLevel();
     Level* GetNextLoadedLevel();
     Renderer* GetRenderer();
