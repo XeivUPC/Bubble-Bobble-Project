@@ -16,7 +16,7 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 	if (this->player1)
 	{
 		spawnPoint = { 3,27 };
-		TextureManager::Instance().CreateTexture("../Assets/Sprites/Player.png", "Player1SpriteSheet");
+		TextureManager::Instance().CreateTexture("Assets/Sprites/Player.png", "Player1SpriteSheet");
 		textureName = "Player1SpriteSheet";
 		renderer.FlipX();
 		startPoint = { 9,21 };
@@ -25,13 +25,13 @@ Player::Player(Keys controlScheme, bool player1,PuntuationHolder* controllerPoin
 	{
 		spawnPoint = { 29,27 };
 		startPoint = { 23,21 };
-		TextureManager::Instance().CreateTexture("../Assets/Sprites/Player2.png", "Player2SpriteSheet");
+		TextureManager::Instance().CreateTexture("Assets/Sprites/Player2.png", "Player2SpriteSheet");
 		textureName = "Player2SpriteSheet";
 	}
-	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Jump.wav", "Jump");
-	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Shoot.wav", "ShootBubble");
-	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/Death.wav", "Death");
-	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/KillEnemy.wav", "KillEnemy");
+	AudioManager::Instance().CreateSound("Assets/Sounds/SFX/Jump.wav", "Jump");
+	AudioManager::Instance().CreateSound("Assets/Sounds/SFX/Shoot.wav", "ShootBubble");
+	AudioManager::Instance().CreateSound("Assets/Sounds/SFX/Death.wav", "Death");
+	AudioManager::Instance().CreateSound("Assets/Sounds/SFX/KillEnemy.wav", "KillEnemy");
 
 	Animation walkAnim = { TextureManager::Instance().GetTexture(textureName) ,0.07f };
 	walkAnim.frames.push_back({ 0 * TILE_REAL_SIZE*2, 0 * TILE_REAL_SIZE*2, TILE_REAL_SIZE*2, TILE_REAL_SIZE*2 });

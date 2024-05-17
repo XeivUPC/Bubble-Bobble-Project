@@ -7,8 +7,8 @@
 
 
 LevelManager::LevelManager() {
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/MapTileSet.png", "MapTileSet");
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/MapShadowsTileSet.png", "MapShadowsTileSet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/MapTileSet.png", "MapTileSet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/MapShadowsTileSet.png", "MapShadowsTileSet");
 }
 
 void LevelManager::LoadNewWaitingLevel(int loadedLevelIndex)
@@ -109,7 +109,7 @@ void LevelManager::EndTransition()
 
 string LevelManager::CreateFilePathName(int levelToGetNamePath)
 {
-	string path = "../Assets/Levels/Level";
+	string path = "Assets/Levels/Level";
 	path += to_string(levelToGetNamePath);
 	path += ".json";
 	return path;

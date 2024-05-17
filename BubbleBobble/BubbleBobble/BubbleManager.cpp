@@ -2,7 +2,7 @@
 #include "TextureManager.hpp"
 
 BubbleManager::BubbleManager() {
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/Bubble.png", "BubbleTileSet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Bubble.png", "BubbleTileSet");
 
 	bubblesPool = new Bubble[MAX_BUBBLES_POOL];
 	for (size_t i = 0; i < MAX_BUBBLES_POOL; i++)

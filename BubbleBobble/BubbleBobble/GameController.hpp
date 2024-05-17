@@ -100,22 +100,22 @@ private:
 
 
 
-	TilemapController topUI = TilemapController("../Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
-	TilemapController initialScreen = TilemapController("../Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController insertCoinScreen = TilemapController("../Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController coinInsertedScreen = TilemapController("../Assets/UI/CoinInsertedScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController loadingGameScreen = TilemapController("../Assets/UI/LoadingGameScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController controlsScreen = TilemapController("../Assets/UI/ControlsUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController gameOverScreen = TilemapController("../Assets/UI/GameOverScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController topUI = TilemapController("Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
+	TilemapController initialScreen = TilemapController("Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController insertCoinScreen = TilemapController("Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController coinInsertedScreen = TilemapController("Assets/UI/CoinInsertedScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController loadingGameScreen = TilemapController("Assets/UI/LoadingGameScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController controlsScreen = TilemapController("Assets/UI/ControlsUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController gameOverScreen = TilemapController("Assets/UI/GameOverScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 
-	TilemapController newRoundUI = TilemapController("../Assets/UI/NewRoundUI.json", 64, Vector2{ 8,3 });
+	TilemapController newRoundUI = TilemapController("Assets/UI/NewRoundUI.json", 64, Vector2{ 8,3 });
 
 
 	TilemapController lifesHUD = TilemapController(nullptr, 64, Vector2{ GAME_TILE_WIDTH,1 });
 
-	TilemapController resultScreen = TilemapController("../Assets/UI/ResultsScreen.json", 32, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController resultScreenUI = TilemapController("../Assets/UI/ResultsScreenUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
-	TilemapController recordLevelUI = TilemapController("../Assets/UI/RecordLevelUI.json", 64, Vector2{ 11,1 });
+	TilemapController resultScreen = TilemapController("Assets/UI/ResultsScreen.json", 32, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController resultScreenUI = TilemapController("Assets/UI/ResultsScreenUI.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
+	TilemapController recordLevelUI = TilemapController("Assets/UI/RecordLevelUI.json", 64, Vector2{ 11,1 });
 
 
 	TilemapController player1PointsMap = TilemapController(nullptr,64 ,Vector2{ 8,1,});

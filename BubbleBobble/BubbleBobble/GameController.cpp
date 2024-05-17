@@ -16,19 +16,19 @@ GameController::GameController()
 	LevelManager::Instance();
 
 	AudioManager& audioManager = AudioManager::Instance();
-	audioManager.CreateSound("../Assets/Sounds/SFX/Pause.wav","StartGame");
-	audioManager.CreateSound("../Assets/Sounds/SFX/Credito.wav","InsertCoin");
-	audioManager.CreateSound("../Assets/Sounds/SFX/HurryMode.wav","GameHurryModeStart");
-	audioManager.CreateMusic("../Assets/Sounds/Music/02_Room Theme (The Quest Begins).ogg","IntroSong");
-	audioManager.CreateMusic("../Assets/Sounds/Music/03_Room Theme.ogg","GameSong");
-	audioManager.CreateMusic("../Assets/Sounds/Music/06_Room Theme - Hurry (No Intro).ogg","GameHurryModeSong");
-	audioManager.CreateMusic("../Assets/Sounds/Music/10_Thanks.ogg","ResultsSong");
-	audioManager.CreateMusic("../Assets/Sounds/Music/12_Game Over.ogg","GameOverSong");
+	audioManager.CreateSound("Assets/Sounds/SFX/Pause.wav","StartGame");
+	audioManager.CreateSound("Assets/Sounds/SFX/Credito.wav","InsertCoin");
+	audioManager.CreateSound("Assets/Sounds/SFX/HurryMode.wav","GameHurryModeStart");
+	audioManager.CreateMusic("Assets/Sounds/Music/02_Room Theme (The Quest Begins).ogg","IntroSong");
+	audioManager.CreateMusic("Assets/Sounds/Music/03_Room Theme.ogg","GameSong");
+	audioManager.CreateMusic("Assets/Sounds/Music/06_Room Theme - Hurry (No Intro).ogg","GameHurryModeSong");
+	audioManager.CreateMusic("Assets/Sounds/Music/10_Thanks.ogg","ResultsSong");
+	audioManager.CreateMusic("Assets/Sounds/Music/12_Game Over.ogg","GameOverSong");
 
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/Text.png","TextUI");
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/TextTransparent.png","TextUITransparent");
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/IntroductionCover.png","IntroductionCover");
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/Points.png", "PointsParticlesTileSet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Text.png","TextUI");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/TextTransparent.png","TextUITransparent");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/IntroductionCover.png","IntroductionCover");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Points.png", "PointsParticlesTileSet");
 
 	topUI.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	initialScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
@@ -644,7 +644,7 @@ void GameController::ChangeLevelRecordUI(int level)
 
 void GameController::SaveGameData(int highScore, const char* name)
 {
-	string path = "../Assets/SaveData/";
+	string path = "Assets/SaveData/";
 	path.append(name);
 	FILE* file;
 	file = fopen(path.c_str(), "w");
@@ -654,7 +654,7 @@ void GameController::SaveGameData(int highScore, const char* name)
 
 void GameController::LoadGameData(int* highScore, const char* name)
 {
-	string path = "../Assets/SaveData/";
+	string path = "Assets/SaveData/";
 	path.append(name);
 	FILE* file;
 	file = fopen(path.c_str(), "r");

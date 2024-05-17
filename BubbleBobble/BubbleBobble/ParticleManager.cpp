@@ -2,7 +2,7 @@
 
 ParticleManager::ParticleManager()
 {
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/BasicParticles.png", "BasicParticlesTileset");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/BasicParticles.png", "BasicParticlesTileset");
 }
 
 ParticleManager::~ParticleManager()

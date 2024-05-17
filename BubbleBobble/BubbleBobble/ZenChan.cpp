@@ -21,7 +21,7 @@ ZenChan::ZenChan(Vector2 tilePos, int lookAt)
 		renderer.FlipX(false);
 	}
 
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/Enemy1.png", "ZenChanSpriteSheet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Enemy1.png", "ZenChanSpriteSheet");
 
 	Animation walkAnim = { TextureManager::Instance().GetTexture("ZenChanSpriteSheet") ,0.12f };
 	walkAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });

@@ -7,8 +7,8 @@
 
 Fruit::Fruit(Vector2 tileIndex, Vector2 pos, int points)
 {
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/Items.png", "ItemsSpriteSheet");
-	AudioManager::Instance().CreateSound("../Assets/Sounds/SFX/TakeFood.wav","EatFruit");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Items.png", "ItemsSpriteSheet");
+	AudioManager::Instance().CreateSound("Assets/Sounds/SFX/TakeFood.wav","EatFruit");
 	position = pos;
 	this->tileIndex = tileIndex;
 	pointValue = points;

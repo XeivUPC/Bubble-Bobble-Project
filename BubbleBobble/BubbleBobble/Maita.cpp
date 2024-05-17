@@ -13,7 +13,7 @@ Maita::Maita(Vector2 tilePos, int lookAt)
 	direction.x = lookAt;
 	internalTimer = MAITA_IA_RECALCULATION_TIME;
 
-	TextureManager::Instance().CreateTexture("../Assets/Sprites/Enemy3.png", "MaitaSpriteSheet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Enemy3.png", "MaitaSpriteSheet");
 
 	Animation walkAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.096f };
 	walkAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
