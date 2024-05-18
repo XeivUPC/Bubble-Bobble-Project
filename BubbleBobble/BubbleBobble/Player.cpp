@@ -167,6 +167,11 @@ void Player::Shoot()
 		shootTimer = 0;
 		bubble->direction = { -(float)renderer.GetFlippedXValue(),0 };
 		bubble->SetPlayerPosession(player1);
+		if(powerUp == None)
+			bubble->SetBubbleType(Bubble::BubbleType::Default);
+		if (powerUp == Electric)
+			bubble->SetBubbleType(Bubble::BubbleType::Electric);
+
 	}
 }
 
@@ -433,6 +438,7 @@ void Player::CheckCollisions()
 					else {
 						puntuationController->ModifyPuntutation(10);
 					}
+					bubble->SetPopDirection({ (renderer.IsFlippedX() ? -1.f : 1.f),0});
 					bubble->Pop();
 					
 				}

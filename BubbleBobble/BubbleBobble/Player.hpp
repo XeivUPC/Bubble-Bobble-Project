@@ -7,7 +7,7 @@
 #include "PlayerConfuseParticle.hpp"
 #include "PointParticle.hpp"
 
-#define PLAYER_SHOOT_INTERVAL  0.5
+#define PLAYER_SHOOT_INTERVAL  0.41
 #define PLAYER_SHOOT_ANIMATION  0.4
 
 #define INMORTAL_TIME 2
@@ -49,6 +49,11 @@ public:
 		PopBubble
 	};
 
+	enum PlayerPowerUps {
+		None,
+		Electric
+	};
+
 	Player(Keys controlScheme, bool player1, PuntuationHolder* controllerPoints);
 	~Player();
 	
@@ -86,6 +91,7 @@ private:
 	void CheckCollisions();
 
 	PlayerState state = StartBubble;
+	PlayerPowerUps powerUp = None;
 
 	bool player1 = false;
 	int lifes = 3;

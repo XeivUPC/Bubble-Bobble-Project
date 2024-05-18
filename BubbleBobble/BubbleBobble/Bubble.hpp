@@ -5,6 +5,7 @@
 #include "GameConfiguration.h"
 #include "AnimationRenderer.hpp"
 #include "BubbleExplodeParticle.hpp"
+#include "ElectricThunderBoltParticle.hpp"
 
 
 #define LIFE_TIME 15
@@ -17,8 +18,12 @@
 
 class Bubble : public Entity
 {
+	friend class Player;
 public:
-	
+	enum BubbleType {
+		Default,
+		Electric
+	};
 	Bubble();
 	~Bubble();
 	void Update() override;
@@ -26,6 +31,7 @@ public:
 	void Debug() override;
 	void Reset() override;
 	void Pop();
+	void SetPopDirection(Vector2 popDirection);
 	bool IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX);
 	void SetPlayerPosession(bool isPlayer1);
 	Rectangle GetJumpCollision();
@@ -34,6 +40,7 @@ public:
 	Rectangle GetBottomCollision();
 	Rectangle GetKillCollision();
 	int GetState();
+	void SetBubbleType(BubbleType type);
 	bool KillEnemyInside(int* points);
 	void SetDirectionOffset(Vector2 offset);
 private:
@@ -43,6 +50,7 @@ private:
 		ShootInertia,
 		Idle
 	};
+	BubbleType type = Default;
 	BubbleState state = ShootInertia;
 	void CheckCollisions();
 	void SetDirectionByTile();
@@ -55,4 +63,5 @@ protected:
 	//// Collisions Info
 	Vector2 directionOffset = { 0,0 };
 	AnimationRenderer renderer;
+	Vector2 popDirection{ 1,0 };
 };

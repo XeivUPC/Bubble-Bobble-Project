@@ -144,6 +144,7 @@
     <ClInclude Include="Bubble.hpp" />
     <ClInclude Include="BubbleExplodeParticle.hpp" />
     <ClInclude Include="BubbleManager.hpp" />
+    <ClInclude Include="ElectricThunderBoltParticle.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="EnemyManager.hpp" />
     <ClInclude Include="Entity.hpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Bubble.cpp" />
     <ClCompile Include="BubbleExplodeParticle.cpp" />
     <ClCompile Include="BubbleManager.cpp" />
+    <ClCompile Include="ElectricThunderBoltParticle.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Fruit.cpp" />

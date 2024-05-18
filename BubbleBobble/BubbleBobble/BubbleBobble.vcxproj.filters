@@ -124,6 +124,7 @@
     <ClInclude Include="PointParticle.hpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="ElectricThunderBoltParticle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -251,5 +252,6 @@
     <ClCompile Include="PointParticle.cpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="ElectricThunderBoltParticle.cpp" />
   </ItemGroup>
 </Project>

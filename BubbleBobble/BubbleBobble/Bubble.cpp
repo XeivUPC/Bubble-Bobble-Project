@@ -22,9 +22,13 @@ Bubble::Bubble()
 	blueModeInertia.frames.push_back({ 3 * TILE_REAL_SIZE * 2,1 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
 	blueModeInertia.frames.push_back({ 4 * TILE_REAL_SIZE * 2,1 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
 	blueModeInertia.frames.push_back({ 5 * TILE_REAL_SIZE * 2,1 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
-	
 
+	Animation pop = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.1f };
+	pop.frames.push_back({ 2 * TILE_REAL_SIZE * 2,3 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	pop.frames.push_back({ 3 * TILE_REAL_SIZE * 2,3 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
 
+#pragma region PowerUps
+#pragma region Default
 	Animation greenMode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,4 };
 	greenMode.frames.push_back({ 1 * TILE_REAL_SIZE * 2,2 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
 	Animation blueMode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,4 };
@@ -40,19 +44,57 @@ Bubble::Bubble()
 	explode.frames.push_back({ 4 * TILE_REAL_SIZE * 2,2 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
 	explode.frames.push_back({ 7 * TILE_REAL_SIZE * 2,2 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
 
-	Animation pop = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.1f };
-	pop.frames.push_back({ 2 * TILE_REAL_SIZE * 2,3 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
-	pop.frames.push_back({ 3 * TILE_REAL_SIZE * 2,3 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
-
-	
-
-	renderer.AddAnimation("BubbleGreenInertiaMode", greenModeInertia);
-	renderer.AddAnimation("BubbleBlueInertiaMode", blueModeInertia);
 	renderer.AddAnimation("BubbleGreenMode", greenMode);
 	renderer.AddAnimation("BubbleBlueMode", blueMode);
 	renderer.AddAnimation("BubbleOrangeMode", orangeMode);
 	renderer.AddAnimation("BubbleRedMode", redMode);
 	renderer.AddAnimation("BubbleExplodeMode", explode);
+#pragma endregion
+
+#pragma region Electric
+	Animation elctricGreenMode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.2f };
+	elctricGreenMode.frames.push_back({ 3 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricGreenMode.frames.push_back({ 4 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricGreenMode.frames.push_back({ 5 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	Animation elctricBlueMode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.2f };
+	elctricBlueMode.frames.push_back({ 12 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricBlueMode.frames.push_back({ 13 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricBlueMode.frames.push_back({ 14 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+
+	Animation elctricOrangeMode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.2f };
+	elctricOrangeMode.frames.push_back({ 6 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricOrangeMode.frames.push_back({ 7 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricOrangeMode.frames.push_back({ 8 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+
+	Animation elctricRedMode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.2f };
+	elctricRedMode.frames.push_back({ 9 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricRedMode.frames.push_back({ 10 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricRedMode.frames.push_back({ 11 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+
+	Animation elctricExplode = { TextureManager::Instance().GetTexture("BubbleTileSet") ,0.1f };
+	elctricExplode.frames.push_back({ 6 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricExplode.frames.push_back({ 9 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricExplode.frames.push_back({ 7 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricExplode.frames.push_back({ 10 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricExplode.frames.push_back({ 8 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+	elctricExplode.frames.push_back({ 11 * TILE_REAL_SIZE * 2,4 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 2 });
+
+	
+
+	renderer.AddAnimation("BubbleElectricGreenMode", elctricGreenMode);
+	renderer.AddAnimation("BubbleElectricBlueMode", elctricBlueMode);
+	renderer.AddAnimation("BubbleElectricOrangeMode", elctricOrangeMode);
+	renderer.AddAnimation("BubbleElectricRedMode", elctricRedMode);
+	renderer.AddAnimation("BubbleElectricExplodeMode", elctricExplode);
+
+#pragma endregion
+#pragma endregion
+
+
+	
+
+	renderer.AddAnimation("BubbleGreenInertiaMode", greenModeInertia);
+	renderer.AddAnimation("BubbleBlueInertiaMode", blueModeInertia);
 	renderer.AddAnimation("BubblePop", pop);
 	renderer.PlayAniamtion("BubbleGreenMode");
 }
@@ -156,9 +198,6 @@ void Bubble::Update()
 	default:
 		break;
 	}
-	
-	
-
 }
 
 void Bubble::Render()
@@ -170,16 +209,60 @@ void Bubble::Render()
 		isPlayer1Bubble ? renderer.PlayAniamtion("BubbleGreenInertiaMode") : renderer.PlayAniamtion("BubbleBlueInertiaMode");
 	}
 	else if (internalTimer < DEFAULT_BUBBLE_PHASE_TIME) {
-		isPlayer1Bubble ? renderer.PlayAniamtion("BubbleGreenMode") : renderer.PlayAniamtion("BubbleBlueMode");
+		switch (type)
+		{
+		case Bubble::Default:
+			isPlayer1Bubble ? renderer.PlayAniamtion("BubbleGreenMode") : renderer.PlayAniamtion("BubbleBlueMode");
+			break;
+		case Bubble::Electric:
+			isPlayer1Bubble ? renderer.PlayAniamtion("BubbleElectricGreenMode") : renderer.PlayAniamtion("BubbleElectricBlueMode");
+			break;
+		default:
+			break;
+		}
+		
 	}
 	else if (internalTimer < ORANGE_BUBBLE_PHASE_TIME) {
-		renderer.PlayAniamtion("BubbleOrangeMode");
+		switch (type)
+		{
+		case Bubble::Default:
+			renderer.PlayAniamtion("BubbleOrangeMode");
+			break;
+		case Bubble::Electric:
+			renderer.PlayAniamtion("BubbleElectricOrangeMode");
+			break;
+		default:
+			break;
+		}
+		
 	}
 	else if (internalTimer < RED_BUBBLE_PHASE_TIME) {
-		renderer.PlayAniamtion("BubbleRedMode");
+		switch (type)
+		{
+		case Bubble::Default:
+			renderer.PlayAniamtion("BubbleRedMode");
+			break;
+		case Bubble::Electric:
+			renderer.PlayAniamtion("BubbleElectricRedMode");
+			break;
+		default:
+			break;
+		}
+		
 	}
 	else if (internalTimer > RED_BUBBLE_PHASE_TIME) {
-		renderer.PlayAniamtion("BubbleExplodeMode");
+		switch (type)
+		{
+		case Bubble::Default:
+			renderer.PlayAniamtion("BubbleExplodeMode");
+			break;
+		case Bubble::Electric:
+			renderer.PlayAniamtion("BubbleElectricExplodeMode");
+			break;
+		default:
+			break;
+		}
+		
 	}
 	
 	renderer.Draw(position.x- TILE_SIZE, position.y - TILE_SIZE, 0, WHITE);
@@ -210,6 +293,10 @@ void Bubble::Debug() {
 	collision = GetBottomCollision();
 	DrawRectangle(collision.x, collision.y, collision.width, collision.height, { 255,255,0,100 });
 
+	if (type == Electric) {
+		DrawCircleLines(position.x, position.y, TILE_SIZE *2, RED);
+	}
+
 }
 
 void Bubble::Reset()
@@ -219,6 +306,7 @@ void Bubble::Reset()
 	internalTimer = 0;
 	direction = { 0,0 };
 	directionOffset = { 0,0 };
+	popDirection ={ 1,0 };
 	state = ShootInertia;
 	if (enemyInside != nullptr) {
 		enemyInside->RemoveFromBubble();
@@ -228,9 +316,35 @@ void Bubble::Reset()
 }
 
 void Bubble::Pop()
-{	if(state==Idle)
+{	
+	if(state==Idle)
 		ParticleManager::Instance().AddParticle(new BubbleExplodeParticle(position));
-	Reset();
+	if (type == Electric) {
+		ParticleManager::Instance().AddParticle(new ElectricThunderBoltParticle(position, popDirection));
+		Reset();
+		BubbleManager& manager = BubbleManager::Instance();
+		for (size_t i = 0; i < manager.GetBubbleAmount(); i++)
+		{	
+			Bubble* bubble = manager.GetBubbleByIndex(i);
+
+			if (!bubble->isActive)
+				continue;
+			if (bubble == this)
+				continue;
+			if (type != Electric)
+				continue;
+			if (CheckCollisionCircles({ position.x, position.y }, TILE_SIZE * 2, { bubble->position.x, bubble->position.y }, TILE_SIZE * 2)) {
+				bubble->SetPopDirection(popDirection);
+				bubble->Pop();
+			}
+		}
+	}
+	
+}
+
+void Bubble::SetPopDirection(Vector2 popDirection)
+{
+	this->popDirection = popDirection;
 }
 
 bool Bubble::IsInTileCenter(Vector2 tileMatrixPos, bool isAxisX)
@@ -271,7 +385,7 @@ Rectangle Bubble::GetLeftCollision()
 
 Rectangle Bubble::GetBottomCollision()
 {
-	Rectangle collision = { position.x - TILE_SIZE * 0.7, position.y + TILE_SIZE - TILE_SIZE / 1.5, TILE_SIZE * 1.4, TILE_SIZE / 1.5 };
+	Rectangle collision = { position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE/1.5, TILE_SIZE * 1.4, TILE_SIZE / 1.5 };
 	return collision;
 }
 
@@ -284,6 +398,11 @@ Rectangle Bubble::GetKillCollision()
 int Bubble::GetState()
 {
 	return state;
+}
+
+void Bubble::SetBubbleType(BubbleType type)
+{
+	this->type = type;
 }
 
 bool Bubble::KillEnemyInside(int* points)
@@ -464,9 +583,11 @@ void Bubble::SetDirectionByTile()
 
 bool Bubble::CheckEnemyCollisions()
 {
+
 	if (enemyInside != nullptr)
 		return false;
-
+	if (type != Default)
+		return false;
 	EnemyManager& manager = EnemyManager::Instance();
 	for (size_t i = 0; i < manager.enemies.size(); i++)
 	{

@@ -81,7 +81,7 @@ GameController::GameController()
 	blueResultFlagRenderer.AddAnimation("BlueResultClear", blueClearFlag);
 	blueResultFlagRenderer.PlayAniamtion("BlueResultRound");
 
-	ChangeState(8);
+	ChangeState(5);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
