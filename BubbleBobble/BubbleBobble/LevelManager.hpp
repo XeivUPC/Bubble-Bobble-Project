@@ -33,6 +33,7 @@ public:
     Level* GetNextLoadedLevel();
     Renderer* GetRenderer();
     int GetActualLevelIndex();
+    int GetNextLevelIndex();
 
 private:
     //Private constructor to prevent instantiation

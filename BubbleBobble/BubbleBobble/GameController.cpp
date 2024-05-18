@@ -218,10 +218,9 @@ void GameController::ChangeState(int stateIndex)
 		resultsProgressionDone = false;
 
 
-		greenResultProgressionTargetPos = { greenResultProgressionPos.x,greenResultProgressionPos.y + ((player1.GetLevel() - 1) * ((20.f * TILE_SIZE) / 100.f))};
-		blueResultProgressionTargetPos = { blueResultProgressionPos.x,blueResultProgressionPos.y + ((player2.GetLevel() - 1) * ((20.f * TILE_SIZE) / 100.f))};
+		greenResultProgressionTargetPos = { greenResultProgressionPos.x,greenResultProgressionPos.y + ((player1.GetLevel()-1) * ((20.f * TILE_SIZE) / 100.f))};
+		blueResultProgressionTargetPos = { blueResultProgressionPos.x,blueResultProgressionPos.y + ((player2.GetLevel()-1) * ((20.f * TILE_SIZE) / 100.f))};
 		recordResultProgressionPos = { recordResultProgressionPos.x,recordResultProgressionPos.y + (currentLevelRecord - 1) * ((20.f * TILE_SIZE) / 100.f)};
-
 		break;
 	case GameController::GameOver:
 		audioManager.StopMusicByName("ResultsSong");
@@ -334,8 +333,9 @@ void GameController::UpdateUI()
 			if (greenResultProgressionPos.y >= greenResultProgressionTargetPos.y && blueResultProgressionPos.y >= blueResultProgressionTargetPos.y) {
 				resultsProgressionDone = true;
 			}
-			greenProgressBarLevelNumber = ((greenResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100;
-			blueProgressBarLevelNumber = ((blueResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100;
+			greenProgressBarLevelNumber = ((greenResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100 +0.01f;
+			
+			blueProgressBarLevelNumber = ((blueResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100 + 0.01f;
 
 		}
 		if (internalTimer >= RESULTS_TIME)
@@ -483,9 +483,9 @@ void GameController::UpdateGame()
 			isHurryOnMode = false;
 
 			if(player1.isActive)
-				player1.SetLevel(LevelManager::Instance().GetActualLevelIndex());
+				player1.SetLevel(LevelManager::Instance().GetNextLevelIndex());
 			if(player2.isActive)
-				player2.SetLevel(LevelManager::Instance().GetActualLevelIndex());
+				player2.SetLevel(LevelManager::Instance().GetNextLevelIndex());
 
 			if (LevelManager::Instance().IsLastLevel())
 				ChangeState(6);
@@ -549,12 +549,12 @@ void GameController::RenderUIEarly()
 			num2 -= 5;
 			offset2 += 1;
 		}
-			printf("%d\n", num2);
+			
 
 		Vector2 positionText = { greenResultProgressionPos.x - TILE_SIZE * 9.7f ,greenResultProgressionPos.y + TILE_SIZE };
 		if (greenProgressBarLevelNumber < 10) {
 			positionText.x -= 0.4 * TILE_SIZE;
-			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, {(float)num1,0}, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, {(float)num1,(float)offset1 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
 		}
 		else if (greenProgressBarLevelNumber < 100) {
 			positionText.x -= 1 * TILE_SIZE;
@@ -592,7 +592,7 @@ void GameController::RenderUIEarly()
 		positionText = { blueResultProgressionPos.x + TILE_SIZE * 10.5f ,blueResultProgressionPos.y + TILE_SIZE };
 		if (blueProgressBarLevelNumber < 10) {
 			positionText.x -= 0.4 * TILE_SIZE;
-			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { (float)num1,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { (float)num1,(float)offset1 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
 		}
 		else if (blueProgressBarLevelNumber < 100) {
 			positionText.x -= 1 * TILE_SIZE;

@@ -95,6 +95,10 @@ int LevelManager::GetActualLevelIndex()
 {
 	return actualLevel->GetLevelIndex();
 }
+int LevelManager::GetNextLevelIndex()
+{
+	return nextLevel->GetLevelIndex();
+}
 
 void LevelManager::StartTransition()
 {

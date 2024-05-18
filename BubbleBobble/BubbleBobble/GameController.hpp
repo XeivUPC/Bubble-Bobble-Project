@@ -98,8 +98,8 @@ private:
 	float resultProgressionUIAnimationTimer = 0;
 	AnimationRenderer greenResultFlagRenderer;
 	AnimationRenderer blueResultFlagRenderer;
-	int greenProgressBarLevelNumber = 0;
-	int blueProgressBarLevelNumber = 0;
+	float greenProgressBarLevelNumber = 0;
+	float blueProgressBarLevelNumber = 0;
 	Renderer textProgressLevelRender = Renderer({ 10,12 }, {0,0}, { 0,0 });
 
 
