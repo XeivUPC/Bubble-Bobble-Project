@@ -613,12 +613,12 @@ void GameController::ChangeNextLevelUI()
 	if (levelNumber > 9) {
 		int num = levelNumber % 10;
 		int numTile = FromNumberToTile(num);
-		newRoundUI.ModifyTile(7, 0, FromNumberToTile(numTile));
+		newRoundUI.ModifyTile(7, 0, numTile);
 		levelNumber -= num;
 		levelNumber /= 10;
 		num = levelNumber % 10;
 		numTile = FromNumberToTile(num);
-		newRoundUI.ModifyTile(6, 0, FromNumberToTile(numTile));
+		newRoundUI.ModifyTile(6, 0, numTile);
 	}
 	else {
 		newRoundUI.ModifyTile(7, 0, FromNumberToTile(levelNumber));
@@ -632,12 +632,12 @@ void GameController::ChangeLevelRecordUI(int level)
 	if (levelNumber > 9) {
 		int num = levelNumber % 10;
 		int numTile = FromNumberToTile(num);
-		recordLevelUI.ModifyTile(9, 0, FromNumberToTile(numTile)-64);
+		recordLevelUI.ModifyTile(9, 0, numTile-64);
 		levelNumber -= num;
 		levelNumber /= 10;
 		num = levelNumber % 10;
 		numTile = FromNumberToTile(num);
-		recordLevelUI.ModifyTile(8, 0, FromNumberToTile(numTile)-64);
+		recordLevelUI.ModifyTile(8, 0, numTile-64);
 	}
 	else {
 		recordLevelUI.ModifyTile(9, 0, FromNumberToTile(levelNumber)-64);

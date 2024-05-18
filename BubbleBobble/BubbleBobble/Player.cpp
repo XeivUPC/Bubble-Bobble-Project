@@ -439,13 +439,13 @@ void Player::CheckCollisions()
 				else
 				{
 					if (CheckCollisionRecs(bubble->GetLeftCollision(), PlayerCollisionRightFull) && direction.x>0) {
-						bubble->SetDirectionOffset({direction.x*3,0});
+						bubble->SetDirectionOffset({direction.x * 2.5f });
 					}
 					if (CheckCollisionRecs(bubble->GetRightCollision(), PlayerCollisionLeftFull) && direction.x < 0) {
-						bubble->SetDirectionOffset({ direction.x*3,0 });
+						bubble->SetDirectionOffset({ direction.x*2.5f });
 					}
 					if (CheckCollisionRecs(bubble->GetBottomCollision(), PlayerCollisionTop) && direction.y < 0) {
-						bubble->SetDirectionOffset({ 0,direction.y*4 });
+						bubble->SetDirectionOffset({ 0,direction.y * 2.5f });
 					}
 
 				}
