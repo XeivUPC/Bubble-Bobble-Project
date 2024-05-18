@@ -88,6 +88,7 @@ private:
 	bool resultsProgressionDone = false;
 	float  resultsProgressionSpeed = 3 * TILE_SIZE;
 	Vector2  resultsProgressionInitialPos = { 13 * TILE_SIZE,5 * TILE_SIZE };
+	Vector2  resultsProgressionMaxPos = { 13 * TILE_SIZE,25 * TILE_SIZE };
 	Vector2 greenResultProgressionPos;
 	Vector2 greenResultProgressionTargetPos;
 	Vector2 blueResultProgressionPos;
@@ -97,7 +98,9 @@ private:
 	float resultProgressionUIAnimationTimer = 0;
 	AnimationRenderer greenResultFlagRenderer;
 	AnimationRenderer blueResultFlagRenderer;
-
+	int greenProgressBarLevelNumber = 0;
+	int blueProgressBarLevelNumber = 0;
+	Renderer textProgressLevelRender = Renderer({ 10,12 }, {0,0}, { 0,0 });
 
 
 	TilemapController topUI = TilemapController("Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });

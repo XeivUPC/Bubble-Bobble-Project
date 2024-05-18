@@ -16,7 +16,7 @@ int main() {
 
     InitWindow(screenWidth, screenHeight, "Bubble Bobble");
     InitAudioDevice();
-    
+    SetWindowIcon(LoadImage("Assets/Logo/Logo.png"));
 
     SetWindowSize(TILE_SIZE * GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT);
     SetWindowPosition(GetMonitorWidth(GetCurrentMonitor()) / 2 - (TILE_SIZE * GAME_TILE_WIDTH) / 2, GetMonitorHeight(GetCurrentMonitor()) / 2 - (TILE_SIZE * GAME_TILE_HEIGHT) / 2);

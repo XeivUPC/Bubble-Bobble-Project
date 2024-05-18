@@ -29,6 +29,7 @@ GameController::GameController()
 	TextureManager::Instance().CreateTexture("Assets/Sprites/TextTransparent.png","TextUITransparent");
 	TextureManager::Instance().CreateTexture("Assets/Sprites/IntroductionCover.png","IntroductionCover");
 	TextureManager::Instance().CreateTexture("Assets/Sprites/Points.png", "PointsParticlesTileSet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/Numbers_Result.png", "ResultNumbersTileSet");
 
 	topUI.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	initialScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
@@ -333,6 +334,9 @@ void GameController::UpdateUI()
 			if (greenResultProgressionPos.y >= greenResultProgressionTargetPos.y && blueResultProgressionPos.y >= blueResultProgressionTargetPos.y) {
 				resultsProgressionDone = true;
 			}
+			greenProgressBarLevelNumber = ((greenResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100;
+			blueProgressBarLevelNumber = ((blueResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100;
+
 		}
 		if (internalTimer >= RESULTS_TIME)
 			ChangeState(7);
@@ -525,7 +529,86 @@ void GameController::RenderUIEarly()
 			DrawRectangle(recordResultProgressionPos.x, recordResultProgressionPos.y, TILE_SIZE * 2, TILE_SIZE / TILE_REAL_SIZE, { 255 ,0,115,255});
 			recordLevelUI.Render();
 		}
-			
+		
+		int level = greenProgressBarLevelNumber;
+		int num1 = 0;
+		int num2 = 0;
+		int offset1 = 0;
+		int offset2 = 0;
+		num1 = level % 10;
+
+		level -= num1;
+		level /= 10;
+		num2 = level % 10;
+
+		if (num1 > 4) {
+			num1 -= 5;
+			offset1 += 1;
+		}
+		if (num2 > 4) {
+			num2 -= 5;
+			offset2 += 1;
+		}
+			printf("%d\n", num2);
+
+		Vector2 positionText = { greenResultProgressionPos.x - TILE_SIZE * 9.7f ,greenResultProgressionPos.y + TILE_SIZE };
+		if (greenProgressBarLevelNumber < 10) {
+			positionText.x -= 0.4 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, {(float)num1,0}, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+		}
+		else if (greenProgressBarLevelNumber < 100) {
+			positionText.x -= 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText , { (float)num2,(float)offset2 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			positionText.x += 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { (float)num1,(float)offset1 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+		}
+		else {
+			positionText.x -= 1 * TILE_SIZE;
+			positionText.x -= 0.6 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { 1,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			positionText.x += 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, {0,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			positionText.x += 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { 0,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+		}	
+
+		level = blueProgressBarLevelNumber;
+		num1 = level % 10;
+
+		level -= num1;
+		level /= 10;
+		num2 = level % 10;
+		offset1 = 0;
+		offset2 = 0;
+
+		if (num1 > 4) {
+			num1 -= 5;
+			offset1 += 1;
+		}
+		if (num2 > 4) {
+			num2 -= 5;
+			offset2 += 1;
+		}
+		positionText = { blueResultProgressionPos.x + TILE_SIZE * 10.5f ,blueResultProgressionPos.y + TILE_SIZE };
+		if (blueProgressBarLevelNumber < 10) {
+			positionText.x -= 0.4 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { (float)num1,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+		}
+		else if (blueProgressBarLevelNumber < 100) {
+			positionText.x -= 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { (float)num2,(float)offset2 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			positionText.x += 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { (float)num1,(float)offset1 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+		}
+		else {
+			positionText.x -= 1 * TILE_SIZE;
+			positionText.x -= 0.6 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { 1,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			positionText.x += 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { 0,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+			positionText.x += 1 * TILE_SIZE;
+			textProgressLevelRender.Paint(*TextureManager::Instance().GetTexture("ResultNumbersTileSet"), positionText, { 0,0 }, { 1 * TILE_SIZE ,1.2f * TILE_SIZE }, 0);
+		}
 	}
 
 }
