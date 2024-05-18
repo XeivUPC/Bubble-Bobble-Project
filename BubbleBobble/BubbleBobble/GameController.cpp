@@ -333,9 +333,9 @@ void GameController::UpdateUI()
 			if (greenResultProgressionPos.y >= greenResultProgressionTargetPos.y && blueResultProgressionPos.y >= blueResultProgressionTargetPos.y) {
 				resultsProgressionDone = true;
 			}
-			greenProgressBarLevelNumber = ((greenResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100 +0.01f;
+			greenProgressBarLevelNumber = ((greenResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100 +0.001f;
 			
-			blueProgressBarLevelNumber = ((blueResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100 + 0.01f;
+			blueProgressBarLevelNumber = ((blueResultProgressionPos.y - resultsProgressionInitialPos.y) / (resultsProgressionMaxPos.y - resultsProgressionInitialPos.y)) * 100 + 0.001f;
 
 		}
 		if (internalTimer >= RESULTS_TIME)

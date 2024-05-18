@@ -169,10 +169,10 @@ void Player::Shoot()
 		bubble->SetPlayerPosession(player1);
 		if(powerUp == None)
 			bubble->SetBubbleType(Bubble::BubbleType::Default);
-		if (powerUp == Electric)
+		if (powerUp == Electric) {
 			bubble->SetOwner(this);
 			bubble->SetBubbleType(Bubble::BubbleType::Electric);
-
+		}
 	}
 }
 

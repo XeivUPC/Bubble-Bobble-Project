@@ -91,7 +91,7 @@ private:
 	void CheckCollisions();
 
 	PlayerState state = StartBubble;
-	PlayerPowerUps powerUp = Electric;
+	PlayerPowerUps powerUp = None;
 
 	bool player1 = false;
 	int lifes = 3;
