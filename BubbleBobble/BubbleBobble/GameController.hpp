@@ -38,7 +38,6 @@ public:
 	void ChangeState(int stateIndex);
 private:
 	
-
 	void UpdateUI();
 	void UpdateGame();
 
@@ -84,7 +83,7 @@ private:
 	float loadingShootTimer = 0;
 
 	int currentLevelRecord;
-
+	
 	bool resultsProgressionDone = false;
 	float  resultsProgressionSpeed = 3 * TILE_SIZE;
 	Vector2  resultsProgressionInitialPos = { 13 * TILE_SIZE,5 * TILE_SIZE };

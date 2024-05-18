@@ -45,7 +45,6 @@ void ElectricThunderBoltParticle::Update()
 		}
 	}
 
-
 	position.x += direction.x * speed * deltaTime;
 	position.y += direction.y * speed * deltaTime;
 	internalTimer += deltaTime;
