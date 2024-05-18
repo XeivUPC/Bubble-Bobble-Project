@@ -438,7 +438,8 @@ void Player::CheckCollisions()
 					else {
 						puntuationController->ModifyPuntutation(10);
 					}
-					bubble->SetPopDirection({ (renderer.IsFlippedX() ? -1.f : 1.f),0});
+					if(bubble->type == Bubble::BubbleType::Electric)
+						bubble->SetPopDirection({ (renderer.IsFlippedX() ? -1.f : 1.f),0});
 					bubble->Pop();
 					
 				}

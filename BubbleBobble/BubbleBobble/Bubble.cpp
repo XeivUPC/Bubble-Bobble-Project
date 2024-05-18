@@ -339,6 +339,9 @@ void Bubble::Pop()
 			}
 		}
 	}
+	else {
+		Reset();
+	}
 	
 }
 

@@ -39,7 +39,7 @@ void Level::Render()
 		{
 			float valueOfTile = GetTile(x, y, Map);
 			if (valueOfTile != 0) {
-				float yOffset = floor(valueOfTile / 32);
+				float yOffset = floor((valueOfTile-1) / 32);
 				float xOffset = floor(valueOfTile - yOffset * 32);
 				xOffset--;
 				LevelManager& levelManager = LevelManager::Instance();

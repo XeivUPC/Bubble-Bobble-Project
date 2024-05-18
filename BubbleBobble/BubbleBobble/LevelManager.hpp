@@ -5,7 +5,7 @@
 #include <string>
 
 using namespace std;
-#define MAX_LEVELS  8
+#define MAX_LEVELS  9
 
 
 #include "IRendereable.h"
