@@ -6,7 +6,7 @@ class ElectricThunderBoltParticle : public Particle
 #define LIFE_TIME 2.5
 #define DELAY 1
 public:
-	ElectricThunderBoltParticle(Vector2 position, Vector2 direction);
+	ElectricThunderBoltParticle(Vector2 position, Vector2 direction, Entity* owner);
 	~ElectricThunderBoltParticle();
 	void Update() override;
 	void Render() override;
@@ -14,5 +14,6 @@ private:
 	AnimationRenderer renderer;
 	float speed = 32 * TILE_SIZE;
 	float delayTimer = 0;
+	Entity* owner=nullptr;
 };
 

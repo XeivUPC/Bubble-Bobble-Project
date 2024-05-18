@@ -16,6 +16,7 @@ public:
 	void Reset() override;
 	bool TryToBubble(bool player1bubble);
 	void RemoveFromBubble();
+	int Kill();
 	bool IsInsideBubble();
 	void SetBubbleTime(float time);
 	void virtual Brain();

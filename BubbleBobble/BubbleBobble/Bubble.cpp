@@ -301,7 +301,7 @@ void Bubble::Debug() {
 
 void Bubble::Reset()
 {
-	
+	owner = nullptr;
 	isActive = false;
 	internalTimer = 0;
 	direction = { 0,0 };
@@ -320,7 +320,7 @@ void Bubble::Pop()
 	if(state==Idle)
 		ParticleManager::Instance().AddParticle(new BubbleExplodeParticle(position));
 	if (type == Electric) {
-		ParticleManager::Instance().AddParticle(new ElectricThunderBoltParticle(position, popDirection));
+		ParticleManager::Instance().AddParticle(new ElectricThunderBoltParticle(position, popDirection, owner));
 		Reset();
 		BubbleManager& manager = BubbleManager::Instance();
 		for (size_t i = 0; i < manager.GetBubbleAmount(); i++)
@@ -411,9 +411,7 @@ void Bubble::SetBubbleType(BubbleType type)
 bool Bubble::KillEnemyInside(int* points)
 {
 	if (enemyInside != nullptr) {
-		enemyInside->isActive=false;
-		enemyInside->RemoveFromBubble();
-		*points = enemyInside->GetPoints();
+		*points = enemyInside->Kill();
 		enemyInside = nullptr;
 		return true;
 	}
@@ -605,4 +603,8 @@ bool Bubble::CheckEnemyCollisions()
 		}
 	}
 	return false;
+}
+
+void Bubble::SetOwner(Entity* owner) {
+	this->owner = owner;
 }

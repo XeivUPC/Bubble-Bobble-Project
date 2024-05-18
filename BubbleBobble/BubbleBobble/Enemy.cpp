@@ -24,6 +24,14 @@ void Enemy::Reset()
 {
 }
 
+int Enemy::Kill() {
+	if (isInsideBubble)
+		RemoveFromBubble();
+	isActive = false;
+	Reset();
+	return GetPoints();
+}
+
 bool Enemy::TryToBubble(bool player1bubble)
 {
 	if (!canBeInsideBubble)

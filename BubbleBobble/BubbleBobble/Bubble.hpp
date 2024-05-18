@@ -43,6 +43,7 @@ public:
 	void SetBubbleType(BubbleType type);
 	bool KillEnemyInside(int* points);
 	void SetDirectionOffset(Vector2 offset);
+	void SetOwner(Entity* owner);
 private:
 	
 	enum BubbleState
@@ -64,4 +65,5 @@ protected:
 	Vector2 directionOffset = { 0,0 };
 	AnimationRenderer renderer;
 	Vector2 popDirection{ 1,0 };
+	Entity* owner = nullptr;
 };
