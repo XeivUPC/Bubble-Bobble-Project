@@ -139,7 +139,7 @@ void Bubble::Update()
 				SetDirectionByTile();
 			}
 		}
-
+		//CheckCollisions();
 		if (CheckEnemyCollisions()) {
 			state = Idle;
 			SetDirectionByTile();
@@ -297,6 +297,11 @@ void Bubble::Debug() {
 		DrawCircleLines(position.x, position.y, TILE_SIZE *2, RED);
 	}
 
+	if (state == ShootInertia) {
+		Vector2 fullCollider = { position.x , position.y };
+		DrawCircleLines(fullCollider.x, fullCollider.y, TILE_SIZE * 0.9, RED);
+	}
+	
 }
 
 void Bubble::Reset()
@@ -428,6 +433,22 @@ void Bubble::SetDirectionOffset(Vector2 offset)
 
 void Bubble::CheckCollisions()
 {
+	//if (state == ShootInertia) {
+	//	Vector2 fullCollider = { position.x , position.y };
+	//	LevelManager& levelManager = LevelManager::Instance();
+	//	Level& level = *levelManager.GetActiveLevel();
+	//	int tileX = (int)(fullCollider.x / TILE_SIZE);
+	//	int tileY = (int)(fullCollider.y / TILE_SIZE);
+	//	int tileType = level.GetTile(tileX, tileY, level.GetCollisionsTilemap());
+	//	Rectangle tileCollisison = { tileX * TILE_SIZE, tileY * TILE_SIZE,TILE_SIZE, TILE_SIZE };
+	//	//DrawRectangle(tileCollisison.x, tileCollisison.y, tileCollisison.width, tileCollisison.height, YELLOW);
+	//	if (tileType != 0 && CheckCollisionCircleRec(fullCollider, TILE_SIZE * 0.9, tileCollisison)) {
+	//		state = Idle;
+	//		SetDirectionByTile();
+	//	}
+	//	return;
+	//}
+
 	if (directionOffset.x!=0 || directionOffset.y!=0)
 	{
 
@@ -503,6 +524,7 @@ void Bubble::CheckCollisions()
 	Vector2 leftCenter = {position.x , position.y + TILE_SIZE / 1.5f };
 	Vector2 rightCenter = { position.x + TILE_SIZE / 1.5f,  position.y };
 	Vector2 bottomCenter = {position.x - TILE_SIZE / 1.5f, position.y };
+	
 	float yellowRadius = TILE_SIZE / 5;
 
 	LevelManager& levelManager = LevelManager::Instance();
@@ -548,6 +570,8 @@ void Bubble::CheckCollisions()
 		position.x -= abs((tileCollisison.x + tileCollisison.width) - (rightCenter.x + yellowRadius));
 		directionOffset.x = 0;
 	}
+
+	
 
 }
 

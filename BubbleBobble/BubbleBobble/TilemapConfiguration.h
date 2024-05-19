@@ -2,7 +2,7 @@
 
 #define TILE_REAL_SIZE 8
 //Displaying scale factor
-#define TILE_SCALE_FACTOR	4.0f
+#define TILE_SCALE_FACTOR	30
 #define TILE_SIZE (int)(TILE_REAL_SIZE*TILE_SCALE_FACTOR)
 
 

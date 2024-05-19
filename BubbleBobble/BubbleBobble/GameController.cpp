@@ -121,6 +121,13 @@ void GameController::Render()
 	RenderUILate();
 	if (state == GameScreen)
 		RenderGameLate();
+
+	//Borders
+	DrawRectangle(0, TILE_SIZE*GAME_TILE_HEIGHT, TILE_SIZE*GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT, BLACK);
+	DrawRectangle(0, TILE_SIZE*GAME_TILE_HEIGHT, TILE_SIZE*GAME_TILE_WIDTH, TILE_SIZE/3, WHITE);
+
+	DrawRectangle(-TILE_SIZE / 3, 0, TILE_SIZE / 3, TILE_SIZE * GAME_TILE_HEIGHT, WHITE);
+	DrawRectangle(TILE_SIZE * GAME_TILE_WIDTH, 0, TILE_SIZE / 3, TILE_SIZE * GAME_TILE_HEIGHT, WHITE);
 }
 
 void GameController::ChangeState(int stateIndex)
