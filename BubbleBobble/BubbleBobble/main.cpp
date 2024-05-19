@@ -18,7 +18,8 @@ int main() {
 
     InitWindow(screenWidth, screenHeight, "Bubble Bobble");
     InitAudioDevice();
-    SetWindowIcon(LoadImage("Assets/Logo/Logo.png"));
+    Image icon = LoadImage("Assets/Logo/Logo.png");
+    SetWindowIcon(icon);
   
 
     //SetWindowSize(TILE_SIZE * GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT);
@@ -44,7 +45,7 @@ int main() {
 
     Camera2D camera = { 0 };
     camera.target = { 0,0 };
-    camera.offset ={ -offset * scale*2 , 0 };
+    camera.offset = { -offset * scale * 2 , 0 };
     camera.rotation = 0.0f;
     camera.zoom = scale;
 
@@ -54,15 +55,15 @@ int main() {
         ClearBackground(BLACK);
         
         ////
+
         controller.Update();
         audioManager.Update();
-
-
-        BeginScissorMode(0,0, TILE_SIZE * GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT);
+        BeginScissorMode(0, 0, TILE_SIZE * GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT);
         BeginMode2D(camera);
         controller.Render();
         EndMode2D();
         EndScissorMode();
+     
         ////
 
         EndDrawing();
@@ -73,6 +74,7 @@ int main() {
     printf("___________________________________\n");
     printf("\n");
     printf("DELETING DATA:\n");
+    UnloadImage(icon);
 
     return 0;
 }
