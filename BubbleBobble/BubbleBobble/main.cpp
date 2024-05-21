@@ -56,14 +56,12 @@ int main() {
         
         ////
 
-        controller.Update();
-        audioManager.Update();
-        BeginScissorMode(0, 0, TILE_SIZE * GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT);
         BeginMode2D(camera);
+        controller.Update();
+        audioManager.Update();  
         controller.Render();
         EndMode2D();
-        EndScissorMode();
-     
+
         ////
 
         EndDrawing();
