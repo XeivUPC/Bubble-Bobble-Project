@@ -34,6 +34,10 @@ void EnemyManager::SpawnMaita(Vector2 tilePos, int direction)
 {
 	enemies.push_back(new Maita({ TILE_SIZE * tilePos.x,TILE_SIZE * tilePos.y }, direction));
 }
+void EnemyManager::SpawnSuperDrunk(Vector2 tilePos, int direction)
+{
+	enemies.push_back(new SuperDrunk({ TILE_SIZE * tilePos.x,TILE_SIZE * tilePos.y }, direction));
+}
 void EnemyManager::AddTarget(Entity* entity)
 {
 	targets.push_back(entity);

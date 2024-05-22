@@ -130,6 +130,9 @@
     <ClInclude Include="ElectricThunderBoltExplosionParticle.hpp">
       <Filter>Scripts\Managers\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="SuperDrunk.hpp">
+      <Filter>Scripts\Managers\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scripts">
@@ -262,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="ElectricThunderBoltExplosionParticle.cpp">
       <Filter>Scripts\Managers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperDrunk.cpp">
+      <Filter>Scripts\Managers\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -41,7 +41,7 @@
                 {
                  "name":"Enemies",
                  "type":"string",
-                 "value":""
+                 "value":"SuperDrunk_16_11_-1\nEND"
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -188,7 +188,7 @@
          "value":"#ff63638c"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.10.1",
  "tileheight":8,
  "tilesets":[
         {

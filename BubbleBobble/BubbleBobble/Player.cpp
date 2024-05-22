@@ -610,13 +610,9 @@ void Player::Render()
 			}
 		}
 	}
-	
 
-	
-	
 	renderer.Draw(position.x- TILE_SIZE, position.y - TILE_SIZE*2, 0, WHITE);
-	
-	
+
 }
 
 void Player::SetState(int index)

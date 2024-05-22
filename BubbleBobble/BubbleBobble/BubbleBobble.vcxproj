@@ -175,6 +175,7 @@
     <ClInclude Include="PointsUI.hpp" />
     <ClInclude Include="PuntuationHolder.hpp" />
     <ClInclude Include="AnimationRenderer.hpp" />
+    <ClInclude Include="SuperDrunk.hpp" />
     <ClInclude Include="TextureManager.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="TilemapConfiguration.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="PointsUI.cpp" />
     <ClCompile Include="PuntuationHolder.cpp" />
     <ClCompile Include="AnimationRenderer.cpp" />
+    <ClCompile Include="SuperDrunk.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TilemapController.cpp" />

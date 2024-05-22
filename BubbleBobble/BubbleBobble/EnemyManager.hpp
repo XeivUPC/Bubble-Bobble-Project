@@ -2,6 +2,7 @@
 #include "Enemy.hpp"
 #include "ZenChan.hpp"
 #include "Maita.hpp"
+#include "SuperDrunk.hpp"
 #include <vector>
 
 
@@ -25,6 +26,7 @@ public:
     void Debug() override;
     void SpawnZenChan(Vector2 tilePos,int direction);
     void SpawnMaita(Vector2 tilePos, int direction);
+    void SpawnSuperDrunk(Vector2 tilePos, int direction);
 
     void AddTarget(Entity* entity);
     Entity* GetTarget(int index);

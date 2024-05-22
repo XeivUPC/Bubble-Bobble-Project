@@ -108,6 +108,9 @@ void Level::LoadEnemies()
 		if (enemyName == "Maita") {
 			EnemyManager::Instance().SpawnMaita({ xPos,yPos }, enemyDir);
 		}
+		if (enemyName == "SuperDrunk") {
+			EnemyManager::Instance().SpawnSuperDrunk({xPos,yPos},enemyDir);
+		}
 		amountOfEnemies--;
 	}
 }
