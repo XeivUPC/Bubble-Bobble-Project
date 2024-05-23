@@ -433,8 +433,11 @@ void Player::CheckCollisions()
 				if (CheckCollisionRecs(bubble->GetKillCollision(), BubbleKill)) {
 					int points = 0;
 					if (bubble->KillEnemyInside(&points)) {
+						ParticleManager::Instance().AddParticle(new PointParticle({ bubble->position.x - TILE_SIZE / 2, bubble->position.y }, points));
 						puntuationController->ModifyPuntutation(points);
 						AudioManager::Instance().PlaySoundByName("KillEnemy");
+
+
 					}
 					else {
 						puntuationController->ModifyPuntutation(10);

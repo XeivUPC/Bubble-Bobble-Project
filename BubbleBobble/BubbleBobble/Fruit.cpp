@@ -57,7 +57,7 @@ void Fruit::CheckCollisions()
 
 void Fruit::Use(Entity* user)
 {
-	ParticleManager::Instance().AddParticle(new PointParticle({position.x, position.y -TILE_SIZE}, pointValue));
+	ParticleManager::Instance().AddParticle(new PointParticle({position.x-TILE_SIZE/2, position.y -TILE_SIZE}, pointValue));
 	Player* player = dynamic_cast<Player*>(user);
 	player->puntuationController->ModifyPuntutation(pointValue);
 	ObjectsManager::Instance().RemoveObject(this);

@@ -37,7 +37,9 @@ void ElectricThunderBoltParticle::Update()
 			if (CheckCollisionRecs(enemy->GetCollider(), { position.x - TILE_SIZE, position.y - TILE_SIZE,TILE_SIZE * 2,TILE_SIZE * 2 })) {
 				
 				Player* player = dynamic_cast<Player*>(owner);
-				player->puntuationController->ModifyPuntutation(enemy->Kill());
+				int points = enemy->Kill();
+				player->puntuationController->ModifyPuntutation(points);
+				ParticleManager::Instance().AddParticle(new PointParticle({ enemy->position.x - TILE_SIZE / 2, enemy->position.y }, points));
 				ParticleManager::Instance().AddParticle(new ElectricThunderBoltExplosionParticle(position));
 				ParticleManager::Instance().RemoveParticle(this);
 				break;
