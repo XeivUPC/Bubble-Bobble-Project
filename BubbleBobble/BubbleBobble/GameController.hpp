@@ -29,7 +29,8 @@ public:
 
 		Results,
 		GameOver, 
-		Cover
+		Cover,
+		Win
 	};
 	GameController();
 	~GameController();
@@ -102,6 +103,49 @@ private:
 	Renderer textProgressLevelRender = Renderer({ 10,12 }, {0,0}, { 0,0 });
 
 
+	Vector2 winAnimGround = { 0,27 * TILE_SIZE };
+	Vector2 endOffsetProgression = { 0,0 };
+	AnimationRenderer girlGreenBubbleRenderer;
+	AnimationRenderer girlBlueBubbleRenderer;
+	AnimationRenderer blueCoupleRenderer;
+	AnimationRenderer greenCoupleRenderer;
+	AnimationRenderer bigBobRenderer;
+	AnimationRenderer curtainRenderer;
+	Renderer happyEndRender = Renderer({80,32}, { 0,0 }, { 0,0 });
+	float cryAniamtionTimer = 0;
+	float girlBubbleExplodeTimer = 0;
+	float bigBobExplodeTimer = 0;
+	bool bigBobExploded = false;
+	bool girlsSpawned = false;
+	bool girlsPositioned = false;
+	bool girlsExploded = false;
+	bool spawnParents = false;
+	bool playersPositioned = false;
+	bool hugStarted = false;
+	bool hugEnded = false;
+	float winDelaysTimer=0;
+	Vector2 curtainPosition = { 0,0 };
+
+	Vector2 bigBobInitialPosition = {16 * TILE_SIZE,13 * TILE_SIZE };
+	Vector2 bigBobPosition;
+	Vector2 girlGreenBubblePosition = {6.5* TILE_SIZE,7.5* TILE_SIZE };
+	Vector2 girlBlueBubblePosition = {25 * TILE_SIZE,7 * TILE_SIZE };
+
+	Vector2 girlGreenInitialPosition = {7 * TILE_SIZE,8 * TILE_SIZE };
+	Vector2 girlGreenPosition = { 0,0};
+	Vector2 girlBlueInitialPosition = { 25 * TILE_SIZE,8 * TILE_SIZE };
+	Vector2 girlBluePosition = { 0,0 };
+
+	Vector2 momPosition = {0,0 };
+	Vector2 momInitialPosition = {14 * TILE_SIZE,24 * TILE_SIZE };
+	Vector2 dadPosition = {0,0 };
+	Vector2 dadInitialPosition = {18 * TILE_SIZE,24 * TILE_SIZE };
+
+	Renderer winAnim32Renderer = Renderer({ 32,32 }, { 0,0 }, { 0,0 });
+	Renderer winAnim16Renderer = Renderer({ 16,16 }, { 0,0 }, { 0,0 });
+	Renderer winAnim64Renderer = Renderer({ 64,64 }, { 0,0 }, { 0,0 });
+
+
 	TilemapController topUI = TilemapController("Assets/UI/UI.json", 64, Vector2{ GAME_TILE_WIDTH,2 });
 	TilemapController initialScreen = TilemapController("Assets/UI/InitialScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
 	TilemapController insertCoinScreen = TilemapController("Assets/UI/InsertCoinScreen.json", 64, Vector2{ GAME_TILE_WIDTH,GAME_TILE_HEIGHT });
@@ -150,6 +194,13 @@ private:
 
 	////Cover
 	#define COVER_SCREEN_TIME 3
+
+	////Win
+	#define CRY_ANIMATION 2.7
+	#define BUBBLE_EXPLODE_ANIMATION 1
+	#define BIG_BOB_EXPLODE_ANIMATION 1
+	#define WIN_ANIMATION_DELAYS 1
+	#define HUG_ANIMATION 0.5
 
 	/// Game
 	#define START_GAME_DELAY 1.5f

@@ -35,13 +35,16 @@ void ElectricThunderBoltParticle::Update()
 		if (enemy->isActive && !enemy->IsInsideBubble())
 		{
 			if (CheckCollisionRecs(enemy->GetCollider(), { position.x - TILE_SIZE, position.y - TILE_SIZE,TILE_SIZE * 2,TILE_SIZE * 2 })) {
-				
-				Player* player = dynamic_cast<Player*>(owner);
-				int points = enemy->Kill();
-				player->puntuationController->ModifyPuntutation(points);
-				ParticleManager::Instance().AddParticle(new PointParticle({ enemy->position.x - TILE_SIZE / 2, enemy->position.y }, points));
+				enemy->Hit(1);
+				if (enemy->TryKill()) {
+					Player* player = dynamic_cast<Player*>(owner);
+					int points = enemy->Kill();
+					player->puntuationController->ModifyPuntutation(points);
+					ParticleManager::Instance().AddParticle(new PointParticle({ enemy->position.x - TILE_SIZE / 2, enemy->position.y }, points));
+				}
 				ParticleManager::Instance().AddParticle(new ElectricThunderBoltExplosionParticle(position));
 				ParticleManager::Instance().RemoveParticle(this);
+				AudioManager::Instance().PlaySoundByName("LightningSound");
 				break;
 			}
 		}

@@ -13,7 +13,9 @@ public:
 	void Render() override;
 	void Debug() override;
 	void LoadEnemies();
+	void LoadItems();
 	string GetEnemiesData();
+	string GetItemsData();
 
 	bool IsTile(int x, int y, int* dataMap);
 	int GetTile(int x, int y, int* dataMap);
@@ -29,6 +31,7 @@ private:
 
 	int levelIndex = 0;
 	string enemiesData;
+	string itemsData;
 	Color ShadowsColor=WHITE;
 
 	void LoadJSON(string levelJsonPath);

@@ -67,7 +67,7 @@
     <ClInclude Include="ZenChan.hpp">
       <Filter>Scripts\Managers\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Fruit.hpp">
+    <ClInclude Include="FruitObject.hpp">
       <Filter>Scripts\Managers\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Object.hpp">
@@ -132,6 +132,12 @@
     </ClInclude>
     <ClInclude Include="SuperDrunk.hpp">
       <Filter>Scripts\Managers\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUpObject.hpp">
+      <Filter>Scripts\Managers\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplodeParticle.hpp">
+      <Filter>Scripts\Managers\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,7 +227,7 @@
     <ClCompile Include="ZenChan.cpp">
       <Filter>Scripts\Managers\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Fruit.cpp">
+    <ClCompile Include="FruitObject.cpp">
       <Filter>Scripts\Managers\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
@@ -268,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="SuperDrunk.cpp">
       <Filter>Scripts\Managers\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerUpObject.cpp">
+      <Filter>Scripts\Managers\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplodeParticle.cpp">
+      <Filter>Scripts\Managers\Particles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

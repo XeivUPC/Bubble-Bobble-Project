@@ -7,7 +7,7 @@
 #include "PlayerConfuseParticle.hpp"
 #include "PointParticle.hpp"
 
-#define PLAYER_SHOOT_INTERVAL  0.41
+#define PLAYER_SHOOT_INTERVAL  0.5
 #define PLAYER_SHOOT_ANIMATION  0.4
 
 #define INMORTAL_TIME 2
@@ -75,7 +75,9 @@ public:
 	void SetIfCanBeHitted_GOD_MODE(bool value);
 	void SetLevel(int level);
 	int GetLevel();
-
+	bool GivePlayerPowerUp(int powerUpIndex);
+	void RemovePowerUp();
+	void ForceBaseStates();
 	Rectangle GetCollision();
 
 	void Reset() override;
@@ -91,7 +93,7 @@ private:
 	void CheckCollisions();
 
 	PlayerState state = StartBubble;
-	PlayerPowerUps powerUp = Electric;
+	PlayerPowerUps powerUp = None;
 
 	bool player1 = false;
 	int lifes = 3;

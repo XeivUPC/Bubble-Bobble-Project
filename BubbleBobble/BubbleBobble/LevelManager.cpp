@@ -28,6 +28,7 @@ void LevelManager::LoadNewActiveLevel(int loadedLevelIndex)
 	}
 	actualLevel = new Level(CreateFilePathName(loadedLevelIndex), loadedLevelIndex-1);
 	actualLevel->LoadEnemies();
+	actualLevel->LoadItems();
 }
 
 void LevelManager::Update() {
@@ -63,6 +64,7 @@ void LevelManager::Reset()
 {
 	LoadNewActiveLevel(1);
 	LoadNewWaitingLevel(2);
+	nextLevelIndex = 2;
 }
 
 bool LevelManager::IsOnTransition()

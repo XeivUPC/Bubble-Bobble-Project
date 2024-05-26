@@ -3,6 +3,7 @@
 ParticleManager::ParticleManager()
 {
 	TextureManager::Instance().CreateTexture("Assets/Sprites/BasicParticles.png", "BasicParticlesTileset");
+	AudioManager::Instance().CreateSound("Assets/Sounds/SFX/Lightning.wav", "LightningSound");
 }
 
 ParticleManager::~ParticleManager()

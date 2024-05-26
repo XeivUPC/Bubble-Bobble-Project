@@ -16,6 +16,7 @@ ZenChan_24_12_-1
 ZenChan_10_22_1
 ZenChan_22_22_-1
 END</property>
+   <property name="Items" value=""/>
   </properties>
   <data encoding="csv">
 263,264,97,97,97,97,97,97,97,0,0,0,0,97,97,97,97,97,97,0,0,0,0,97,97,97,97,97,97,97,263,264,

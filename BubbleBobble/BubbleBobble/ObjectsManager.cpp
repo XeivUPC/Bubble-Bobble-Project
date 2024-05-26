@@ -3,7 +3,8 @@
 
 ObjectsManager::ObjectsManager()
 {
-	objects.push_back(new Fruit({6,1}, {10*TILE_SIZE,12 * TILE_SIZE },100));
+	//objects.push_back(new FruitObject({6,1}, {10*TILE_SIZE,12 * TILE_SIZE },100));
+	//objects.push_back(new PowerUpObject({8,7}, {25*TILE_SIZE,12 * TILE_SIZE },1000,1));
 }
 
 ObjectsManager::~ObjectsManager()
@@ -63,6 +64,16 @@ void ObjectsManager::DestroyAll() {
 		delete objects[i];
 	}
 	objects.clear();
+}
+
+void ObjectsManager::SpawnPowerUp(Vector2 textureOffset, Vector2 position, float points, float powerUpIndex)
+{
+	objects.push_back(new PowerUpObject(textureOffset, { TILE_SIZE * position.x,TILE_SIZE * position.y }, points, powerUpIndex));
+}
+
+void ObjectsManager::SpawnFruit(Vector2 textureOffset, Vector2 position, float points)
+{
+	objects.push_back(new FruitObject(textureOffset, { TILE_SIZE * position.x,TILE_SIZE * position.y }, points));
 }
 
 void ObjectsManager::AddCollector(Entity* entity)

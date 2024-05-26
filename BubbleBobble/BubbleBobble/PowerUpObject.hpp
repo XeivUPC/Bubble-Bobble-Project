@@ -1,10 +1,10 @@
 #pragma once
 #include "Object.hpp"
-class Fruit : public Object
+class PowerUpObject : public Object
 {
 public:
-	Fruit(Vector2 tileIndex, Vector2 pos, int points);
-	~Fruit();
+	PowerUpObject(Vector2 tileIndex, Vector2 pos, int points, int powerUpIndex);
+	~PowerUpObject();
 
 	void Update() override;
 	void Render() override;
@@ -19,6 +19,6 @@ public:
 
 private:
 	int pointValue;
-	Vector2 tileIndex{0,0};
+	int powerUpIndex;
+	Vector2 tileIndex{ 0,0 };
 };
-

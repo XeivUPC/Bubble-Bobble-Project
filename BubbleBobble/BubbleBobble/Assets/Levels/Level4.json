@@ -42,6 +42,11 @@
                  "name":"Enemies",
                  "type":"string",
                  "value":"ZenChan_6_8_1\nZenChan_26_8_-1\nZenChan_8_12_1\nZenChan_24_12_-1\nZenChan_10_22_1\nZenChan_22_22_-1\nEND"
+                }, 
+                {
+                 "name":"Items",
+                 "type":"string",
+                 "value":""
                 }],
          "type":"tilelayer",
          "visible":true,

@@ -6,6 +6,7 @@
 #include "ObjectsManager.hpp"
 #include "LoadingScreenParticle.hpp"
 #include "LoadingScreenStaticParticle.hpp"
+#include "ExplodeParticle.hpp"
 #include "ZenChan.hpp"
 #include <iostream>
 
@@ -23,13 +24,16 @@ GameController::GameController()
 	audioManager.CreateMusic("Assets/Sounds/Music/03_Room Theme.ogg","GameSong");
 	audioManager.CreateMusic("Assets/Sounds/Music/06_Room Theme - Hurry (No Intro).ogg","GameHurryModeSong");
 	audioManager.CreateMusic("Assets/Sounds/Music/10_Thanks.ogg","ResultsSong");
+	audioManager.CreateMusic("Assets/Sounds/Music/11_Final Boss.ogg","BossSong");
 	audioManager.CreateMusic("Assets/Sounds/Music/12_Game Over.ogg","GameOverSong");
+	audioManager.CreateMusic("Assets/Sounds/Music/15_Good Ending.ogg","VictorySong");
 
 	TextureManager::Instance().CreateTexture("Assets/Sprites/Text.png","TextUI");
 	TextureManager::Instance().CreateTexture("Assets/Sprites/TextTransparent.png","TextUITransparent");
 	TextureManager::Instance().CreateTexture("Assets/Sprites/IntroductionCover.png","IntroductionCover");
 	TextureManager::Instance().CreateTexture("Assets/Sprites/Points.png", "PointsParticlesTileSet");
 	TextureManager::Instance().CreateTexture("Assets/Sprites/Numbers_Result.png", "ResultNumbersTileSet");
+	TextureManager::Instance().CreateTexture("Assets/Sprites/WinSceneSpriteSheet.png", "WinTileSet");
 
 	topUI.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
 	initialScreen.SetTexture(TextureManager::Instance().GetTexture("TextUI"));
@@ -82,7 +86,110 @@ GameController::GameController()
 	blueResultFlagRenderer.AddAnimation("BlueResultClear", blueClearFlag);
 	blueResultFlagRenderer.PlayAniamtion("BlueResultRound");
 
-	ChangeState(5);
+
+	Animation greenGirlBubbleAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.1f };
+	greenGirlBubbleAnim.frames.push_back({0,4* TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	greenGirlBubbleAnim.frames.push_back({1* TILE_REAL_SIZE * 4 ,4* TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	Animation greenGirlBubbleExplodeAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.2f };
+	greenGirlBubbleExplodeAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 4,4 * TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	greenGirlBubbleExplodeAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 4 ,4 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	greenGirlBubbleExplodeAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4 ,4 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	greenGirlBubbleExplodeAnim.frames.push_back({ 5 * TILE_REAL_SIZE * 4 ,4 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	greenGirlBubbleExplodeAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4 ,5 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	girlGreenBubbleRenderer.AddAnimation("GreenGirlBubbleIdle", greenGirlBubbleAnim);
+	girlGreenBubbleRenderer.AddAnimation("GreenGirlBubbleExplode", greenGirlBubbleExplodeAnim);
+	girlGreenBubbleRenderer.PlayAniamtion("GreenGirlBubbleIdle");
+
+	Animation blueGirlBubbleAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.1f };
+	blueGirlBubbleAnim.frames.push_back({ 0,5 * TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	blueGirlBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 4 ,5 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	Animation blueGirlBubbleExplodeAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.2f };
+	blueGirlBubbleExplodeAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 4,5 * TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	blueGirlBubbleExplodeAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 4 ,5 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	blueGirlBubbleExplodeAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4 ,4 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	blueGirlBubbleExplodeAnim.frames.push_back({ 5 * TILE_REAL_SIZE * 4 ,4 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	blueGirlBubbleExplodeAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4 ,5 * TILE_REAL_SIZE * 4 ,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 4 });
+	girlBlueBubbleRenderer.AddAnimation("BlueGirlBubbleIdle", blueGirlBubbleAnim);
+	girlBlueBubbleRenderer.AddAnimation("BlueGirlBubbleExplode", blueGirlBubbleExplodeAnim);
+	girlBlueBubbleRenderer.PlayAniamtion("BlueGirlBubbleIdle");
+
+	Animation bigBobFallAnim = { TextureManager::Instance().GetTexture("WinTileSet"),1 };
+	bigBobFallAnim.frames.push_back({ 0,0,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobRenderer.AddAnimation("BigBobFall", bigBobFallAnim);
+	bigBobRenderer.PlayAniamtion("BigBobFall");
+
+	Animation bigBobCryAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.1f };
+	bigBobCryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 8,0 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobCryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 8,1 * TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8,TILE_REAL_SIZE * 8 });
+	bigBobRenderer.AddAnimation("BigBobFall", bigBobFallAnim);
+	bigBobRenderer.AddAnimation("BigBobCry", bigBobCryAnim);
+	bigBobRenderer.PlayAniamtion("BigBobFall");
+
+	Animation greenCoupleIdleAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.2f };
+	greenCoupleIdleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	Animation greenCoupleHugAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.1f };
+	greenCoupleHugAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	greenCoupleHugAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	greenCoupleHugAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	greenCoupleHugAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	greenCoupleHugAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	Animation greenCoupleEndHugAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.2f };
+	greenCoupleEndHugAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4,12 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	greenCoupleRenderer.AddAnimation("GreenCoupleHug", greenCoupleHugAnim);
+	greenCoupleRenderer.AddAnimation("GreenCoupleIdle", greenCoupleIdleAnim);
+	greenCoupleRenderer.AddAnimation("GreenCoupleEndHug", greenCoupleEndHugAnim);
+	greenCoupleRenderer.PlayAniamtion("GreenCoupleIdle");
+
+	Animation blueCoupleIdleAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.2f };
+	blueCoupleIdleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	Animation blueCoupleHugAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.1f };
+	blueCoupleHugAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	blueCoupleHugAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	blueCoupleHugAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	blueCoupleHugAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	blueCoupleHugAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	Animation blueCoupleEndHugAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.2f };
+	blueCoupleEndHugAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 4,13 * TILE_REAL_SIZE * 2,TILE_REAL_SIZE * 4,TILE_REAL_SIZE * 2 });
+	blueCoupleRenderer.AddAnimation("BlueCoupleHug", blueCoupleHugAnim);
+	blueCoupleRenderer.AddAnimation("BlueCoupleIdle", blueCoupleIdleAnim);
+	blueCoupleRenderer.AddAnimation("BlueCoupleEndHug", blueCoupleEndHugAnim);
+	blueCoupleRenderer.PlayAniamtion("BlueCoupleIdle");
+
+	Animation curtainAnim = { TextureManager::Instance().GetTexture("WinTileSet"),0.111111111 };
+	curtainAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 1,40 * TILE_REAL_SIZE * 1,TILE_REAL_SIZE *1,TILE_REAL_SIZE * 1 });
+	curtainAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 1,40 * TILE_REAL_SIZE * 1,TILE_REAL_SIZE *1,TILE_REAL_SIZE * 1 });
+	curtainAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 1,40 * TILE_REAL_SIZE * 1,TILE_REAL_SIZE *1,TILE_REAL_SIZE * 1 });
+	curtainRenderer.AddAnimation("CurtainEar", curtainAnim);
+	curtainRenderer.PlayAniamtion("CurtainEar");
+
+
+	ChangeState(0);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -116,10 +223,10 @@ void GameController::Update()
 void GameController::Render()
 {
 	RenderUIEarly();
-	if (state == GameScreen)
+	if (state == GameScreen || state == Win)
 		RenderGameEarly();
 	RenderUILate();
-	if (state == GameScreen)
+	if (state == GameScreen || state == Win)
 		RenderGameLate();
 
 	//Borders
@@ -147,7 +254,7 @@ void GameController::ChangeState(int stateIndex)
 	resultScreen.isActive = false;
 	resultScreenUI.isActive = false;
 	gameOverScreen.isActive = false;
-
+	logoColorIndex = 0;
 
 	std::cout << "Game State Changed --> " << state << std::endl;
 	switch (state)
@@ -196,6 +303,9 @@ void GameController::ChangeState(int stateIndex)
 		LevelManager::Instance().Reset();
 		ChangeNextLevelUI();
 
+		girlGreenBubbleRenderer.PlayAniamtion("GreenGirlBubbleIdle");
+		girlBlueBubbleRenderer.PlayAniamtion("BlueGirlBubbleIdle");
+
 		break;
 	case GameController::Results:
 		audioManager.StopMusicByName("GameSong");
@@ -236,6 +346,35 @@ void GameController::ChangeState(int stateIndex)
 		audioManager.SetMusicLoopStatus("GameOverSong", false);
 		topUI.isActive = true;
 		gameOverScreen.isActive = true;
+		break;
+	case GameController::Win:
+		topUI.isActive = true;
+		player1.TpToSpawnPoint();
+		player1.position.x += 2 * TILE_SIZE;
+		player2.TpToSpawnPoint();
+		player2.position.x -= 2 * TILE_SIZE;
+
+		player1.SetState(0);
+		player2.SetState(0);
+		player1.ForceBaseStates();
+		player2.ForceBaseStates();
+
+		bigBobPosition = bigBobInitialPosition;
+		bigBobRenderer.PlayAniamtion("BigBobFall");
+		cryAniamtionTimer = 0;
+		girlBubbleExplodeTimer = 0;
+		bigBobExplodeTimer = 0;
+		winDelaysTimer = 0;
+		bigBobExploded = false;
+		girlsSpawned = false;
+		girlsPositioned = false;
+		girlsExploded = false;
+		spawnParents = false;
+		playersPositioned = false;
+		hugStarted = false;
+		hugEnded = false;
+		endOffsetProgression = { 0,0 };
+		curtainPosition = { 0,0 };
 		break;
 	default:
 		break;
@@ -315,6 +454,12 @@ void GameController::UpdateUI()
 				lifesHUD.ModifyTile(Vector2{ (GAME_TILE_WIDTH- 1) - (float)i, 0 }, 386);
 		}
 
+		girlGreenBubblePosition.x = 7 * TILE_SIZE + sin(internalTimer * 3) * TILE_SIZE * 1;
+		girlGreenBubblePosition.y = 7.5 * TILE_SIZE + cos(internalTimer * 3) * TILE_SIZE * 1;
+
+		girlBlueBubblePosition.x = 25 * TILE_SIZE - sin(internalTimer * 3) * TILE_SIZE * 1;
+		girlBlueBubblePosition.y = 7.5 * TILE_SIZE + cos(internalTimer * 3) * TILE_SIZE * 1;
+
 		break;
 	case GameController::Results:
 		resultProgressionUIAnimationTimer += deltaTime;
@@ -356,6 +501,166 @@ void GameController::UpdateUI()
 	case GameController::Cover:
 		if (internalTimer >= COVER_SCREEN_TIME)
 			ChangeState(0);
+		break;
+	case GameController::Win:
+
+		if (!girlsExploded) {
+			girlGreenBubblePosition.x = 7 * TILE_SIZE + sin(internalTimer * 3) * TILE_SIZE * 1;
+			girlGreenBubblePosition.y = 7.5 * TILE_SIZE + cos(internalTimer * 3) * TILE_SIZE * 1;
+
+			girlBlueBubblePosition.x = 25 * TILE_SIZE - sin(internalTimer * 3) * TILE_SIZE * 1;
+			girlBlueBubblePosition.y = 7.5 * TILE_SIZE + cos(internalTimer * 3) * TILE_SIZE * 1;
+		}
+		
+
+
+		bigBobPosition.y+= TILE_SIZE * 7.f *deltaTime;
+		if (bigBobPosition.y >= winAnimGround.y) {
+			bigBobPosition.y = winAnimGround.y;
+			bigBobRenderer.PlayAniamtion("BigBobCry");
+			if(!bigBobExploded)
+				cryAniamtionTimer += deltaTime;
+			
+		}
+
+		if (!girlsExploded && spawnParents) {
+			dadPosition.y += TILE_SIZE * 4.f * deltaTime;
+			momPosition.y += TILE_SIZE * 4.f * deltaTime;
+			if (dadPosition.y >= winAnimGround.y) {
+				dadPosition.y = winAnimGround.y;
+				momPosition.y = winAnimGround.y;
+
+
+				winDelaysTimer += deltaTime;
+				if (winDelaysTimer > WIN_ANIMATION_DELAYS) {
+					dadPosition.x -= TILE_SIZE * 1.f * deltaTime;
+					momPosition.x += TILE_SIZE * 1.f * deltaTime;
+					if (momPosition.x >= momInitialPosition.x + 0.5 * TILE_SIZE) {
+						dadPosition.x = dadInitialPosition.x - 0.5 * TILE_SIZE;
+						momPosition.x = momInitialPosition.x + 0.5 * TILE_SIZE;
+						girlsExploded = true;
+						AudioManager::Instance().StopMusicByName("BossSong");
+						winDelaysTimer = 0;
+					}
+				}
+			}
+		}
+
+		if (girlsExploded && !girlsSpawned) {
+			winDelaysTimer += deltaTime;
+			if (winDelaysTimer > WIN_ANIMATION_DELAYS) {
+				girlBubbleExplodeTimer += deltaTime;
+				girlGreenBubbleRenderer.PlayAniamtion("GreenGirlBubbleExplode");
+				girlBlueBubbleRenderer.PlayAniamtion("BlueGirlBubbleExplode");
+				if (girlBubbleExplodeTimer > BUBBLE_EXPLODE_ANIMATION) {
+					girlsSpawned = true;
+					///SpawnGirls
+					girlGreenPosition = girlGreenInitialPosition;
+					girlBluePosition = girlBlueInitialPosition;
+					winDelaysTimer = 0;
+				}
+			}
+			else {
+				girlGreenBubblePosition.x = 7 * TILE_SIZE + sin(internalTimer * 3) * TILE_SIZE * 1;
+				girlGreenBubblePosition.y = 7.5 * TILE_SIZE + cos(internalTimer * 3) * TILE_SIZE * 1;
+
+				girlBlueBubblePosition.x = 25 * TILE_SIZE - sin(internalTimer * 3) * TILE_SIZE * 1;
+				girlBlueBubblePosition.y = 7.5 * TILE_SIZE + cos(internalTimer * 3) * TILE_SIZE * 1;
+			}
+		}
+
+		if (girlsSpawned && !girlsPositioned) {
+			girlGreenPosition.y += TILE_SIZE * 5.f * deltaTime;
+			girlBluePosition.y += TILE_SIZE * 5.f * deltaTime;
+			if (girlGreenPosition.y >= winAnimGround.y) {
+				girlGreenPosition.y = winAnimGround.y;
+				girlBluePosition.y = winAnimGround.y;
+				girlsPositioned = true;
+			}
+		}
+
+		if (girlsPositioned && !playersPositioned) {
+			player1.position.x+= TILE_SIZE * 5.f * deltaTime;
+			player2.position.x-= TILE_SIZE * 5.f * deltaTime;
+			if (player1.position.x >= girlGreenInitialPosition.x + 2 * TILE_SIZE) {
+				player1.position.x = girlGreenInitialPosition.x + 2 * TILE_SIZE;
+				player2.position.x = girlBlueInitialPosition.x - 2 * TILE_SIZE;
+				ParticleManager::Instance().AddParticle(new ExplodeParticle({ player1.position.x,player1.position.y-1*TILE_SIZE}, 0));
+				ParticleManager::Instance().AddParticle(new ExplodeParticle({ player2.position.x,player2.position.y - 1 * TILE_SIZE },0));
+				player1.isActive = false;
+				player2.isActive = false;
+				playersPositioned = true;
+				winDelaysTimer = 0;
+			}
+		}
+
+		if (playersPositioned && !hugStarted) {
+			winDelaysTimer += deltaTime;
+			if (winDelaysTimer <2) {
+				blueCoupleRenderer.PlayAniamtion("BlueCoupleIdle");
+				greenCoupleRenderer.PlayAniamtion("GreenCoupleIdle");
+			}
+			else {
+				hugStarted = true;
+				blueCoupleRenderer.PlayAniamtion("BlueCoupleHug");
+				greenCoupleRenderer.PlayAniamtion("GreenCoupleHug");
+				winDelaysTimer = 0;
+				AudioManager::Instance().PlaySoundByName("StartGame");
+			}
+		}
+
+		if (hugStarted && !hugEnded) {
+			winDelaysTimer += deltaTime;
+			if (winDelaysTimer > 0.5) {
+				hugEnded = true;
+				winDelaysTimer = 0;
+				blueCoupleRenderer.PlayAniamtion("BlueCoupleEndHug");
+				greenCoupleRenderer.PlayAniamtion("GreenCoupleEndHug");
+
+				
+				AudioManager::Instance().PlayMusicByName("VictorySong");
+			}
+		}
+
+		if (hugEnded) {
+			curtainPosition.y += 3 * TILE_SIZE * deltaTime;
+			if (curtainPosition.y > TILE_SIZE * GAME_TILE_HEIGHT) {
+				winDelaysTimer += deltaTime;
+				endOffsetProgression.y -= 2 * TILE_SIZE * deltaTime;
+				if (winDelaysTimer > WIN_ANIMATION_DELAYS * 17) {
+					AudioManager::Instance().StopMusicByName("VictorySong");
+					curtainPosition = { 0,0 };
+					ChangeState(6);
+				}
+			}
+		}
+
+		if (cryAniamtionTimer > CRY_ANIMATION)
+		{
+			bigBobExploded = true;
+			cryAniamtionTimer = false;
+			///TrIGGER EXPLOSIONS
+			for (size_t i = 0; i < 4; i++)
+			{
+				for (size_t j = 0; j < 5; j++)
+				{
+					float angulo = (float)rand() / RAND_MAX * 2 * PI;
+					float r = (4 * TILE_SIZE) * sqrt((float)rand() / RAND_MAX);
+					float x = bigBobPosition.x + r * cos(angulo);
+					float y = (bigBobPosition.y - 4 * TILE_SIZE) + r * sin(angulo);
+					ParticleManager::Instance().AddParticle(new ExplodeParticle({ x ,y }, i / 8.f));
+				}
+			}
+		}
+		if (!spawnParents && bigBobExploded) {
+			bigBobExplodeTimer += deltaTime;
+			if (bigBobExplodeTimer > BIG_BOB_EXPLODE_ANIMATION) {
+				spawnParents = true;
+				momPosition = momInitialPosition;
+				dadPosition = dadInitialPosition;
+			}
+		}
+		ParticleManager::Instance().Update();
 		break;
 	default:
 		break;
@@ -406,7 +711,7 @@ void GameController::UpdateGame()
 		ChangeState(6);
 	}
 	LevelManager::Instance().Update();
-	ParticleManager::Instance().Update();
+	
 	bool isInTransition = player1.IsInBubbleMode() || ( player2.IsInBubbleMode());
 
 	if (isInTransition) {
@@ -419,8 +724,13 @@ void GameController::UpdateGame()
 	}
 
 	if (internalTimer < START_GAME_DELAY) {
-		if(!newRoundUI.isActive)
+		if (!newRoundUI.isActive) {
 			ChangeNextLevelUI();
+			if (LevelManager::Instance().IsLastLevel()) {
+				AudioManager::Instance().StopMusicByName("GameSong");
+				AudioManager::Instance().PlayMusicByName("BossSong");
+			}
+		}
 		newRoundUI.isActive = true;
 		return;
 	}
@@ -436,6 +746,7 @@ void GameController::UpdateGame()
 			hurryModeTimer = 0;
 			AudioManager::Instance().PlaySoundByName("GameHurryModeStart");
 			AudioManager::Instance().StopMusicByName("GameSong");
+			
 		}
 	}
 	else {
@@ -449,11 +760,13 @@ void GameController::UpdateGame()
 			if (!EnemyManager::Instance().IsAngryMode())
 			{
 				EnemyManager::Instance().SetAngry(true);
-				AudioManager::Instance().PlayMusicByName("GameHurryModeSong");
+				if (!LevelManager::Instance().IsLastLevel()) {
+					AudioManager::Instance().PlayMusicByName("GameHurryModeSong");
+				}
 			}
 		}
 	}
-	
+	ParticleManager::Instance().Update();
 	BubbleManager::Instance().Update();
 	EnemyManager::Instance().Update();
 	ObjectsManager::Instance().Update();
@@ -461,6 +774,7 @@ void GameController::UpdateGame()
 		player1.Update();
 	if (player2.isActive)
 		player2.Update();
+
 
 	if (EnemyManager::Instance().EnemiesAlive() == 0) {
 		if (!levelEnded) {
@@ -471,7 +785,7 @@ void GameController::UpdateGame()
 		endLevelTimer += deltaTime;
 		hurryModeTimer = 0;
 		isHurryOnMode = false;
-		if (endLevelTimer >= END_LEVEL_TIME_WAIT) {
+		if (endLevelTimer >= END_LEVEL_TIME_WAIT || LevelManager::Instance().IsLastLevel()) {
 			LevelManager::Instance().StartTransition();
 			BubbleManager::Instance().DisableAll();
 			BubbleManager::Instance().Reset();
@@ -494,12 +808,10 @@ void GameController::UpdateGame()
 				player1.SetLevel(LevelManager::Instance().GetNextLevelIndex());
 			if(player2.isActive)
 				player2.SetLevel(LevelManager::Instance().GetNextLevelIndex());
-
 			if (LevelManager::Instance().IsLastLevel())
-				ChangeState(6);
+				ChangeState(9);
 		}	
 	}
-
 
 }
 
@@ -538,7 +850,7 @@ void GameController::RenderUIEarly()
 			recordLevelUI.Render();
 		}
 		
-		int level = greenProgressBarLevelNumber;
+		int level = greenProgressBarLevelNumber*10;
 		int num1 = 0;
 		int num2 = 0;
 		int offset1 = 0;
@@ -619,6 +931,10 @@ void GameController::RenderUIEarly()
 		}
 	}
 
+	if (state == Win) {
+
+	}
+
 }
 
 void GameController::RenderGameEarly()
@@ -626,6 +942,72 @@ void GameController::RenderGameEarly()
 	LevelManager::Instance().Render();
 	ObjectsManager::Instance().Render();
 	BubbleManager::Instance().Render();
+
+	
+
+
+	if (LevelManager::Instance().IsLastLevel() && !LevelManager::Instance().IsOnTransition()) {
+
+		///Render LAST LEVEL GIRLS
+		girlGreenBubbleRenderer.UpdateAnimation();
+		girlBlueBubbleRenderer.UpdateAnimation();
+		bigBobRenderer.UpdateAnimation();
+		curtainRenderer.UpdateAnimation();
+
+		if (hugEnded) {
+			DrawRectangle(0, 0, TILE_SIZE * GAME_TILE_WIDTH, curtainPosition.y + TILE_SIZE / 2, BLACK);
+			for (size_t i = 0; i < GAME_TILE_WIDTH; i++)
+			{
+				curtainRenderer.Draw(i * TILE_SIZE, curtainPosition.y, 0, WHITE);
+			}
+		}
+		if (!girlsSpawned) {
+			girlGreenBubbleRenderer.Draw(girlGreenBubblePosition.x - 2 * TILE_SIZE, girlGreenBubblePosition.y - 2 * TILE_SIZE, 0, WHITE);
+			girlBlueBubbleRenderer.Draw(girlBlueBubblePosition.x - 2 * TILE_SIZE, girlBlueBubblePosition.y - 2 * TILE_SIZE, 0, WHITE);
+		}
+		
+
+		if(!bigBobExploded)
+			bigBobRenderer.Draw(bigBobPosition.x - 4 * TILE_SIZE, bigBobPosition.y - 8 * TILE_SIZE, 0, WHITE);
+
+		if (spawnParents) {
+			winAnim32Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { dadPosition.x - 2 * TILE_SIZE,dadPosition.y - 4 * TILE_SIZE + endOffsetProgression.y }, { 7,2 }, { 4 * TILE_SIZE ,4 * TILE_SIZE }, 0);
+			winAnim32Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { momPosition.x - 2 * TILE_SIZE,momPosition.y - 4 * TILE_SIZE + endOffsetProgression.y }, { 6,2 }, { 4 * TILE_SIZE ,4 * TILE_SIZE }, 0);
+
+		}
+
+		if (girlsSpawned && !playersPositioned) {
+			winAnim16Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlGreenPosition.x - 1 * TILE_SIZE,girlGreenPosition.y - 2 * TILE_SIZE }, { 0,12 }, { 2 * TILE_SIZE ,2 * TILE_SIZE }, 0);
+			winAnim16Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlBluePosition.x - 1 * TILE_SIZE,girlBluePosition.y - 2 * TILE_SIZE }, { 1,13 }, { 2 * TILE_SIZE ,2 * TILE_SIZE }, 0);
+		}
+
+		if (playersPositioned) {
+			greenCoupleRenderer.UpdateAnimation();
+			blueCoupleRenderer.UpdateAnimation();
+			greenCoupleRenderer.Draw(girlGreenPosition.x - 1 * TILE_SIZE, girlGreenPosition.y - 2 * TILE_SIZE + endOffsetProgression.y,0,WHITE);
+			blueCoupleRenderer.Draw(girlBluePosition.x - 3 * TILE_SIZE, girlBluePosition.y - 2 * TILE_SIZE + endOffsetProgression.y, 0, WHITE);
+		}
+
+		if (hugEnded) {
+
+			logoColorIndex += deltaTime * 25;
+			if (logoColorIndex >= 6)
+				logoColorIndex -= 6;
+
+			winAnim16Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlGreenPosition.x,girlGreenPosition.y - 5 * TILE_SIZE + endOffsetProgression.y}, { 10,13 }, { 2 * TILE_SIZE ,2 * TILE_SIZE }, 0, logoColors[(int)logoColorIndex]);
+			winAnim16Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlGreenPosition.x,girlGreenPosition.y - 5 * TILE_SIZE + endOffsetProgression.y }, { 11,13 }, { 2 * TILE_SIZE ,2 * TILE_SIZE }, 0, WHITE);
+
+			winAnim16Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlBluePosition.x - 2*TILE_SIZE ,girlBluePosition.y - 5 * TILE_SIZE + endOffsetProgression.y }, { 10,13 }, { 2 * TILE_SIZE ,2 * TILE_SIZE }, 0, logoColors[(int)logoColorIndex]);
+			winAnim16Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlBluePosition.x - 2 * TILE_SIZE ,girlBluePosition.y - 5 * TILE_SIZE + endOffsetProgression.y }, { 11,13 }, { 2 * TILE_SIZE ,2 * TILE_SIZE }, 0, WHITE);
+
+			winAnim64Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { (16*TILE_SIZE) - 4 * TILE_SIZE,momPosition.y - 17 * TILE_SIZE + endOffsetProgression.y }, { 0,4 }, { 8 * TILE_SIZE ,8 * TILE_SIZE }, 0, logoColors[(int)logoColorIndex]);
+			winAnim64Renderer.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { (16 * TILE_SIZE) - 4* TILE_SIZE,momPosition.y - 17 * TILE_SIZE + endOffsetProgression.y }, {1,4 }, { 8 * TILE_SIZE ,8 * TILE_SIZE }, 0, WHITE);
+
+			happyEndRender.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlGreenPosition.x -6 *TILE_SIZE,momPosition.y - 13 * TILE_SIZE + endOffsetProgression.y }, {0,7}, { 10* TILE_SIZE ,4 * TILE_SIZE }, 0, WHITE);
+			happyEndRender.Paint(*TextureManager::Instance().GetTexture("WinTileSet"), { girlBluePosition.x - 5 * TILE_SIZE ,momPosition.y - 13 * TILE_SIZE + endOffsetProgression.y }, { 0,7 }, { 10 * TILE_SIZE ,4 * TILE_SIZE }, 0, WHITE);
+		}
+	}
+
 	EnemyManager::Instance().Render();
 	ParticleManager::Instance().Render();
 	if (DebugMode) {
@@ -635,6 +1017,7 @@ void GameController::RenderGameEarly()
 		EnemyManager::Instance().Debug();
 		ParticleManager::Instance().Debug();
 	}
+
 }
 
 void GameController::RenderUILate()
@@ -654,6 +1037,10 @@ void GameController::RenderUILate()
 	if (state == LoadingGameScreen) {
 		player1.Render();
 		player2.Render();
+		ParticleManager::Instance().Render();
+	}
+
+	if (state == Win) {
 		ParticleManager::Instance().Render();
 	}
 }
@@ -700,7 +1087,7 @@ void GameController::CheckInsertedCoinsSound()
 
 void GameController::ChangeNextLevelUI()
 {
-	int levelNumber = LevelManager::Instance().GetActualLevelIndex();
+	int levelNumber = LevelManager::Instance().GetActualLevelIndex()*10;
 	if (levelNumber > 9) {
 		int num = levelNumber % 10;
 		int numTile = FromNumberToTile(num);

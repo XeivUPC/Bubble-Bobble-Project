@@ -3,6 +3,7 @@
 #include "LevelManager.hpp"
 #include "TextureManager.hpp"
 #include "EnemyManager.hpp"
+#include "ObjectsManager.hpp"
 #include "json.hpp"
 #include <fstream>
 #include <iostream>
@@ -115,9 +116,58 @@ void Level::LoadEnemies()
 	}
 }
 
+void Level::LoadItems()
+{
+	char delimiter = '\n';
+
+	istringstream stream(itemsData);
+	string itemData;
+	int amountOfItems= std::count_if(itemsData.begin(), itemsData.end(), [](char c) {return c == '\n'; });
+
+	while (amountOfItems > 0)
+	{
+		getline(stream, itemData, delimiter);
+		istringstream stream2(itemData);
+		
+		string itemPositions;
+		char delimiter2 = '_';
+
+
+		string itemType;
+		getline(stream2, itemType, delimiter2);
+
+		string itemData;
+		getline(stream2, itemData, delimiter2);
+		float xOffset = stof(itemData);
+		getline(stream2, itemData, delimiter2);
+		float yOffset = stof(itemData);
+		getline(stream2, itemData, delimiter2);
+		float xPos = stof(itemData);
+		getline(stream2, itemData, delimiter2);
+		float yPos = stof(itemData);
+		getline(stream2, itemData, delimiter2);
+		float points = stof(itemData);
+
+		if (itemType == "Fruit") {
+			ObjectsManager::Instance().SpawnFruit({ xOffset ,yOffset }, { xPos,yPos, }, points);
+		}
+		if (itemType == "PowerUp") {
+			getline(stream2, itemData, delimiter2);
+			float powerUpIndex = stof(itemData);
+			ObjectsManager::Instance().SpawnPowerUp({ xOffset ,yOffset }, { xPos,yPos, }, points, powerUpIndex);
+		}
+		amountOfItems--;
+	}
+}
+
 string Level::GetEnemiesData()
 {
 	return enemiesData;
+}
+
+string Level::GetItemsData()
+{
+	return itemsData;
 }
 
 bool Level::IsTile(int x, int y, int* dataMap)
@@ -174,6 +224,7 @@ void Level::LoadJSON(string levelJsonPath)
 
 		////Enemies
 		enemiesData = layers[0]["properties"][0]["value"];
+		itemsData = layers[0]["properties"][1]["value"];
 		
 
 

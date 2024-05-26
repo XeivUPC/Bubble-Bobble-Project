@@ -801,6 +801,7 @@ void Player::Reset()
 	renderer.isActive = true;
 	canBeHit = true;
 	SetState(5);
+	powerUp = None;
 }
 
 
@@ -809,5 +810,31 @@ void Player::SetLevel(int level) {
 }
 int Player::GetLevel() {
 	return levelArrived;
+}
+
+bool Player::GivePlayerPowerUp(int powerUpIndex)
+{
+	PlayerPowerUps powerUpToGet = static_cast<PlayerPowerUps>(powerUpIndex);
+	if (powerUp == powerUpToGet)
+		return false;
+	powerUp = powerUpToGet;
+	return true;
+}
+
+void Player::RemovePowerUp()
+{
+	powerUp = None;
+}
+
+void Player::ForceBaseStates()
+{
+	isGrounded = true;
+	isShooting = false;
+	isJumping = false;
+	direction = { 0,0 };
+	hasBeenHit = false;
+	canBeHit = true;
+	isInBubbleMode = false;
+	canBeHit_GOD_MODE = true;
 }
 

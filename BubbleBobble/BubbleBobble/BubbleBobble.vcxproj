@@ -149,7 +149,8 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="EnemyManager.hpp" />
     <ClInclude Include="Entity.hpp" />
-    <ClInclude Include="Fruit.hpp" />
+    <ClInclude Include="ExplodeParticle.hpp" />
+    <ClInclude Include="FruitObject.hpp" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameController.hpp" />
     <ClInclude Include="IActivable.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="PlayerDeadParticle.hpp" />
     <ClInclude Include="PointParticle.hpp" />
     <ClInclude Include="PointsUI.hpp" />
+    <ClInclude Include="PowerUpObject.hpp" />
     <ClInclude Include="PuntuationHolder.hpp" />
     <ClInclude Include="AnimationRenderer.hpp" />
     <ClInclude Include="SuperDrunk.hpp" />
@@ -194,7 +196,8 @@
     <ClCompile Include="ElectricThunderBoltParticle.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
-    <ClCompile Include="Fruit.cpp" />
+    <ClCompile Include="ExplodeParticle.cpp" />
+    <ClCompile Include="FruitObject.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelManager.cpp" />
@@ -211,6 +214,7 @@
     <ClCompile Include="PlayerDeadParticle.cpp" />
     <ClCompile Include="PointParticle.cpp" />
     <ClCompile Include="PointsUI.cpp" />
+    <ClCompile Include="PowerUpObject.cpp" />
     <ClCompile Include="PuntuationHolder.cpp" />
     <ClCompile Include="AnimationRenderer.cpp" />
     <ClCompile Include="SuperDrunk.cpp" />

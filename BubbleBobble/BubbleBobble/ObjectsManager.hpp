@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.hpp"
-#include "Fruit.hpp"
+#include "FruitObject.hpp"
+#include "PowerUpObject.hpp"
 #include <vector>
 
 
@@ -23,6 +24,8 @@ public:
     void Reset() override;
     void RemoveObject(Object* object);
     void DestroyAll();
+    void SpawnPowerUp(Vector2 textureOffset, Vector2 position, float points, float powerUpIndex);
+    void SpawnFruit(Vector2 textureOffset, Vector2 position, float points);
 
     void AddCollector(Entity* entity);
     Entity* GetCollectors(int index);

@@ -42,6 +42,11 @@
                  "name":"Enemies",
                  "type":"string",
                  "value":"ZenChan_11_7_1\nZenChan_21_7_-1\nZenChan_7_12_1\nZenChan_25_12_-1\nEND"
+                }, 
+                {
+                 "name":"Items",
+                 "type":"string",
+                 "value":""
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -85,7 +90,7 @@
          "name":"CollisionLayer",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":32,
          "x":0,
          "y":0

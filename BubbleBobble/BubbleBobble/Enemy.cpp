@@ -32,6 +32,17 @@ int Enemy::Kill() {
 	return GetPoints();
 }
 
+void Enemy::Hit(int amountDamage) {
+	lifes -= amountDamage;
+	if (lifes <= 0) {
+		lifes = 0;
+	}
+}
+
+bool Enemy::TryKill() {
+	return lifes == 0;
+}
+
 bool Enemy::TryToBubble(bool player1bubble)
 {
 	if (!canBeInsideBubble)

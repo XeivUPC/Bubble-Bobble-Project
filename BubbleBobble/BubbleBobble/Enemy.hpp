@@ -17,6 +17,8 @@ public:
 	bool TryToBubble(bool player1bubble);
 	void RemoveFromBubble();
 	int Kill();
+	virtual void Hit(int amountDamage);
+	virtual bool TryKill();
 	bool IsInsideBubble();
 	void SetBubbleTime(float time);
 	void virtual Brain();
@@ -41,5 +43,6 @@ protected:
 	bool canBeInsideBubble = true;
 	float bubbleTime = 0;
 	float player1Bubble = false;
+	int lifes = 1;
 };
 

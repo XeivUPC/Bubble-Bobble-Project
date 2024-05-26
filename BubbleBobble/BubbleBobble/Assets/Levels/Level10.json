@@ -41,6 +41,11 @@
                 {
                  "name":"Enemies",
                  "type":"string",
+                 "value":"SuperDrunk_16_11_-1\nEND"
+                }, 
+                {
+                 "name":"Items",
+                 "type":"string",
                  "value":""
                 }],
          "type":"tilelayer",

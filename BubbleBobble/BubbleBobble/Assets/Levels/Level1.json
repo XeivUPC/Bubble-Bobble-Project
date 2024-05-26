@@ -42,6 +42,11 @@
                  "name":"Enemies",
                  "type":"string",
                  "value":"ZenChan_16_12_-1\nZenChan_16_9_-1\nZenChan_16_6_-1\nEND"
+                }, 
+                {
+                 "name":"Items",
+                 "type":"string",
+                 "value":"Fruit_6_1_9_12_100\nEND"
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -182,24 +187,24 @@
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.10.2",
  "tileheight":8,
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/TiledData\/Levels\/MapBlocks.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/MapBlocks.tsx"
         }, 
         {
          "firstgid":513,
-         "source":"..\/..\/TiledData\/Levels\/Collisions.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/Collisions.tsx"
         }, 
         {
          "firstgid":521,
-         "source":"..\/..\/TiledData\/Levels\/Directions.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/Directions.tsx"
         }, 
         {
          "firstgid":525,
-         "source":"..\/..\/TiledData\/Levels\/MapShadows.tsx"
+         "source":"..\/..\/..\/TiledData\/Levels\/MapShadows.tsx"
         }],
  "tilewidth":8,
  "type":"map",

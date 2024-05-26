@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 #include "AnimationRenderer.hpp"
 #include "TextureManager.hpp"
+#include "AudioManager.hpp"
 #include "GameConfiguration.h"
 #include "TilemapConfiguration.h"
 

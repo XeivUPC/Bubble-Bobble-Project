@@ -23,7 +23,6 @@ int main() {
   
 
     //SetWindowSize(TILE_SIZE * GAME_TILE_WIDTH, TILE_SIZE * GAME_TILE_HEIGHT);
-    //SetWindowPosition(GetMonitorWidth(GetCurrentMonitor()) / 2 - (TILE_SIZE * GAME_TILE_WIDTH) / 2, GetMonitorHeight(GetCurrentMonitor()) / 2 - (TILE_SIZE * GAME_TILE_HEIGHT) / 2);
 
     SetTargetFPS(TARGET_FPS);
     SetMasterVolume(GAME_VOLUME);
@@ -32,6 +31,7 @@ int main() {
     GameController controller = GameController();
 
     SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
+    //SetWindowPosition(GetMonitorWidth(GetCurrentMonitor()) / 2 - (TILE_SIZE * GAME_TILE_WIDTH) / 2, GetMonitorHeight(GetCurrentMonitor()) / 2 - (TILE_SIZE * GAME_TILE_HEIGHT) / 2);
     ToggleFullscreen();
 
     bool isMonitorHigher = GetMonitorHeight(GetCurrentMonitor()) > GetMonitorWidth(GetCurrentMonitor());
