@@ -21,34 +21,8 @@ Each player can control one of two protagonists, Bub and Bob, two little dragons
 * QA
 
 # Team Photo
+<iframe width="740" height="590" src="[https://www.youtube.com/embed/yBFzOEv0snY](https://www.youtube.com/watch?v=vOV2MCGLjrg)" frameborder="0" allowfullscreen></iframe>
 
-# Controls
-
-GreenPlayer:
-
-    * A - D --> Left and right
-
-    * W --> Jump
-
-    * Q --> Shoot
-
-BluePlayer:
-
-    * LeftArrow - RightArrow --> Left and right
-
-    * UpArrow --> Jump
-
-    * RightShift --> Shoot
-
-ArcadeMenu:
-
-    * RightShift --> Insert Coin
-
-    * Enter --> Start
-
-GeneralControls:
-
-    * Esc --> Exit
 
 # Index
 
@@ -60,6 +34,4 @@ GeneralControls:
 
 # Download
 
-| Executable Zip |
-| -------- |
-| [![Download Bubble Bubble](https://img.shields.io/badge/download-BubbleBobble.zip-blue?style=for-the-badge)](https://github.com/XeivUPC/Bubble-Bobble-Project/releases/latest/download/BubbleGames_BubbleBobble_v0.5.zip)|
+[![Download Bubble Bubble](https://img.shields.io/badge/download-BubbleBobble.zip-blue?style=for-the-badge)](https://github.com/XeivUPC/Bubble-Bobble-Project/releases/latest/download/BubbleGames_BubbleBobble_v0.5.zip)
