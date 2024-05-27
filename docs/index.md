@@ -16,25 +16,26 @@ Each player can control one of two protagonists, Bub and Bob, two little dragons
 # Members
 
 Adria Garcia
-    * [GitHub](https://github.com/XeivUPC)
-    * Code
-    * Managment
+* [GitHub](https://github.com/XeivUPC)
+* Code
+* Managment
 
 Pol Cot
-    * [GitHub](https://github.com/crem4)
-    * Audio
-    * QA
+* [GitHub](https://github.com/crem4)
+* Audio
+* QA
 
 # Team Photo
 
+<img src="https://github.com/XeivUPC/Bubble-Bobble-Project/blob/wiki-files/logoBubbleBobble.png" width="600">
 
 # Index
 
-    1. [General Analysis](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/General-Analysis)
-    2. [Design](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/Design)
-    3. [UI](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/UI)
-    4. [Audio](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/Audio)
-    5. [Art](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/Art)
+1. [General Analysis](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/General-Analysis)
+2. [Design](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/Design)
+3. [UI](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/UI)
+4. [Audio](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/Audio)
+5. [Art](https://github.com/XeivUPC/Bubble-Bobble-Project/wiki/Art)
 
 
 ***
