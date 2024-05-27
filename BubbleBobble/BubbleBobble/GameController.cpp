@@ -189,7 +189,7 @@ GameController::GameController()
 	curtainRenderer.PlayAniamtion("CurtainEar");
 
 
-	ChangeState(0);
+	ChangeState(8);
 	
 
 	EnemyManager::Instance().AddTarget(&player1);
@@ -320,9 +320,11 @@ void GameController::ChangeState(int stateIndex)
 
 
 		LoadGameData(&currentLevelRecord, "LevelRecord.txt");
-		if (currentLevelRecord < LevelManager::Instance().GetActualLevelIndex()) {
-			SaveGameData(LevelManager::Instance().GetActualLevelIndex(), "LevelRecord.txt");
-			currentLevelRecord = LevelManager::Instance().GetActualLevelIndex();
+		maxPlayerLevel = player1.GetLevel() - 1 > player2.GetLevel() - 1 ? player1.GetLevel() - 1 : player2.GetLevel() - 1;
+		maxPlayerLevel *= LEVEL_MULTIPLICATION;
+		if (currentLevelRecord < maxPlayerLevel){
+			SaveGameData(maxPlayerLevel, "LevelRecord.txt");
+			currentLevelRecord = maxPlayerLevel;
 		}
 		/// SetRecord
 		ChangeLevelRecordUI(currentLevelRecord);
@@ -336,8 +338,8 @@ void GameController::ChangeState(int stateIndex)
 		resultsProgressionDone = false;
 
 
-		greenResultProgressionTargetPos = { greenResultProgressionPos.x,greenResultProgressionPos.y + ((player1.GetLevel()-1) * ((20.f * TILE_SIZE) / 100.f))};
-		blueResultProgressionTargetPos = { blueResultProgressionPos.x,blueResultProgressionPos.y + ((player2.GetLevel()-1) * ((20.f * TILE_SIZE) / 100.f))};
+		greenResultProgressionTargetPos = { greenResultProgressionPos.x,greenResultProgressionPos.y + ((player1.GetLevel()-1)*LEVEL_MULTIPLICATION * ((20.f * TILE_SIZE) / 100.f))};
+		blueResultProgressionTargetPos = { blueResultProgressionPos.x,blueResultProgressionPos.y + ((player2.GetLevel()-1) * LEVEL_MULTIPLICATION * ((20.f * TILE_SIZE) / 100.f))};
 		recordResultProgressionPos = { recordResultProgressionPos.x,recordResultProgressionPos.y + (currentLevelRecord - 1) * ((20.f * TILE_SIZE) / 100.f)};
 		break;
 	case GameController::GameOver:
@@ -850,7 +852,7 @@ void GameController::RenderUIEarly()
 			recordLevelUI.Render();
 		}
 		
-		int level = greenProgressBarLevelNumber*10;
+		int level = greenProgressBarLevelNumber;
 		int num1 = 0;
 		int num2 = 0;
 		int offset1 = 0;

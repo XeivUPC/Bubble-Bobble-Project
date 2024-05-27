@@ -84,6 +84,7 @@ private:
 	float loadingShootTimer = 0;
 
 	int currentLevelRecord;
+	int maxPlayerLevel;
 	
 	bool resultsProgressionDone = false;
 	float  resultsProgressionSpeed = 3 * TILE_SIZE;
