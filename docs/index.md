@@ -1,6 +1,6 @@
-# Game Title
+# Bubble Bobble
 
-<img src="https://static.wikia.nocookie.net/square/images/2/24/BubbleBobbleLogo.png" width="600">
+<img src="https://static.wikia.nocookie.net/fictionalcrossover/images/0/07/Bubble_bobble_logo.png/" width="600">
 
 
 # Game Description
