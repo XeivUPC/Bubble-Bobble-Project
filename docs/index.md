@@ -21,7 +21,7 @@ Each player can control one of two protagonists, Bub and Bob, two little dragons
 * QA
 
 # Team Photo
-<iframe width="740" height="590" src="https://www.youtube.com/watch?v=vOV2MCGLjrg" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vOV2MCGLjrg?si=KmvAjIe9EqJf9nmm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 # Index
