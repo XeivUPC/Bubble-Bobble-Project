@@ -632,7 +632,13 @@ void GameController::UpdateUI()
 				if (winDelaysTimer > WIN_ANIMATION_DELAYS * 17) {
 					AudioManager::Instance().StopMusicByName("VictorySong");
 					curtainPosition = { 0,0 };
+					if (!player1.IsDead())
+						player1.SetLevel(LevelManager::Instance().GetNextLevelIndex() + 1);
+					if (!player2.IsDead())
+						player2.SetLevel(LevelManager::Instance().GetNextLevelIndex() + 1);
 					ChangeState(6);
+
+					
 				}
 			}
 		}
@@ -1089,7 +1095,7 @@ void GameController::CheckInsertedCoinsSound()
 
 void GameController::ChangeNextLevelUI()
 {
-	int levelNumber = LevelManager::Instance().GetActualLevelIndex()*10;
+	int levelNumber = LevelManager::Instance().GetActualLevelIndex()*LEVEL_MULTIPLICATION;
 	if (levelNumber > 9) {
 		int num = levelNumber % 10;
 		int numTile = FromNumberToTile(num);

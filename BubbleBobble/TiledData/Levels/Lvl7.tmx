@@ -12,10 +12,10 @@
  <tileset firstgid="525" source="MapShadows.tsx"/>
  <layer id="1" name="BuildLayer" width="32" height="30">
   <properties>
-   <property name="Enemies">ZenChan_3_7_1
-ZenChan_29_7_-1
-ZenChan_5_12_1
-ZenChan_27_12_-1
+   <property name="Enemies">Maita_3_7_1
+Maita_29_7_-1
+Maita_5_12_1
+Maita_27_12_-1
 END</property>
    <property name="Items" value=""/>
   </properties>

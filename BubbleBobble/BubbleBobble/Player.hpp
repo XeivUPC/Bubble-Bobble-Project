@@ -64,6 +64,7 @@ public:
 	void TpToSpawnPoint();
 	bool MoveToSpawnPoint();
 	int GetLifes();
+	bool IsDead();
 	void HitPlayer();
 	void HitPlayer_GOD_MODE();
 	void HitPlayer(int amount);
@@ -134,6 +135,8 @@ private:
 	bool hasBeenHit = false;
 	bool canBeHit = true;
 	bool isInBubbleMode = false;
+
+	bool isDead = false;
 
 
 	bool canBeHit_GOD_MODE = true;

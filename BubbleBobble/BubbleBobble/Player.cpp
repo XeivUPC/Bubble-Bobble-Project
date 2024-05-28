@@ -511,6 +511,7 @@ void Player::Update()
 			if (lifes < 0) {
 				lifes = 3;
 				isActive = false;
+				isDead = true;
 			}
 			else {
 				TpToSpawnPoint();
@@ -728,6 +729,11 @@ int Player::GetLifes()
 	return lifes;
 }
 
+bool Player::IsDead()
+{
+	return isDead;
+}
+
 void Player::HitPlayer()
 {
 	if (hasBeenHit || !canBeHit || !canBeHit_GOD_MODE)
@@ -802,6 +808,7 @@ void Player::Reset()
 	canBeHit = true;
 	SetState(5);
 	powerUp = None;
+	isDead = false;
 }
 
 

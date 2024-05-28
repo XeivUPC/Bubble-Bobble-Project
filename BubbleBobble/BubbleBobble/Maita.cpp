@@ -12,10 +12,18 @@ Maita::Maita(Vector2 tilePos, int lookAt)
 	walkAngrySpeed = walkSpeed * 2;
 	direction.x = lookAt;
 	internalTimer = MAITA_IA_RECALCULATION_TIME;
+	pointsToGive = 1000;
+
+	if (direction.x < 0) {
+		renderer.FlipX(true);
+	}
+	if (direction.x > 0) {
+		renderer.FlipX(false);
+	}
 
 	TextureManager::Instance().CreateTexture("Assets/Sprites/Enemy3.png", "MaitaSpriteSheet");
 
-	Animation walkAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.096f };
+	Animation walkAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.12f };
 	walkAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	walkAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	walkAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
@@ -26,20 +34,72 @@ Maita::Maita(Vector2 tilePos, int lookAt)
 	idleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	idleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 0 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
-	Animation walkAngryAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.096f };
+	Animation walkAngryAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.06f };
 	walkAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	walkAngryAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	walkAngryAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	walkAngryAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	walkAngryAnim.frames.push_back({ 4 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
 	Animation idleAngryAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.12f };
 	idleAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, -TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 	idleAngryAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 2 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
 
+	///
+
+	Animation greenBubbleAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.2f };
+	greenBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	greenBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	greenBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 7 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation blueBubbleAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.2f };
+	blueBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 8 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	blueBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 8 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	blueBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 8 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation orangeBubbleAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.2f };
+	orangeBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 9 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	orangeBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 9 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	orangeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 9 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation redBubbleAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.2f };
+	redBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 10 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 10 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	redBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 10 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	Animation explodeBubbleAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.1f };
+	explodeBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 9 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 10 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 9 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 10 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 9 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	explodeBubbleAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 10 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+	///
+
+	Animation throwAnim = { TextureManager::Instance().GetTexture("MaitaSpriteSheet") ,0.06f };
+	throwAnim.frames.push_back({ 0 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	throwAnim.frames.push_back({ 1 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	throwAnim.frames.push_back({ 2 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+	throwAnim.frames.push_back({ 3 * TILE_REAL_SIZE * 2, 6 * TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2, TILE_REAL_SIZE * 2 });
+
+
 	renderer.AddAnimation("MaitaWalk", walkAnim);
 	renderer.AddAnimation("MaitaIdle", idleAnim);
 	renderer.AddAnimation("MaitaWalkAngry", walkAngryAnim);
 	renderer.AddAnimation("MaitaIdleAngry", idleAngryAnim);
+
+	///
+
+	renderer.AddAnimation("MaitaGreenBubble", greenBubbleAnim);
+	renderer.AddAnimation("MaitaBlueBubble", blueBubbleAnim);
+	renderer.AddAnimation("MaitaOrangeBubble", orangeBubbleAnim);
+	renderer.AddAnimation("MaitaRedBubble", redBubbleAnim);
+	renderer.AddAnimation("MaitaExplodeBubble", explodeBubbleAnim);
+
+	///
+
+	renderer.AddAnimation("MaitaThrow", throwAnim);
 }
 
 Maita::~Maita()
@@ -48,7 +108,9 @@ Maita::~Maita()
 
 void Maita::Update()
 {
-	
+	if (isInsideBubble)
+		return;
+
 	retargetTimer += deltaTime;
 	internalTimer += deltaTime;
 
@@ -67,7 +129,7 @@ void Maita::Update()
 	if (direction.x > 0) {
 		renderer.FlipX(false);
 	}
-	
+
 
 
 	if (isClimbing) {
@@ -82,33 +144,56 @@ void Maita::Update()
 	position.x += direction.x * speed.x * deltaTime;
 	position.y += direction.y * speed.y * deltaTime;
 
+
+	if (position.y > (GAME_TILE_HEIGHT + 1.5) * TILE_SIZE)
+		position.y = 0;
+
 }
 
 void Maita::Render()
 {
 	renderer.UpdateAnimation();
 
-	if (direction.x == 0 && direction.y==0) {
-		if (isAngry) {
-			renderer.PlayAniamtion("MaitaWalkAngry");
+	if (isInsideBubble)
+	{
+		if (bubbleTime < 10) {
+			player1Bubble ? renderer.PlayAniamtion("MaitaGreenBubble") : renderer.PlayAniamtion("MaitaBlueBubble");
 		}
-		else
-		{
-			renderer.PlayAniamtion("MaitaIdle");
+		else if (bubbleTime < 13) {
+			renderer.PlayAniamtion("MaitaOrangeBubble");
 		}
-		
+		else if (bubbleTime < 14) {
+			renderer.PlayAniamtion("MaitaRedBubble");
+		}
+		else if (bubbleTime > 14) {
+			renderer.PlayAniamtion("MaitaExplodeBubble");
+		}
+
+		renderer.Draw(position.x - TILE_SIZE, position.y - TILE_SIZE, 0, WHITE);
 	}
 	else {
-		if (isAngry) {
-			renderer.PlayAniamtion("MaitaWalkAngry");
+		if (direction.x == 0 && direction.y == 0) {
+			if (isAngry) {
+				renderer.PlayAniamtion("MaitaIdleAngry");
+			}
+			else {
+				renderer.PlayAniamtion("MaitaIdle");
+			}
 		}
 		else {
-			renderer.PlayAniamtion("MaitaWalk");
+			if (isAngry) {
+				renderer.PlayAniamtion("MaitaWalkAngry");
+			}
+			else {
+				renderer.PlayAniamtion("MaitaWalk");
+			}
 		}
+		renderer.Draw(position.x - TILE_SIZE, position.y - TILE_SIZE * 2, 0, WHITE);
 	}
-	
 
-	renderer.Draw(position.x - TILE_SIZE, position.y - TILE_SIZE * 2, 0, WHITE);
+
+
+
 }
 
 void Maita::Brain()
@@ -121,23 +206,17 @@ void Maita::Brain()
 			if (needsToGoUp) {
 				internalTimer = MAITA_IA_RECALCULATION_TIME - 0.7f;
 				isWaitingClimbing = true;
-				
+
 			}
 			else {
 				if (needsToGoLeft) {
 					direction.x = -1;
-					if (rand() % 4)
-						direction.x *= -1;
 				}
 				else {
 					direction.x = 1;
-					if (rand() % 4)
-						direction.x *= -1;
 				}
 			}
 			direction.y = 0;
-
-
 		}
 	}
 	else if (isGoingDown && isGrounded) {
@@ -145,25 +224,21 @@ void Maita::Brain()
 		direction.y = 0;
 		if (needsToGoLeft) {
 			direction.x = -1;
-			if (rand() % 4)
-				direction.x *= -1;
+
 		}
 		else {
 			direction.x = 1;
-			if (rand() % 4)
-				direction.x *= -1;
+
 		}
 	}
-	else if(!isGoingDown && direction.x==0 && !isWaitingClimbing && !isClimbing) {
+	else if (!isGoingDown && direction.x == 0 && !isWaitingClimbing && !isClimbing) {
 		if (needsToGoLeft) {
 			direction.x = -1;
-			if (rand() % 4)
-				direction.x *= -1;
+
 		}
 		else {
 			direction.x = 1;
-			if (rand() % 4)
-				direction.x *= -1;
+
 		}
 	}
 
@@ -197,12 +272,11 @@ void Maita::Brain()
 	}
 
 	if (canGoUp && needsToGoUp && isGrounded) {
-
-			direction.x = 0;
-			direction.y = -1;
-			climbPoint = position.y - 5 * TILE_SIZE;
-			isClimbing = true;
-			internalTimer = 0;
+		direction.x = 0;
+		direction.y = -1;
+		climbPoint = position.y - 5 * TILE_SIZE;
+		isClimbing = true;
+		internalTimer = 0;
 	}
 	else if (needsToGoDown && !isGrounded)
 	{
@@ -211,26 +285,28 @@ void Maita::Brain()
 		internalTimer = 0;
 		isGoingDown = true;
 	}
+
+
 }
 
 
 void Maita::CheckCollisions()
 {
 	///Colliders
-	Vector2 frontCheck = { position.x + TILE_SIZE * renderer.GetFlippedXValue(),position.y - TILE_SIZE};
+	Vector2 frontCheck = { position.x + TILE_SIZE * renderer.GetFlippedXValue(),position.y - TILE_SIZE };
 	Vector2 topCheck = { position.x , position.y - (4.5 * TILE_SIZE) };
-	Vector2 groundCheck = { position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y + TILE_SIZE/2 };
+	Vector2 groundCheck = { position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y + TILE_SIZE / 2 };
 
-	Vector2 groundedCheckRight = { position.x + (TILE_SIZE / 1.2), position.y};
-	Vector2 groundedCheckLeft = { position.x - (TILE_SIZE / 1.2), position.y};
+	Vector2 groundedCheckRight = { position.x + (TILE_SIZE / 1.2), position.y };
+	Vector2 groundedCheckLeft = { position.x - (TILE_SIZE / 1.2), position.y };
 
 	Level& level = *LevelManager::Instance().GetActiveLevel();
-	
+
 
 
 	float tileX = (int)(frontCheck.x / TILE_SIZE);
 	float tileY = (int)(frontCheck.y / TILE_SIZE);
-	Rectangle tileCollision = { tileX* TILE_SIZE, tileY* TILE_SIZE,TILE_SIZE,TILE_SIZE };
+	Rectangle tileCollision = { tileX * TILE_SIZE, tileY * TILE_SIZE,TILE_SIZE,TILE_SIZE };
 	if (CheckCollisionCircleRec(frontCheck, 1, tileCollision)) {
 		if (level.GetTile(tileX, tileY, level.GetCollisionsTilemap()) == 2) {
 			direction.x *= -1;
@@ -262,7 +338,7 @@ void Maita::CheckCollisions()
 	tileX = (int)(groundedCheckRight.x / TILE_SIZE);
 	tileY = (int)(groundedCheckRight.y / TILE_SIZE);
 	tileCollision = { tileX * TILE_SIZE, tileY * TILE_SIZE,TILE_SIZE,TILE_SIZE };
-	if (CheckCollisionCircleRec(groundedCheckRight,1, tileCollision)) {
+	if (CheckCollisionCircleRec(groundedCheckRight, 1, tileCollision)) {
 		if (level.GetTile(tileX, tileY, level.GetCollisionsTilemap()) == 0) {
 
 			tileX = (int)(groundedCheckLeft.x / TILE_SIZE);
@@ -272,16 +348,22 @@ void Maita::CheckCollisions()
 			if (CheckCollisionCircleRec(groundedCheckLeft, 1, tileCollision)) {
 				if (level.GetTile(tileX, tileY, level.GetCollisionsTilemap()) == 0) {
 					isGrounded = false;
-					
+
 				}
 				else {
 					isGrounded = true;
 				}
 			}
+
 		}
 		else {
 			isGrounded = true;
-		}	
+		}
+
+	}
+
+	if (position.y > (GAME_TILE_HEIGHT)*TILE_SIZE) {
+		isGrounded = false;
 	}
 
 	Rectangle collision = { position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE * 2 * 0.8, TILE_SIZE * 2 * 0.7, TILE_SIZE * 2 * 0.8 };
@@ -296,30 +378,36 @@ void Maita::CheckCollisions()
 			}
 		}
 	}
-	
-	
+
+}
+
+Rectangle Maita::GetCollider()
+{
+	Rectangle collider = { position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE * 2 * 0.8, TILE_SIZE * 2 * 0.7, TILE_SIZE * 2 * 0.8 };
+	return collider;
 }
 
 void Maita::Reset()
 {
-	direction.x = 1;
+
 	internalTimer = MAITA_IA_RECALCULATION_TIME;
+
 }
 
 void Maita::Debug()
 {
-	DrawCircle(position.x , position.y - (4.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
-	DrawCircle(position.x , position.y - (3.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
+	DrawCircle(position.x, position.y - (4.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
+	DrawCircle(position.x, position.y - (3.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
 	DrawCircle(position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y - TILE_SIZE, 3, RED); /// Wall Debug
 
 	DrawCircle(position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y + TILE_SIZE / 2, 3, RED); /// Ground Debug
 
 	DrawCircle(position.x - (TILE_SIZE / 1.2), position.y + 1, 3, GREEN);
-	DrawCircle(position.x + TILE_SIZE /1.2, position.y + 1, 3, GREEN);
+	DrawCircle(position.x + TILE_SIZE / 1.2, position.y + 1, 3, GREEN);
 
 	DrawRectangle(position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE * 2 * 0.8, TILE_SIZE * 2 * 0.7, TILE_SIZE * 2 * 0.8, { 255,255,255,100 });
 
-
 	if (currentTarget != nullptr)
 		DrawLine(position.x, position.y, currentTarget->position.x, currentTarget->position.y, YELLOW);
+
 }

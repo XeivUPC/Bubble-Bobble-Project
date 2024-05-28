@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="30" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="1">
  <editorsettings>
-  <export target="../../Assets/Levels/Level6.json" format="json"/>
+  <export target="../../BubbleBobble/Assets/Levels/Level6.json" format="json"/>
  </editorsettings>
  <properties>
   <property name="ShadowColor" type="color" value="#ff63638c"/>
@@ -13,9 +13,10 @@
  <layer id="1" name="BuildLayer" width="32" height="30">
   <properties>
    <property name="Enemies">ZenChan_25_7_-1
-ZenChan_21_12_-1
+Maita_21_12_-1
 ZenChan_27_17_-1
-ZenChan_16_17_1</property>
+Maita_16_17_1
+END</property>
    <property name="Items" value=""/>
   </properties>
   <data encoding="csv">
