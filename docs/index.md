@@ -26,4 +26,4 @@ Each player can control one of two protagonists, Bub and Bob, two little dragons
 
 # Download
 
-[![Download Bubble Bubble](https://img.shields.io/badge/download-BubbleBobble.zip-blue?style=for-the-badge)](https://github.com/XeivUPC/Bubble-Bobble-Project/releases/latest/download/BubbleGames_BubbleBobble_v0.5.zip)
+[![Download Bubble Bubble](https://img.shields.io/badge/download-BubbleBobble.zip-blue?style=for-the-badge)](https://github.com/XeivUPC/Bubble-Bobble-Project/releases/download/v1.0/BubbleGames_BubbleBobble_v1.0.zip)
