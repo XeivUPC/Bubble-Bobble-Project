@@ -843,5 +843,7 @@ void Player::ForceBaseStates()
 	canBeHit = true;
 	isInBubbleMode = false;
 	canBeHit_GOD_MODE = true;
+
+	renderer.FlipX(this->player1);
 }
 
