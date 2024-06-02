@@ -5,7 +5,7 @@ https://github.com/XeivUPC/Bubble-Bobble-Project
 ________________________________________________________
 
 LinkVideo:
-https://www.youtube.com/watch?v=vOV2MCGLjrg
+
 ________________________________________________________
 
 Members:
@@ -50,15 +50,21 @@ In order to play the game you need to know the controls:
 
     GodMenu:
 
-        * F1 --> Inmortality
+        * F1 --> Switch God Mode
 
-        * F2 --> ShowDebugMode
+        * F2 --> Switch Debug Mode
 
-        * F3 --> InstaLose
+        * F3 --> Kill GreenPlayer
 
-        * F4 --> Remove One Life Green
+        * F4 --> Kill BluePlayer
 
-        * F5 --> Remove One Life Blue
+        * F5 --> Kill All Enemies
+
+        * F6 --> Spawn Random Fruit
+
+        * F7 --> Spawn Random Enemy
+
+        * 1-8 --> Go To Level
 
     GeneralControls:
 
@@ -80,4 +86,8 @@ Features:
 
 -Bubbles
 
+-Boss Fight
 
+-Results Menu
+
+-Final Animation
