@@ -34,7 +34,6 @@ protected:
 	float walkSpeed;
 	float walkAngrySpeed;
 
-	float speed;
 	Entity* currentTarget = nullptr;
 	float retargetTimer = RETARGET_TIME;
 	float pointsToGive = 100;

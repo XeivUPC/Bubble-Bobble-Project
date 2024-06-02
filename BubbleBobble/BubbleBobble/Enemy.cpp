@@ -57,6 +57,7 @@ bool Enemy::TryToBubble(bool player1bubble)
 void Enemy::RemoveFromBubble()
 {
 	isInsideBubble = false;
+	Reset();
 }
 
 bool Enemy::IsInsideBubble()

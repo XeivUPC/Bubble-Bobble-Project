@@ -102,6 +102,13 @@ int LevelManager::GetNextLevelIndex()
 	return nextLevel->GetLevelIndex();
 }
 
+void LevelManager::SetLevelFix(int index)
+{
+	LoadNewActiveLevel(index);
+	LoadNewWaitingLevel(index+1);
+	nextLevelIndex = index+1;
+}
+
 void LevelManager::StartTransition()
 {
 	if (isOnTransition || nextLevelIndex > MAX_LEVELS)

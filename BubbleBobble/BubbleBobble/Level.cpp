@@ -66,6 +66,32 @@ void Level::Render()
 	}
 }
 
+Vector2 Level::GetRandomGroundTile() {
+	bool obtained = false;
+	Vector2 tileToReturn = { 0,0 };
+
+	int yOffset = (rand() % GAME_TILE_HEIGHT);
+	int xOffset = (rand() % GAME_TILE_WIDTH);
+
+	for (int y = yOffset; y < GAME_TILE_HEIGHT; y++)
+	{
+		for (int x = xOffset; x < GAME_TILE_WIDTH; x++)
+		{
+			float valueOfTile = GetTile(x, y, Collisions);
+			int prob = (rand() % 2);
+			if (valueOfTile == 1 && prob == 1) {
+				/// GroundTile
+				tileToReturn = { (float)x+0.5f,(float)y };
+				obtained = true;
+				return tileToReturn;
+			}
+		}
+	}
+	if (!obtained)
+		return GetRandomGroundTile();
+	
+}
+
 void Level::Debug()
 {
 	for (int y = 0; y < GAME_TILE_HEIGHT; y++)

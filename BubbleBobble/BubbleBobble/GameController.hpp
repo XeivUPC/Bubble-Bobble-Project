@@ -37,6 +37,7 @@ public:
 	void Update() override;
 	void Render() override;
 	void ChangeState(int stateIndex);
+	void SetScreenOffset(float offset);
 private:
 	
 	void UpdateUI();
@@ -58,6 +59,7 @@ private:
 	void LoadGameData(int* highScore, const char* name);
 
 	int FromNumberToTile(int num);
+	void PrepareLevel();
 
 	GameState state = InitialScreen;
 
@@ -179,7 +181,8 @@ private:
 
 
 	bool DebugMode = false;
-
+	bool GodMode = false;
+	float screenOffset = 0;
 
 	/////CONSTANTS
 	#define INIT_SCREEN_TIME 8

@@ -27,6 +27,7 @@ public:
     void SpawnZenChan(Vector2 tilePos,int direction);
     void SpawnMaita(Vector2 tilePos, int direction);
     void SpawnSuperDrunk(Vector2 tilePos, int direction);
+    void SpawnRandomEnemy(Vector2 tilePos, int direction);
 
     void AddTarget(Entity* entity);
     Entity* GetTarget(int index);

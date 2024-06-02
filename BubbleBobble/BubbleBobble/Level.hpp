@@ -19,7 +19,7 @@ public:
 
 	bool IsTile(int x, int y, int* dataMap);
 	int GetTile(int x, int y, int* dataMap);
-
+	Vector2 GetRandomGroundTile();
 	int* GetCollisionsTilemap();
 	int* GetDirectionsTilemap();
 	int GetLevelIndex();

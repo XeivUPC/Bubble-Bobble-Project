@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.hpp"
 
-#define MAITA_IA_RECALCULATION_TIME 3
+#define MAITA_IA_RECALCULATION_TIME 4
 
 class Maita : public Enemy
 {
@@ -36,5 +36,4 @@ private:
 
 
 	bool isGrounded = true;
-
 };

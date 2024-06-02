@@ -38,6 +38,16 @@ void EnemyManager::SpawnSuperDrunk(Vector2 tilePos, int direction)
 {
 	enemies.push_back(new SuperDrunk({ TILE_SIZE * tilePos.x,TILE_SIZE * tilePos.y }, direction));
 }
+void EnemyManager::SpawnRandomEnemy(Vector2 tilePos, int direction)
+{
+	int randEnemy = rand() % 2;
+	if (randEnemy == 1) {
+		SpawnMaita(tilePos, direction);
+	}
+	else {
+		SpawnZenChan(tilePos, direction);
+	}
+}
 void EnemyManager::AddTarget(Entity* entity)
 {
 	targets.push_back(entity);

@@ -34,6 +34,7 @@ public:
     Renderer* GetRenderer();
     int GetActualLevelIndex();
     int GetNextLevelIndex();
+    void SetLevelFix(int index);
 
 private:
     //Private constructor to prevent instantiation

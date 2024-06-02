@@ -387,21 +387,40 @@ Rectangle ZenChan::GetCollider()
 
 void ZenChan::Reset()
 {
+	position = { (float)((int)(position.x / TILE_SIZE)), (float)((int)(position.y / TILE_SIZE)) };
+	position = { position.x * TILE_SIZE , position.y * TILE_SIZE };
+	currentTarget = nullptr;
+	retargetTimer = RETARGET_TIME;
+
+	needsToGoUp = false;
+	needsToGoDown = false;
+	needsToGoLeft = false;
+
+	canGoUp = false;
+	canGoDown = false;
+
+	isClimbing = false;
+	isWaitingClimbing = false;
+	isGoingDown = false;
 
 	internalTimer = ZENCHAN_IA_RECALCULATION_TIME;
 
+	isGrounded = false;
+
+	direction = { 0,1 };
+	speed = { 0,0 };
 }
 
 void ZenChan::Debug()
 {
-	DrawCircle(position.x , position.y - (4.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
-	DrawCircle(position.x , position.y - (3.5 * TILE_SIZE), 3, BLUE); /// JumpVertical Debug
-	DrawCircle(position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y - TILE_SIZE, 3, RED); /// Wall Debug
+	DrawCircle(position.x , position.y - (4.5 * TILE_SIZE), 0.1 * TILE_SIZE, BLUE); /// JumpVertical Debug
+	DrawCircle(position.x , position.y - (3.5 * TILE_SIZE), 0.1 * TILE_SIZE, BLUE); /// JumpVertical Debug
+	DrawCircle(position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y - TILE_SIZE, 0.1 * TILE_SIZE, RED); /// Wall Debug
 
-	DrawCircle(position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y + TILE_SIZE / 2, 3, RED); /// Ground Debug
+	DrawCircle(position.x + TILE_SIZE * renderer.GetFlippedXValue(), position.y + TILE_SIZE / 2, 0.1 * TILE_SIZE, RED); /// Ground Debug
 
-	DrawCircle(position.x - (TILE_SIZE / 1.2), position.y + 1, 3, GREEN);
-	DrawCircle(position.x + TILE_SIZE /1.2, position.y + 1, 3, GREEN);
+	DrawCircle(position.x - (TILE_SIZE / 1.2), position.y + 1, 0.1 * TILE_SIZE, GREEN);
+	DrawCircle(position.x + TILE_SIZE /1.2, position.y + 1, 0.1 * TILE_SIZE, GREEN);
 
 	DrawRectangle(position.x - TILE_SIZE * 0.7, position.y - TILE_SIZE * 2 * 0.8, TILE_SIZE * 2 * 0.7, TILE_SIZE * 2 * 0.8, {255,255,255,100});
 

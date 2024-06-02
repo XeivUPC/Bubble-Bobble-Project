@@ -49,7 +49,7 @@ int main() {
     camera.rotation = 0.0f;
     camera.zoom = scale;
 
-
+    controller.SetScreenOffset(-offset * scale * 2);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);

@@ -194,6 +194,9 @@ void Bubble::Update()
 			enemyInside->SetBubbleTime(internalTimer);
 		}
 
+		if (position.y > (GAME_TILE_HEIGHT+1) * TILE_SIZE && direction.y >= 0)
+			position.y = 0;
+
 		break;
 	default:
 		break;
@@ -600,8 +603,6 @@ void Bubble::SetDirectionByTile()
 		direction.x = 1;
 		break;
 	default:
-		direction.x = 0;
-		direction.y = 0;
 		break;
 	}
 }

@@ -383,6 +383,11 @@ void GameController::ChangeState(int stateIndex)
 	}
 }
 
+void GameController::SetScreenOffset(float offset)
+{
+	screenOffset = offset;
+}
+
 void GameController::UpdateUI()
 {
 	switch (state)
@@ -647,7 +652,6 @@ void GameController::UpdateUI()
 		{
 			bigBobExploded = true;
 			cryAniamtionTimer = false;
-			///TrIGGER EXPLOSIONS
 			for (size_t i = 0; i < 4; i++)
 			{
 				for (size_t j = 0; j < 5; j++)
@@ -693,27 +697,6 @@ void GameController::UpdateGame()
 			highScorePoints.SetPuntutation(player2Points.GetPuntuation());
 	}
 
-	if (IsKeyPressed(KEY_F3)) {
-		player1.HitPlayer_GOD_MODE(player1.GetLifes() + 1);
-		player2.HitPlayer_GOD_MODE(player2.GetLifes() + 1);
-	}
-	if (IsKeyPressed(KEY_F4))
-		player1.HitPlayer_GOD_MODE();
-	if (IsKeyPressed(KEY_F5))
-		player2.HitPlayer_GOD_MODE();
-
-	if (IsKeyPressed(KEY_F6))\
-		EnemyManager::Instance().KillAllEnemies();
-
-	if (IsKeyPressed(KEY_F2)) {
-		DebugMode = !DebugMode;
-	}
-
-	if (IsKeyPressed(KEY_F1)) {
-		player1.SetIfCanBeHitted_GOD_MODE(!player1.CanBeHit_GOD_MODE());
-		player2.SetIfCanBeHitted_GOD_MODE(!player2.CanBeHit_GOD_MODE());
-
-	}
 	if (!player2.isActive && !player1.isActive) {
 		////Lose
 		ChangeState(6);
@@ -819,6 +802,98 @@ void GameController::UpdateGame()
 			if (LevelManager::Instance().IsLastLevel())
 				ChangeState(9);
 		}	
+	}
+	else {
+		/// Spawn Enemies DEBUG
+
+		//// F1 -> God Mode
+		////___________________
+		//// F2 -> DebugMode
+		//// F3 -> Kill Green
+		//// F4 -> Kill Blue
+		//// F5 -> Kill Enemies
+
+		//// 1-8 -> LoadLevel
+		//// 
+
+		#pragma region Debug
+		if (IsKeyPressed(KEY_F1)) {
+			GodMode = !GodMode;
+			player1.SetIfCanBeHitted_GOD_MODE(!GodMode);
+			player2.SetIfCanBeHitted_GOD_MODE(!GodMode);
+		}
+
+		if (GodMode) {
+			if (IsKeyPressed(KEY_F2)) {
+				DebugMode = !DebugMode;
+			}
+			if (IsKeyPressed(KEY_F3)) {
+				player1.HitPlayer_GOD_MODE(player1.GetLifes() + 1);
+			}
+			if (IsKeyPressed(KEY_F4)) {
+				player2.HitPlayer_GOD_MODE(player2.GetLifes() + 1);
+			}
+			if (IsKeyPressed(KEY_F5)) {
+				EnemyManager::Instance().KillAllEnemies();
+			}
+			if (IsKeyPressed(KEY_F6)) {
+				/// SpawnFruit
+				Vector2 fruitTextureOffset = { (rand() % 13),(rand() % 3) };
+				Vector2 fruitPosition = LevelManager::Instance().GetActiveLevel()->GetRandomGroundTile();
+				
+				ObjectsManager::Instance().SpawnFruit({ fruitTextureOffset.x,fruitTextureOffset .y}, fruitPosition, 100);
+			}
+			if (IsKeyPressed(KEY_F7)) {
+				/// SpawnEnemy
+				Vector2 enemyPosition = LevelManager::Instance().GetActiveLevel()->GetRandomGroundTile();
+				
+				EnemyManager::Instance().SpawnRandomEnemy(enemyPosition, 1);
+			}
+
+			///Levels
+			if (IsKeyPressed(KEY_ONE)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(1);
+			}
+			else if (IsKeyPressed(KEY_TWO)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(2);
+			}
+			else if (IsKeyPressed(KEY_THREE)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(3);
+			}
+			else if (IsKeyPressed(KEY_FOUR)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(4);
+			}
+			else if (IsKeyPressed(KEY_FIVE)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(5);
+			}
+			else if (IsKeyPressed(KEY_SIX)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(6);
+			}
+			else if (IsKeyPressed(KEY_SEVEN)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(7);
+			}
+			else if (IsKeyPressed(KEY_EIGHT)) {
+				PrepareLevel();
+				EnemyManager::Instance().KillAllEnemies();
+				LevelManager::Instance().SetLevelFix(8);
+			}
+			#pragma endregion
+
+		}
 	}
 
 }
@@ -1018,7 +1093,7 @@ void GameController::RenderGameEarly()
 
 	EnemyManager::Instance().Render();
 	ParticleManager::Instance().Render();
-	if (DebugMode) {
+	if (DebugMode && GodMode) {
 		LevelManager::Instance().Debug();
 		ObjectsManager::Instance().Debug();
 		BubbleManager::Instance().Debug();
@@ -1051,6 +1126,10 @@ void GameController::RenderUILate()
 	if (state == Win) {
 		ParticleManager::Instance().Render();
 	}
+
+	if (GodMode) {
+		DrawText("GOD Mode", 1* TILE_SIZE, 2* TILE_SIZE, TILE_SIZE, WHITE);
+	}
 }
 
 void GameController::RenderGameLate()
@@ -1060,7 +1139,7 @@ void GameController::RenderGameLate()
 	if (player1.isActive)
 		player1.Render();
 
-	if (DebugMode) {
+	if (DebugMode && GodMode) {
 		if (player2.isActive)
 			player2.Debug();
 		if (player1.isActive)
@@ -1178,4 +1257,15 @@ int GameController::FromNumberToTile(int num)
 	default:
 		break;
 	}
+}
+
+void GameController::PrepareLevel()
+{
+	hurryModeTimer = 0;
+	isHurryOnMode = false;
+	BubbleManager::Instance().DisableAll();
+	BubbleManager::Instance().Reset();
+	EnemyManager::Instance().DestroyAll();
+	ObjectsManager::Instance().DestroyAll();
+	EnemyManager::Instance().SetAngry(false);
 }
