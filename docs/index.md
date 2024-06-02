@@ -20,7 +20,7 @@ Each player can control one of two protagonists, Bub and Bob, two little dragons
 
 # Team Photo
 
-<img src="https://github.com/XeivUPC/Bubble-Bobble-Project/blob/wiki-files/ImageTeam.jpg" width="300">
+<img src="https://raw.githubusercontent.com/XeivUPC/Bubble-Bobble-Project/wiki-files/ImageTeam.jpg" width="300">
 
 
 # Video
