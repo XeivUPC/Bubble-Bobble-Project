@@ -4,6 +4,10 @@ GitHub:
 https://github.com/XeivUPC/Bubble-Bobble-Project
 ________________________________________________________
 
+Web:
+https://xeivupc.github.io/Bubble-Bobble-Project/
+________________________________________________________
+
 LinkVideo:
 https://www.youtube.com/watch?v=grOOwS4xlPs
 ________________________________________________________
